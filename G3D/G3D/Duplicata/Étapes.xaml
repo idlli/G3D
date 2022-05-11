@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="G3D.Duplicata.Étapes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:G3D" xmlns:controls="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+             mc:Ignorable="d" 
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             FontFamily="{materialDesign:MaterialDesignFont}"
+             d:DesignHeight="872" d:DesignWidth="1634">
+    <Border Background="#f3f4fb" CornerRadius="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Background="White" CornerRadius="5" Padding="30,20">
+                <controls:AutoCompleteBox x:Name="SearchByBox" HorizontalAlignment="Center" MinWidth="300" Margin="25,0" Style="{DynamicResource AutoCompleteBoxStyle}" SelectionChanged="SearchByBox_SelectionChanged" TextChanged="SearchByBox_TextChanged" IsEnabled="True" IsTextCompletionEnabled="True" FilterMode="Contains" Padding="12,10" materialDesign:HintAssist.Hint="Rechercher d'un duplicata..." VerticalAlignment="Center"/>
+
+
+            </Border>
+            <Grid Grid.Row="1" Margin="0,25,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="White" CornerRadius="5" Padding="30,20" Margin="0,0,25,0">
+                    <StackPanel VerticalAlignment="Center">
+                        <WrapPanel>
+                            <StackPanel Margin="0,-2.5,0,0">
+                                <Border Background="{StaticResource PrimaryHueMidBrush}" x:Name="EditéBorder" Width="22" Height="22" CornerRadius="15" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="2">
+                                    <materialDesign:PackIcon Width="10" Height="10" Name="EditéIcon" Kind="CheckBold" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Margin="15,0">
+                                <TextBlock Margin="0,0,0,5" FontWeight="Medium" FontSize="13" Foreground="{StaticResource PrimaryHueMidBrush}" Name="EditéText">Edité</TextBlock>
+                                <TextBlock FontSize="12" Foreground="#a4b0be" Name="EditéDescription">Sélectionner la date d'édition</TextBlock>
+                            </StackPanel>
+                        </WrapPanel>
+                        <Grid Margin="0,-15,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Width="2.5" Height="40" Name="EnvoyéLine" Background="{StaticResource PrimaryHueMidBrush}" Margin="0,5"></Border>
+                            <Border Grid.Row="1" VerticalAlignment="Top" Grid.Column="0" Name="EnvoyéBorder" Background="{StaticResource PrimaryHueMidBrush}" Width="22" Height="22" CornerRadius="15" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="2">
+                                <materialDesign:PackIcon Width="10" Height="10" Name="EnvoyéIcon" Kind="Circle" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+                            </Border>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="15,2.5">
+                                <TextBlock Margin="0,0,0,5" Name="EnvoyéText" FontWeight="Medium" FontSize="13" Foreground="{StaticResource PrimaryHueMidBrush}">Envoyé</TextBlock>
+                                <TextBlock FontSize="12" Name="EnvoyéDescription" Foreground="#a4b0be">Sélectionnez la date d'envoyé</TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Background="White" CornerRadius="5" Padding="30">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="White" BorderBrush="#a4b0be" BorderThickness="1" CornerRadius="5" Padding="20" HorizontalAlignment="Center"
+                                  MinWidth="400"
+                                  VerticalAlignment="Center">
+                            <Calendar Language="fr-FR" 
+                                  Background="White"
+                                  
+                                      x:Name="Calendar"
+                                      Opacity=".4"
+                                  materialDesign:CalendarAssist.Orientation="Horizontal"
+  Style="{StaticResource MaterialDesignCalendarPortraitForeground}" />
+                        </Border>
+                        <Button Grid.Row="1"
+                                Name="Valider"
+                                Click="Valider_Click"
+                                HorizontalAlignment="Right"
+  Style="{StaticResource MaterialDesignFlatMidBgButton}"
+materialDesign:ButtonAssist.CornerRadius="5"
+  ToolTip="Ajouter un stagiaire manuellement"
+                        FontSize="12"
+                        Height="36"
+                        Padding="20,2,15,3"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+                            <Button.Content>
+                                <WrapPanel>
+                                    <TextBlock>Valider</TextBlock>
+                                    <materialDesign:PackIcon Kind="CalendarCheck" Margin="10,0,0,0" Width="16" Height="16"/>
+                                </WrapPanel>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="G3D.Diplôme.Menu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:G3D"
+             mc:Ignorable="d" 
+             d:DesignHeight="872" d:DesignWidth="236">
+    <Border Background="White" CornerRadius="0,5,5,0" Padding="0,18">
+        <ListView Grid.Row="1" Style="{DynamicResource MaterialDesignListView1}" SelectionMode="Single">
+            <ListView.Resources>
+                <Style TargetType="WrapPanel">
+                    <Setter Property="Margin" Value="30,0,0,0"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="15,0,0,0"/>
+                    <Setter Property="FontSize" Value="13"/>
+                </Style>
+            </ListView.Resources>
+            <ListViewItem IsSelected="True" Selected="TableauDeBordSelected">
+                <WrapPanel>
+                    <materialDesign:PackIcon Kind="HomeOutline" Width="24" Height="24"/>
+                    <TextBlock>Tableau de bord</TextBlock>
+                </WrapPanel>
+            </ListViewItem>
+            <ListViewItem Selected="ImporterDesStagiairesSelected">
+                <WrapPanel>
+                    <materialDesign:PackIcon Kind="DatabaseImportOutline" Width="23" Height="23"  Margin="1,0,0,0" />
+                    <TextBlock>Importer des stagiaires</TextBlock>
+                </WrapPanel>
+            </ListViewItem>
+            <ListViewItem Selected="ChecklistSelected">
+                <WrapPanel>
+                    <materialDesign:PackIcon Kind="ListStatus" Width="23" Height="23" Margin="1,0,0,0" />
+                    <TextBlock>Checklist</TextBlock>
+                </WrapPanel>
+            </ListViewItem>
+            <ListViewItem Selected="ÉtapesDeSignatureSelected">
+                <WrapPanel>
+                    <materialDesign:PackIcon Kind="FileSign" Width="22" Height="22" Margin="1,0,0,0" />
+                    <TextBlock Margin="16,0,0,0">Étapes de signature</TextBlock>
+                </WrapPanel>
+            </ListViewItem>
+            <ListViewItem Unselected="ListViewItem1_Unselected" Selected="ListViewItem1_Selected" PreviewMouseLeftButtonDown="ListViewItem_PreviewMouseLeftButtonDown" Name="ListViewItemWithTreeView">
+                <TreeView Margin="-3,0,0,0">
+                    <TreeViewItem Style="{DynamicResource MaterialDesignTreeViewItem1}" PreviewMouseLeftButtonDown="TreeViewItemHeader_PreviewMouseLeftButtonDown" x:Name="TreeViewItemHeader" Margin="0,0,0,0" Padding="0" Foreground="#5f6368"  MouseEnter="TreeViewItemHeader_MouseEnter">
+                        <TreeViewItem.Resources>
+                            <Style TargetType="TreeViewItem" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                                <Setter Property="Padding" Value="20,2,60,2"/>
+                                <Setter Property="Foreground" Value="#5f6368"/>
+                            </Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="FontWeight" Value="Regular"/>
+                                <Setter Property="Margin" Value="0,5"/>
+                            </Style>
+                        </TreeViewItem.Resources>
+                        <TreeViewItem.Header>
+                            <WrapPanel Margin="0">
+                                <materialDesign:PackIcon Kind="FileDocumentMultipleOutline" Width="21" Height="21" Margin="2,0,0,0" />
+                                <TextBlock VerticalAlignment="Center" Margin="17,0,0,0" Name="TreeName">Registre</TextBlock>
+                            </WrapPanel>
+                        </TreeViewItem.Header>
+                        <TreeViewItem Unselected="TreeViewItem_Unselected" Selected="TreeViewItem_Selected"  Margin="4,10,0,5">
+                            <TreeViewItem.Header>
+                                <TextBlock>Signatures</TextBlock>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem Unselected="TreeViewItem_Unselected" Selected="TreeViewItem_Selected" Margin="4,0,0,0">
+                            <TreeViewItem.Header>
+                                <TextBlock>Retrait diplômes</TextBlock>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        
+                    </TreeViewItem>
+                </TreeView>
+            </ListViewItem>
+            <ListViewItem Selected="SuiviDesSignaturesSelected">
+                <WrapPanel>
+                    <materialDesign:PackIcon Kind="DrawPen" Width="22" Height="22" Margin="1,0,0,0" />
+                    <TextBlock Margin="16,0,0,0">Suivi des signatures</TextBlock>
+                </WrapPanel>
+            </ListViewItem>
+            <ListViewItem Selected="BordereauSelected">
+                <WrapPanel>
+                    <materialDesign:PackIcon Kind="TextBoxCheckOutline" Width="22" Height="22" Margin="1,0,0,0" />
+                    <TextBlock Margin="16,0,0,0">Bordereau</TextBlock>
+                </WrapPanel>
+            </ListViewItem>
+            <ListViewItem Selected="RetraitDuDiplômeSelected">
+                <WrapPanel>
+                    <materialDesign:PackIcon Kind="CertificateOutline" Width="22" Height="22" Margin="1,0,0,0" />
+                    <TextBlock Margin="16,0,0,0">Retrait du diplôme</TextBlock>
+                </WrapPanel>
+            </ListViewItem>
+            <ListViewItem Selected="ContactLauréatsSelected">
+                <WrapPanel>
+                    <materialDesign:PackIcon Kind="CardAccountPhoneOutline" Width="22" Height="22" Margin="1,0,0,0" />
+                    <TextBlock Margin="16,0,0,0">Contact lauréats</TextBlock>
+                </WrapPanel>
+            </ListViewItem>
+        </ListView>
+    </Border>
+</UserControl>

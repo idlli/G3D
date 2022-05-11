@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="G3D.Authentication.Récupération"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:G3D"
+        mc:Ignorable="d"
+        TextElement.FontSize="13"
+        FontFamily="{materialDesign:MaterialDesignFont}">
+    <UserControl.Resources>
+        <!-- My Short Resources -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="#3f4347" />
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="materialDesign:PackIcon" x:Key="WarningIcon">
+            <Setter Property="Foreground" Value="#d9254e" />
+            <Setter Property="Width" Value="14" />
+            <Setter Property="Height" Value="14" />
+            <Setter Property="Margin" Value="0,0,7,0" />
+            <Setter Property="Kind" Value="WarningCircle" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="WarningText">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="#d9254e" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Border Visibility="Visible" BorderBrush="#dadce0" Background="#fff" Padding="50,45" Width="420" CornerRadius="8" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2" Name="AccountFind">
+            <StackPanel>
+                <StackPanel>
+                    <TextBlock Margin="0,0,0,20" FontSize="18" FontWeight="Medium" Text="Récupération de compte"/>
+                    <TextBlock Foreground="#8395a7" Margin="0,0,0,40" Text="Veuillez entrer les informations suivantes pour continuer"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,0,20">
+                    <TextBox materialDesign:HintAssist.FloatingScale=".9" Style="{StaticResource MaterialDesignOutlinedTextBox}" Name="Identité" Padding="10,14" BorderBrush="#dadce0" MouseEnter="MouseEnterFunc" MouseLeave="MouseLeaveFunc" BorderThickness="1" GotFocus="GotFocusFunc" LostFocus="LostFocusFunc" Foreground="#5f6368" materialDesign:HintAssist.Background="#fff" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="Adresse e-mail ou nom d'utilisateur"/>
+                    <WrapPanel Visibility="Collapsed" Margin="0,7,0,0" Name="IdentitéValidation">
+                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}" />
+                        <TextBlock Style="{StaticResource WarningText}" Name="IdentitéValidationText" />
+                    </WrapPanel>
+                </StackPanel>
+                <StackPanel Margin="0,0,0,20">
+                    <TextBox materialDesign:HintAssist.FloatingScale=".9" Style="{StaticResource MaterialDesignOutlinedTextBox}" Name="CléProduit" materialDesign:HintAssist.HelperText="Clé d'accès délivrée par l'administrateur" materialDesign:HintAssist.HelperTextFontSize="11" Padding="10,14" BorderBrush="#dadce0" MouseEnter="MouseEnterFunc" MouseLeave="MouseLeaveFunc" BorderThickness="1,1,1,1" GotFocus="GotFocusFunc" LostFocus="LostFocusFunc" Foreground="#5f6368" materialDesign:HintAssist.Background="#fff" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="Clé de produit"/>
+                    <WrapPanel Visibility="Collapsed" Margin="0,20,0,0" Name="CléProduitValidation">
+                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}" />
+                        <TextBlock Style="{StaticResource WarningText}" Name="CléProduitValidationText" />
+                    </WrapPanel>
+                </StackPanel>
+                <StackPanel Margin="0,15,0,5">
+                    <Button Style="{StaticResource MaterialDesignFlatMidBgButton}" Click="Suivant_Click" Name="Suivant" materialDesign:ButtonAssist.CornerRadius="3" Content="Suivant" Padding="20,0" Height="38" FontSize="12"/>
+                    <WrapPanel Visibility="Collapsed" Margin="0,14,0,0" Name="SuivantValidation" HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}" VerticalAlignment="Center"/>
+                        <TextBlock Style="{StaticResource WarningText}" MaxWidth="300" TextWrapping="Wrap" Name="SuivantValidationText" />
+                    </WrapPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border BorderBrush="#dadce0" Background="#fff" Padding="50,45" Width="420" CornerRadius="8" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2" Name="ChangePassword" Visibility="Collapsed">
+            <StackPanel>
+                <TextBlock Margin="0,0,0,40" Text="Réinitialiser le mot de passe" FontSize="18" FontWeight="Medium"/>
+                <StackPanel Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <PasswordBox materialDesign:HintAssist.FloatingScale=".9" Style="{StaticResource MaterialDesignOutlinedPasswordBox}" Name="NewPassword" Padding="10,13" Foreground="#5f6368" MouseEnter="MouseEnterFunc" MouseLeave="MouseLeaveFunc" BorderBrush="#dadce0" BorderThickness="1" GotFocus="GotFocusFunc" LostFocus="LostFocusFunc" PasswordChanged="NewPassword_PasswordChanged" materialDesign:HintAssist.Background="#fff" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="Nouveau mot de passe" Grid.ColumnSpan="2" />
+                        <TextBox materialDesign:HintAssist.FloatingScale=".9" Style="{StaticResource MaterialDesignOutlinedTextBox}" Visibility="Collapsed" Name="NewPasswordText" Padding="10,14" BorderBrush="#dadce0" BorderThickness="1" TextChanged="NewPassword_PasswordChanged" MouseEnter="MouseEnterFunc" MouseLeave="MouseLeaveFunc" GotFocus="GotFocusFunc" LostFocus="LostFocusFunc" Foreground="#5f6368" materialDesign:HintAssist.Background="#fff" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="Nouveau mot de passe" Grid.ColumnSpan="2" />
+                        <ToggleButton Grid.Column="2" Style="{StaticResource MaterialDesignFlatToggleButton}" Name="ShowNewPassword" Visibility="Collapsed" Margin="10,0,0,0" Checked="ShowNewPassword_Checked" Unchecked="ShowNewPassword_UnChecked" ToolTip="MaterialDesignFlatToggleButton">
+                            <materialDesign:PackIcon Margin="0" Foreground="#5f6368" Kind="Eye" Height="16" Width="16" />
+                        </ToggleButton>
+                    </Grid>
+                    <WrapPanel Visibility="Collapsed" Margin="0,7,0,0" Name="NewPasswordValidation">
+                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}" />
+                        <TextBlock Style="{StaticResource WarningText}" Name="NewPasswordValidationText" />
+                    </WrapPanel>
+                    <Grid Visibility="Collapsed" Margin="0,7,0,0" Name="MotPasseValidationRegex">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}" VerticalAlignment="Center" Grid.RowSpan="2"/>
+                        <TextBlock Grid.Column="1" Style="{StaticResource WarningText}" TextWrapping="Wrap">
+                        Merci de respecter ces termes lors de la création de votre mot de passe :
+                        </TextBlock>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,5,0,0">
+                            <TextBlock Grid.Column="1" Style="{StaticResource WarningText}" TextWrapping="Wrap">
+                            Au moins une lettre majuscule
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" Style="{StaticResource WarningText}" TextWrapping="Wrap">
+                            Au moins une lettre minuscule
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" Style="{StaticResource WarningText}" TextWrapping="Wrap">
+                            Au moins un chiffre
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" Style="{StaticResource WarningText}" TextWrapping="Wrap">
+                            Au moins un caractère spécial
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" Style="{StaticResource WarningText}" TextWrapping="Wrap">
+                            Minimum 8 de longueur
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <PasswordBox materialDesign:HintAssist.FloatingScale=".9" Style="{StaticResource MaterialDesignOutlinedPasswordBox}" Name="ConfirmePassword" Padding="10,13" Foreground="#5f6368" MouseEnter="MouseEnterFunc" MouseLeave="MouseLeaveFunc" BorderBrush="#dadce0" BorderThickness="1" GotFocus="GotFocusFunc" LostFocus="LostFocusFunc" PasswordChanged="ConfirmePassword_PasswordChanged" materialDesign:HintAssist.Background="#fff" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="Confirmez le mot de passe" Grid.ColumnSpan="2" />
+                        <TextBox materialDesign:HintAssist.FloatingScale=".9" Style="{StaticResource MaterialDesignOutlinedTextBox}" Visibility="Collapsed" Name="ConfirmePasswordText" Padding="10,14" BorderBrush="#dadce0" BorderThickness="1" TextChanged="ConfirmePassword_PasswordChanged" MouseEnter="MouseEnterFunc" MouseLeave="MouseLeaveFunc" GotFocus="GotFocusFunc" LostFocus="LostFocusFunc" Foreground="#5f6368" materialDesign:HintAssist.Background="#fff" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="Confirmez le mot de passe" Grid.ColumnSpan="2" />
+                        <ToggleButton Grid.Column="2" Style="{StaticResource MaterialDesignFlatToggleButton}" Name="ShowConfirmePassword" Visibility="Collapsed" Margin="10,0,0,0" Checked="ShowConfirmePassword_Checked" Unchecked="ShowConfirmePassword_UnChecked" ToolTip="MaterialDesignFlatToggleButton">
+                            <materialDesign:PackIcon Margin="0" Foreground="#5f6368" Kind="Eye" Height="16" Width="16" />
+                        </ToggleButton>
+                    </Grid>
+                    <WrapPanel Visibility="Collapsed" Margin="0,7,0,0" Name="ConfirmePasswordValidation">
+                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}" />
+                        <TextBlock Style="{StaticResource WarningText}" Name="ConfirmePasswordValidationText" />
+                    </WrapPanel>
+                </StackPanel>
+                <StackPanel>
+                    <Button Style="{StaticResource MaterialDesignFlatMidBgButton}" Click="Modifier_Click" Margin="0,10,0,5" materialDesign:ButtonAssist.CornerRadius="3" Content="Modifier" Padding="20,0" Height="38" FontSize="12"/>
+                    <WrapPanel Visibility="Collapsed" Margin="0,14,0,0" Name="ModifierValidation" HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}" VerticalAlignment="Center"/>
+                        <TextBlock Style="{StaticResource WarningText}" MaxWidth="300" TextWrapping="Wrap" Name="ModifierValidationText" />
+                    </WrapPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

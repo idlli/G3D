@@ -1,0 +1,311 @@
+﻿<UserControl x:Class="G3D.Diplôme.Checklist"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:G3D" xmlns:controls="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit" xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
+             mc:Ignorable="d" 
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             Foreground="#5f6368"
+             FontFamily="{materialDesign:MaterialDesignFont}"
+             d:DesignHeight="872" d:DesignWidth="1634">
+
+    <UserControl.Resources>
+    </UserControl.Resources>
+
+    <Border Background="#f3f4fb" CornerRadius="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Background="White" CornerRadius="5" Padding="30" Margin="0,0,0,25">
+                    <StackPanel>
+                        <WrapPanel Margin="0,0,0,25">
+                            <WrapPanel.Resources>
+                                <Style TargetType="WrapPanel" x:Key="WrapMargin">
+                                    <Setter Property="Margin" Value="0,5,0,0"/>
+                                </Style>
+                                <Style TargetType="materialDesign:PackIcon" x:Key="WarningIcon">
+                                    <Setter Property="Foreground" Value="#d9254e"/>
+                                    <Setter Property="Width" Value="13"/>
+                                    <Setter Property="Height" Value="13"/>
+                                    <Setter Property="Margin" Value="0,0,7,0"/>
+                                    <Setter Property="Kind" Value="WarningCircle"/>
+                                </Style>
+                                <Style TargetType="TextBlock" x:Key="WarningText">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Foreground" Value="#d9254e"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </WrapPanel.Resources>
+                            <StackPanel>
+                                <DatePicker materialDesign:HintAssist.FloatingScale=".9" Style="{StaticResource MaterialDesignOutlinedDatePicker}" Name="DateControle" materialDesign:TextFieldAssist.UnderlineBrush="#a4b0be" materialDesign:HintAssist.Background="White" materialDesign:HintAssist.Foreground="#a4b0be" MinWidth="230" Padding="12,11" BorderBrush="#a4b0be" BorderThickness="1,1,1,1" Foreground="#5f6368" FontSize="12" materialDesign:HintAssist.Hint="Date de contrôle">
+                                    <DatePicker.Resources>
+                                        <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                    </DatePicker.Resources>
+                                </DatePicker>
+                                <WrapPanel Visibility="Collapsed" Name="DateControleWarning" Style="{StaticResource WrapMargin}">
+                                    <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                    <TextBlock Name="DateControleWarningText" Style="{StaticResource WarningText}"/>
+                                </WrapPanel>
+                            </StackPanel>
+                            <StackPanel Margin="25,0" >
+                                <DatePicker materialDesign:HintAssist.FloatingScale=".9" Style="{StaticResource MaterialDesignOutlinedDatePicker}" Name="DateVerification" materialDesign:TextFieldAssist.UnderlineBrush="#a4b0be" materialDesign:HintAssist.Background="White" materialDesign:HintAssist.Foreground="#a4b0be" MinWidth="230" Padding="12,11" BorderBrush="#a4b0be" BorderThickness="1,1,1,1" Foreground="#5f6368" FontSize="12" materialDesign:HintAssist.Hint="Date de vérification">
+                                    <DatePicker.Resources>
+                                        <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                    </DatePicker.Resources>
+                                </DatePicker>
+                                <WrapPanel Visibility="Collapsed" Name="DateVerificationWarning" Style="{StaticResource WrapMargin}">
+                                    <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                    <TextBlock Name="DateVerificationWarningText" Style="{StaticResource WarningText}"/>
+                                </WrapPanel>
+                            </StackPanel>
+                            <StackPanel Margin="0,0,25,0">
+                                <TextBox materialDesign:HintAssist.FloatingScale=".9"
+    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+    TextWrapping="Wrap"
+                        
+                        MinWidth="230"
+                            Padding="12,10"
+                        FontSize="12"
+                                    Name="Direction"
+                        Foreground="#57606f"
+                        BorderBrush="#a4b0be"
+                        materialDesign:HintAssist.Foreground="#a4b0be"
+                        materialDesign:HintAssist.Background="White"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+    materialDesign:HintAssist.Hint="Direction régionale" TextChanged="TextBox_TextChanged"/>
+                                <WrapPanel Visibility="Collapsed" Name="DirectionWarning" Style="{StaticResource WrapMargin}">
+                                    <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                    <TextBlock Name="DirectionWarningText" Style="{StaticResource WarningText}"/>
+                                </WrapPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBox materialDesign:HintAssist.FloatingScale=".9"
+    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+    TextWrapping="Wrap"                                
+                                Name="Promotion"
+                        MinWidth="230"
+                            Padding="12,10"
+                        FontSize="12"
+                        Foreground="#57606f"
+                        BorderBrush="#a4b0be"
+                        materialDesign:HintAssist.Foreground="#a4b0be"
+                        materialDesign:HintAssist.Background="White"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+    materialDesign:HintAssist.Hint="Promotion"/>
+                                <WrapPanel Visibility="Collapsed" Name="PromotionWarning" Style="{StaticResource WrapMargin}">
+                                    <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                    <TextBlock Name="PromotionWarningText" Style="{StaticResource WarningText}"/>
+                                </WrapPanel>
+                            </StackPanel>
+
+
+
+                            <!--<DatePicker
+  Name="LocaleDatePicker"
+                            Background="White"
+                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                            
+                            FontSize="12"
+                        Foreground="#5f6368"
+                            Padding="20,10,20,10"
+                        materialDesign:HintAssist.Background="#fff" materialDesign:HintAssist.Foreground="#a4b0be"
+                        BorderThickness="0"
+                             materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                            materialDesign:TextFieldAssist.UnderlineBrush="White"
+                            materialDesign:TextFieldAssist.TrailingIconSize="40"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+  materialDesign:HintAssist.Hint="Date Contrôle">
+                            <DatePicker.Resources>
+                            </DatePicker.Resources>
+                        </DatePicker>-->
+                        </WrapPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock VerticalAlignment="Center" FontSize="12">Rechercher par</TextBlock>
+                                <ComboBox materialDesign:ComboBoxAssist.ShowSelectedItem="False" x:Name="SearchBy" SelectionChanged="SearchBy_SelectionChanged" Margin="10,1,10,0" FontSize="13" FontWeight="Medium" BorderBrush="#57606f">
+                                    <ComboBoxItem IsSelected="True" Content="Stagiaire" />
+                                    <ComboBoxItem Content="Groupe" />
+                                    <ComboBoxItem Content="Filière" />
+                                </ComboBox>
+                                <controls:AutoCompleteBox x:Name="SearchByBox" MinWidth="250" Margin="25,0" Style="{DynamicResource AutoCompleteBoxStyle}" SelectionChanged="SearchByBox_SelectionChanged" TextChanged="SearchByBox_TextChanged" IsEnabled="True" IsTextCompletionEnabled="True" FilterMode="Contains" Padding="12,10" materialDesign:HintAssist.Hint="Rechercher ..." VerticalAlignment="Center"/>
+
+                            </WrapPanel>
+                            <WrapPanel Grid.Column="1" HorizontalAlignment="Right">
+                                <Border Background="#f3f4f6" Padding="25,6" CornerRadius="5" Margin="25,0">
+                                    <CheckBox
+  Style="{StaticResource MaterialDesignCheckBox}"
+                                FontSize="12"
+                                Padding="10,0,0,0"
+                                        Name="Vide"
+  Content="Vide">
+                                    </CheckBox>
+                                </Border>
+                                <Border Background="#f3f4f6" Padding="25,6,30,6" CornerRadius="5" >
+                                    <WrapPanel VerticalAlignment="Center" Name="SelectedType" IsEnabled="False">
+                                        <RadioButton
+  Style="{StaticResource MaterialDesignRadioButton}"
+                            IsChecked="True"
+                            Margin="0,0,25,0"
+                            FontSize="12"
+                            Padding="10,0,0,0"
+                            VerticalAlignment="Center"
+  Tag="StagiairesType"
+                                            Name="Réguliers"
+  Content="Réguliers">
+                                        </RadioButton>
+                                        <RadioButton
+  Style="{StaticResource MaterialDesignRadioButton}"
+  Tag="StagiairesType"
+                                            Name="Libres"
+                            FontSize="12"
+                            Padding="10,0,0,0"
+  Content="Libres">
+
+                                        </RadioButton>
+                                    </WrapPanel>
+                                </Border>
+
+                                <Button
+  Style="{StaticResource MaterialDesignFlatMidBgButton}"
+materialDesign:ButtonAssist.CornerRadius="5"
+                        Margin="25,0,0,0"
+  ToolTip="Ajouter un stagiaire manuellement"
+                        FontSize="12"
+                        Height="38"
+                                Name="ShowBtn"
+                                    IsEnabled="False"
+                                    Click="ShowBtn_Click"
+                        Padding="20,0,15,1">
+                                    <Button.Content>
+                                        <WrapPanel>
+                                            <TextBlock>Afficher</TextBlock>
+                                            <materialDesign:PackIcon Margin="10,0,0,0" Kind="Eye"/>
+                                        </WrapPanel>
+                                    </Button.Content>
+                                </Button>
+                            </WrapPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="White" Grid.Row="1" CornerRadius="5">
+                    <WindowsFormsHost>
+                        <rv:ReportViewer BorderStyle="None" x:Name="_ReportViewer" Load="_ReportViewerLoad"/>
+                    </WindowsFormsHost>
+                </Border>
+            </Grid>
+            <Grid Grid.Column="1" Grid.RowSpan="2" x:Name="ListItemsPanel" MaxWidth="420" Visibility="Collapsed" Margin="25,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border Background="White" CornerRadius="5" Padding="30,20,30,30">
+                    <DataGrid
+ItemsSource="{Binding ListItems}"
+Grid.Row="1"
+FontSize="12"
+VerticalScrollBarVisibility="Auto"
+BorderBrush="#dfe4ea"
+CanUserAddRows="False"
+AutoGenerateColumns="False"
+HeadersVisibility="All"
+Background="White"
+materialDesign:DataGridAssist.CellPadding="12"
+materialDesign:DataGridAssist.CornerRadius="0"
+materialDesign:DataGridAssist.ColumnHeaderPadding="16"
+                                CanUserResizeColumns="False"
+                                CanUserDeleteRows="False"
+                                CanUserResizeRows="False"
+                                
+Name="ListData">
+                        <DataGrid.Resources>
+                            <domain:BindingProxy x:Key="DataContextProxy"
+      Data="{Binding}" xmlns:domain="clr-namespace:G3D.Domain"/>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn
+                                        
+Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
+
+                                <DataGridCheckBoxColumn.Header>
+                                    <Border Background="Transparent">
+                                        <CheckBox x:Name="GridCheckBoxColumn" IsChecked="{Binding Data.IsAllListItemsSelected, Source={StaticResource DataContextProxy}}" />
+                                    </Border>
+                                </DataGridCheckBoxColumn.Header>
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridTextColumn
+Binding="{Binding Cef}"
+Header="CEF"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                            <DataGridTextColumn
+Binding="{Binding NomPrénom}"
+Header="NOM ET PRÉNOM"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <Border Grid.Row="1" Background="White" CornerRadius="5" Padding="30,20" Margin="0,25,0,0">
+                    <Grid>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="#57606f" FontSize="12">Stagiaires : <Run Name="SelectedCount" FontWeight="Medium" Foreground="{StaticResource PrimaryHueMidBrush}">0</Run></TextBlock>
+                        <!--<Button HorizontalAlignment="Right"
+  Style="{StaticResource MaterialDesignFlatMidBgButton}"
+materialDesign:ButtonAssist.CornerRadius="5"
+                            Background="#eb3b5a"
+                                BorderThickness="0"
+  ToolTip="Ajouter un stagiaire manuellement"
+                        Height="36"
+                        Padding="9,0">
+                            <Button.Content>
+                                <materialDesign:PackIcon Margin="0,-2,0,0" VerticalAlignment="Center" Kind="DeleteOutline" Width="18" Height="18"/>
+                            </Button.Content>
+                        </Button>-->
+                        <Button HorizontalAlignment="Right"
+  Style="{StaticResource MaterialDesignFlatLightButton}"
+  ToolTip="Supprimer des stagiaire"
+
+                                Height="34"
+                                Foreground="#eb3b5a"
+                                Background="Transparent"
+                               materialDesign:ButtonProgressAssist.IndicatorForeground="Black"
+                                materialDesign:ButtonProgressAssist.Opacity="0"
+                                materialDesign:ToggleButtonAssist.SwitchTrackOffBackground="Black"
+                                materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="Black"
+                                Padding="0"
+                                Click="SupprimerStagiaires_Click"
+                                materialDesign:ButtonAssist.CornerRadius="5" Name="SupprimerStagiaires"
+                            Width="34">
+                            <materialDesign:PackIcon
+    Kind="DeleteOutline"
+    Height="20"
+    Width="20" />
+
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,288 @@
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\SqlServerTypes\x64\msvcr120.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\SqlServerTypes\x64\SqlServerSpatial140.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\SqlServerTypes\x86\msvcr120.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\SqlServerTypes\x86\SqlServerSpatial140.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\G3D.exe.config
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\G3D.exe
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\G3D.pdb
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ClosedXML.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\DotNetProjects.Input.Toolkit.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ExcelNumberFormat.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\LiveCharts.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\MaterialDesignColors.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.ReportViewer.Common.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.ReportViewer.DataVisualization.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.ReportViewer.Design.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.ReportViewer.WinForms.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.SqlServer.ConnectionInfoExtended.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.SqlServer.Smo.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.SqlServer.SmoExtended.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.SqlServer.SqlClrProvider.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\Microsoft.SqlServer.Types.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\EnvDTE.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\stdole.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ClosedXML.pdb
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ClosedXML.xml
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ExcelNumberFormat.xml
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\LiveCharts.pdb
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\LiveCharts.xml
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\de\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\es\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\fr\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\it\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ja\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ko\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\pt\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ru\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\zh-CHS\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\zh-CHT\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\de\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\es\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\fr\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\it\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ja\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ko\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\pt\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ru\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\zh-CHS\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\zh-CHT\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\de\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\es\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\fr\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\it\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ja\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ko\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\pt\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ru\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\zh-CHS\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\zh-CHT\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\de\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\es\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\fr\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\it\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ja\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ko\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\pt\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\ru\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\zh-CHS\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\bin\Debug\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.csproj.SuggestedBindingRedirects.cache
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Profile.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Archive\Importer.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Authentication\Inscription.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Authentication\Connexion.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Authentication\Identification.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Authentication\Récupération.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Bord.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Bordereau.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Cahier.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Checklist.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Contact.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Importer.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Menu.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Registre.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Retrait.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Signatures.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Étapes.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Bordereau.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Duplicatas.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Fiche.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Menu.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Retrait.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Étapes.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Main.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Profile.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\App.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D_Content.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D_MarkupCompile.cache
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D_MarkupCompile.lref
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\App.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Archive\Importer.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Authentication\Inscription.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Authentication\Connexion.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Authentication\Identification.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Authentication\Récupération.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Bord.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Bordereau.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Cahier.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Checklist.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Contact.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Importer.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Menu.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Registre.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Retrait.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Signatures.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Diplôme\Étapes.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Bordereau.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Duplicatas.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Fiche.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Menu.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Retrait.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Duplicata\Étapes.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\Main.baml
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.g.resources
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.Properties.Resources.resources
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.csproj.GenerateResource.cache
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.csproj.CoreCompileInputs.cache
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.csproj.CopyComplete
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.exe
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.pdb
+C:\Users\Owner\Desktop\G3D\G3D\obj\Debug\G3D.csproj.AssemblyReference.cache
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.csproj.SuggestedBindingRedirects.cache
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Profile.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Archive\Importer.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Authentication\Inscription.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Authentication\Connexion.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Authentication\Identification.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Authentication\Récupération.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Bord.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Bordereau.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Cahier.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Checklist.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Contact.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Importer.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Menu.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Registre.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Retrait.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Signatures.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Étapes.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Bordereau.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Duplicatas.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Fiche.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Menu.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Retrait.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Étapes.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Main.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Profile.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\App.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D_Content.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D_MarkupCompile.cache
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D_MarkupCompile.lref
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\App.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Archive\Importer.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Authentication\Inscription.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Authentication\Connexion.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Authentication\Identification.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Authentication\Récupération.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Bord.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Bordereau.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Cahier.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Checklist.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Contact.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Importer.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Menu.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Registre.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Retrait.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Signatures.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Diplôme\Étapes.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Bordereau.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Duplicatas.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Fiche.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Menu.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Retrait.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Duplicata\Étapes.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\Main.baml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.g.resources
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.Properties.Resources.resources
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.csproj.GenerateResource.cache
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.csproj.CoreCompileInputs.cache
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.exe
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.pdb
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\SqlServerTypes\x64\msvcr120.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\SqlServerTypes\x64\SqlServerSpatial140.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\SqlServerTypes\x86\msvcr120.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\SqlServerTypes\x86\SqlServerSpatial140.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\G3D.exe.config
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\G3D.exe
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\G3D.pdb
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ClosedXML.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\DotNetProjects.Input.Toolkit.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ExcelNumberFormat.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\LiveCharts.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\MaterialDesignColors.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.ReportViewer.Common.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.ReportViewer.DataVisualization.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.ReportViewer.Design.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.ReportViewer.WinForms.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.SqlServer.ConnectionInfoExtended.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.SqlServer.Smo.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.SqlServer.SmoExtended.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.SqlServer.SqlClrProvider.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\Microsoft.SqlServer.Types.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\EnvDTE.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\stdole.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ClosedXML.pdb
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ClosedXML.xml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ExcelNumberFormat.xml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\LiveCharts.pdb
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\LiveCharts.xml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\de\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\es\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\fr\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\it\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ja\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ko\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\pt\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ru\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\zh-CHS\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\zh-CHT\Microsoft.ReportViewer.Common.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\de\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\es\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\fr\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\it\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ja\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ko\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\pt\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ru\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\zh-CHS\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\zh-CHT\Microsoft.ReportViewer.DataVisualization.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\de\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\es\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\fr\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\it\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ja\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ko\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\pt\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ru\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\zh-CHS\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\zh-CHT\Microsoft.ReportViewer.Design.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\de\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\es\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\fr\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\it\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ja\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ko\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\pt\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\ru\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\zh-CHS\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\bin\Debug\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.csproj.CopyComplete
+C:\Users\Owner\Desktop\G3D Project\G3D\G3D\obj\Debug\G3D.csproj.AssemblyReference.cache

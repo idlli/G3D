@@ -1,0 +1,1182 @@
+﻿<UserControl x:Class="G3D.Diplôme.Importer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controls="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+             xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+             xmlns:local="clr-namespace:G3D"
+             xmlns:domain="clr-namespace:G3D.Domain"
+             mc:Ignorable="d" 
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             FontFamily="{materialDesign:MaterialDesignFont}"
+             d:DesignHeight="872" d:DesignWidth="1634">
+
+    <UserControl.Resources>
+        <Style x:Key="MaterialDesignChoiceChipOutlineRadioButton" TargetType="{x:Type RadioButton}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Grid ClipToBounds="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" CornerRadius="5" Padding="42,0"/>
+                            <Border x:Name="MouseOverBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Opacity="0"/>
+                            <Border x:Name="SelectedBackgroundBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Opacity="0"/>
+                            <ContentControl x:Name="Content" Foreground="{DynamicResource PrimaryHueDarkBrush}" ContentStringFormat="{TemplateBinding ContentTemplateSelector}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" HorizontalAlignment="Center" IsTabStop="False" Margin="12 0 15 0" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value=".56"/>
+                            </Trigger>
+
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Foreground" TargetName="Content" Value="#5f6368"/>
+                                <Setter Property="Foreground" Value="#5f6368"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}"/>
+                                <Setter Property="Background" Value="White"/>
+
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
+                                <Setter Property="FontWeight" Value="Medium"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" TargetName="MouseOverBorder" Value=".03"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RadioButtonStyle1" BasedOn="{StaticResource MaterialDesignChoiceChipOutlineRadioButton}" TargetType="{x:Type RadioButton}">
+            <Setter Property="Background" Value="#e9f4fe"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="#f3f4fb" CornerRadius="5">
+        <materialDesign:DialogHost DialogClosingCallback="{Binding DialogClosingHandler}" Name="MainDialog" CloseOnClickAway="True" OverlayBackground="#f3f4fb" DialogBackground="Transparent">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid>
+                    <Border Background="White" Padding="30" x:Name="ImportForm" CornerRadius="5" Visibility="Collapsed">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Foreground="#57606f" VerticalAlignment="Center" FontWeight="Medium" FontSize="13">Importer un document excel</TextBlock>
+                            <Button Grid.Column="1" Visibility="Visible" x:Name="DialogClose"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+  Style="{StaticResource MaterialDesignFlatLightButton}"
+  ToolTip="Supprimer des duplicatas"
+                                Height="30"
+                                Foreground="#2c3e50"
+                                Background="Transparent"
+                                Padding="0"
+                                materialDesign:ButtonAssist.CornerRadius="5"
+                            Width="30">
+                                <materialDesign:PackIcon
+    Kind="Close"
+    Height="18"
+    Width="18" />
+
+                            </Button>
+                            <ProgressBar Grid.Column="1" x:Name="DialogLoading" Visibility="Hidden" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" />
+                            <Border Margin="0,25" Grid.ColumnSpan="2" Grid.Row="1" BorderThickness="2" CornerRadius="5" Padding="80,40" Background="White" AllowDrop="True" Cursor="Hand" Name="ImportBorder" 
+                                MouseEnter="ImportBorder_MouseEnter" MouseLeave="ImportBorder_MouseLeave" MouseLeftButtonDown="ImportBorder_MouseLeftButtonDown"
+                                DragEnter="ImportBorder_MouseEnter" DragLeave="ImportBorder_MouseLeave"
+                                Drop="ImportBorder_Drop"
+                                >
+                                <Border.Resources>
+                                    <SolidColorBrush x:Key="ImportBorderBrush" x:Name="ImportBorderBrush" Color="#d1d8e0" />
+                                </Border.Resources>
+                                <Border.BorderBrush>
+                                    <DrawingBrush Viewport="0,0,16,16" ViewportUnits="Absolute" TileMode="Tile">
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing Brush="{DynamicResource ImportBorderBrush}">
+                                                    <GeometryDrawing.Geometry>
+                                                        <GeometryGroup>
+                                                            <RectangleGeometry Rect="0,0,50,50" />
+                                                            <RectangleGeometry Rect="50,50,50,50" />
+                                                        </GeometryGroup>
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Border.BorderBrush>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height='*'/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon Kind="TrayArrowUp" Foreground="{DynamicResource ImportBorderBrush}" Width="50" Height="50" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+                                        <TextBlock Foreground="#57606f" TextAlignment="Center" FontSize="13">Sélectionnez un fichier excel pour importer</TextBlock>
+                                        <TextBlock Foreground="#a4b0be" TextAlignment="Center" Margin="0,10,0,0" FontSize="12">Ou glissez et déposez-le ici</TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <ItemsControl Name="FileDropped" Grid.Row="2" Grid.ColumnSpan="2">
+                                <ItemsControl.Resources>
+                                    <DataTemplate DataType="{x:Type domain:Imports}">
+                                        <Border Margin="0,0,0,25" Background="#f1f2f6" CornerRadius="5" Padding="15,10">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <materialDesign:PackIcon Kind="FileExcelOutline" Width="35" Height="35" Foreground="#778ca3" Margin="0,0,15,0" />
+                                                <Grid Grid.Column="1">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <WrapPanel VerticalAlignment="Center">
+                                                        <TextBlock FontWeight="Medium" Margin="0,0,5,0" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="11">(<Run Text="{Binding Count}"></Run>)</TextBlock>
+                                                        <TextBlock Foreground="#57606f" FontSize="11" Text="{Binding Title}"></TextBlock>
+                                                    </WrapPanel>
+                                                    <WrapPanel Grid.Row="1" VerticalAlignment="Center">
+                                                        <Border VerticalAlignment="Center" Background="#20bf6b" CornerRadius="5" Padding="8,1" Margin="0,0,5,0">
+                                                            <TextBlock FontSize="10" Foreground="White" Text="{Binding Extrnsion}"></TextBlock>
+                                                        </Border>
+                                                        <TextBlock VerticalAlignment="Center" FontSize="10" Foreground="#57606f" Text="{Binding Size}"></TextBlock>
+                                                    </WrapPanel>
+                                                </Grid>
+                                                <Button Grid.Column="2" VerticalAlignment="Center" Click="Button_Click"
+  Style="{StaticResource MaterialDesignFlatLightButton}"
+  ToolTip="Supprimer des duplicatas"
+                                Height="30"
+                                Foreground="#eb3b5a"
+                                Background="Transparent"
+                                Padding="0"
+                                materialDesign:ButtonAssist.CornerRadius="5"
+                            Width="30">
+                                                    <materialDesign:PackIcon
+    Kind="Close"
+    Height="16"
+    Width="16" />
+
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.Resources>
+                            </ItemsControl>
+                            <Button  Name="ImportButton" IsEnabled="False" Click="ImportButton_Click"
+                                       Grid.Row="3" Grid.ColumnSpan="2"
+  Style="{StaticResource MaterialDesignFlatMidBgButton}"
+  ToolTip="Supprimer des duplicatas"
+                                Height="32"
+                            Width="Auto"
+                                Foreground="White"
+                                Padding="25,0,25,3"
+                                    BorderThickness="0"
+                                materialDesign:ButtonAssist.CornerRadius="5"
+                            >
+                                <TextBlock FontSize="12">Importer</TextBlock>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="AMStagiaire" Visibility="Collapsed" Background="White" CornerRadius="5" Padding="40,30">
+                        <Grid Margin="0">
+                            <Grid.Resources>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Margin" Value="0,0,0,22"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Margin="0,0,0,30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Foreground="#57606f" FontWeight="Medium" FontSize="13" VerticalAlignment="Center" Name="AMSTitle"></TextBlock>
+                                <Button Grid.Column="1" Visibility="Visible" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+  Style="{StaticResource MaterialDesignFlatLightButton}"
+  ToolTip="Supprimer des duplicatas"
+                                Height="30"
+                                Foreground="#2c3e50"
+                                Background="Transparent"
+                                Padding="0"
+                                materialDesign:ButtonAssist.CornerRadius="5"
+                            Width="30">
+                                    <materialDesign:PackIcon
+    Kind="Close"
+    Height="18"
+    Width="18" />
+
+                                </Button>
+                            </Grid>
+                            <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                                <StackPanel.Resources>
+                                    <Style TargetType="materialDesign:PackIcon" x:Key="WarningIcon">
+                                        <Setter Property="Foreground" Value="#d9254e"/>
+                                        <Setter Property="Width" Value="13"/>
+                                        <Setter Property="Height" Value="13"/>
+                                        <Setter Property="Margin" Value="0,0,7,0"/>
+                                        <Setter Property="Kind" Value="WarningCircle"/>
+                                    </Style>
+                                    <Style TargetType="TextBlock" x:Key="WarningText">
+                                        <Setter Property="FontSize" Value="12"/>
+                                        <Setter Property="Foreground" Value="#d9254e"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                    <Style TargetType="WrapPanel" x:Key="WrapMargin">
+                                        <Setter Property="Margin" Value="0,5,0,0"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="22"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <controls:AutoCompleteBox x:Name="AMSCef" Style="{DynamicResource AutoCompleteBoxStyle}" SelectionChanged="AMSCef_SelectionChanged" MinWidth="170" IsEnabled="True" IsTextCompletionEnabled="True" FilterMode="Contains" Padding="12,11" materialDesign:HintAssist.Hint="Cef" VerticalAlignment="Center"/>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSCefWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSCefWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBox x:Name="AMSCin"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" 
+                                 MinWidth="170"
+                    TextWrapping="Wrap" 
+                    Padding="12,11"
+                    FontSize="12"
+                                                 materialDesign:HintAssist.FloatingScale=".9"
+                    Foreground="#57606f"
+                    BorderBrush="#a4b0be"
+                    materialDesign:HintAssist.Foreground="#a4b0be"
+                    materialDesign:HintAssist.Background="White"
+                    materialDesign:HintAssist.Hint="Cin"/>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSCinWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSCinWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <StackPanel>
+                                        <TextBox x:Name="AMSNom"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" 
+                    TextWrapping="Wrap" 
+                    Padding="12,11"
+                                                 materialDesign:HintAssist.FloatingScale=".9"
+                    FontSize="12"
+                    Foreground="#57606f"
+                    BorderBrush="#a4b0be"
+                    materialDesign:HintAssist.Foreground="#a4b0be"
+                    materialDesign:HintAssist.Background="White"
+                    materialDesign:HintAssist.Hint="Nom et prénom"/>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSNomWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSNomWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <StackPanel>
+                                        <ComboBox materialDesign:HintAssist.FloatingScale=".9" Name="AMSÉtablissement" Foreground="#57606f" BorderThickness="1" BorderBrush="#a4b0be" Padding="12,11" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Foreground="#a4b0be" FontSize="12"
+                              materialDesign:HintAssist.Hint="Établissement" SelectionChanged="AMSÉtablissement_SelectionChanged">
+                                            <ComboBox.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                            </ComboBox.Resources>
+                                        </ComboBox>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSÉtablissementWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSÉtablissementWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="22"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <ComboBox materialDesign:HintAssist.FloatingScale=".9" Name="AMSAnnéeF" Foreground="#57606f" BorderThickness="1" BorderBrush="#a4b0be" Padding="12,11" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Foreground="#a4b0be" FontSize="12"
+                              materialDesign:HintAssist.Hint="Année de formation" SelectionChanged="AMSAnnéeF_SelectionChanged">
+                                            <ComboBox.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                            </ComboBox.Resources>
+                                        </ComboBox>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSAnnéeFWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSAnnéeFWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <ComboBox materialDesign:HintAssist.FloatingScale=".9" Name="AMSNiveau" Foreground="#57606f" BorderThickness="1" BorderBrush="#a4b0be" Padding="12,11" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Foreground="#a4b0be" FontSize="12"
+                              materialDesign:HintAssist.Hint="Niveau" SelectionChanged="AMSNiveau_SelectionChanged">
+                                            <ComboBox.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                            </ComboBox.Resources>
+                                        </ComboBox>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSNiveauWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSNiveauWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="22"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <ComboBox materialDesign:HintAssist.FloatingScale=".9" Name="AMSTypeS" Foreground="#57606f" BorderThickness="1" BorderBrush="#a4b0be" Padding="12,11" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Foreground="#a4b0be" FontSize="12"
+                              materialDesign:HintAssist.Hint="Type de stagiaire" SelectionChanged="AMSTypeS_SelectionChanged">
+                                            <ComboBox.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                            </ComboBox.Resources>
+                                        </ComboBox>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSTypeSWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSTypeSWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <ComboBox materialDesign:HintAssist.FloatingScale=".9" Name="AMSTypeF" Foreground="#57606f" BorderThickness="1" BorderBrush="#a4b0be" Padding="12,11" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Foreground="#a4b0be" FontSize="12"
+                              materialDesign:HintAssist.Hint="Type de formation" SelectionChanged="AMSTypeF_SelectionChanged">
+                                            <ComboBox.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                            </ComboBox.Resources>
+                                        </ComboBox>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSTypeFWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSTypeFWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <StackPanel>
+                                        <ComboBox materialDesign:HintAssist.FloatingScale=".9" Name="AMSFilière" Foreground="#57606f" BorderThickness="1" BorderBrush="#a4b0be" Padding="12,11" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Foreground="#a4b0be" FontSize="12"
+                              materialDesign:HintAssist.Hint="Filière" SelectionChanged="AMSFilière_SelectionChanged">
+                                            <ComboBox.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                            </ComboBox.Resources>
+                                        </ComboBox>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSFilièreWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSFilièreWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <ComboBox materialDesign:HintAssist.FloatingScale=".9" Name="AMSAnnéeE" Foreground="#57606f" BorderThickness="1" BorderBrush="#a4b0be" Padding="12,11" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Foreground="#a4b0be" FontSize="12"
+                              materialDesign:HintAssist.Hint="Année d'étude" SelectionChanged="AMSAnnéeE_SelectionChanged">
+                                            <ComboBox.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                            </ComboBox.Resources>
+                                        </ComboBox>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSAnnéeEWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSAnnéeEWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <ComboBox materialDesign:HintAssist.FloatingScale=".9" Name="AMSGroupe"  Foreground="#57606f" BorderThickness="1" BorderBrush="#a4b0be" Padding="12,11" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Foreground="#a4b0be" FontSize="12"
+                              materialDesign:HintAssist.Hint="Groupe">
+                                            <ComboBox.Resources>
+                                                <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                                            </ComboBox.Resources>
+                                        </ComboBox>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSGroupeWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSGroupeWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+
+                                        <TextBox
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" 
+                    TextWrapping="Wrap" 
+                                            materialDesign:HintAssist.FloatingScale=".9"
+                    Padding="12,11" Name="AMSClassement"
+                    FontSize="12"
+                    Foreground="#57606f"
+                    BorderBrush="#a4b0be"
+                    materialDesign:HintAssist.Foreground="#a4b0be"
+                    materialDesign:HintAssist.Background="White"
+                    materialDesign:HintAssist.Hint="Classement"/>
+                                        <WrapPanel Visibility="Collapsed" Name="AMSClassementWarning" Style="{StaticResource WrapMargin}">
+                                            <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                            <TextBlock Name="AMSClassementWarningText" Style="{StaticResource WarningText}"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Background="#f3f4f6" CornerRadius="5" Padding="20,0">
+                                        <Grid VerticalAlignment="Center" Margin="0,-2,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" Foreground="#5f6368">Admis :</TextBlock>
+                                            <WrapPanel Grid.Column="1" HorizontalAlignment="Right" Name="AMSAdmis" VerticalAlignment="Top">
+                                                <RadioButton HorizontalAlignment="Center" Margin="0,0,25,0" Grid.Column="1" Style="{StaticResource MaterialDesignRadioButton}" Tag="Admis" Name="AMSAdmisOui" Content="Oui" IsChecked="True" FontSize="12" Foreground="#5f6368" Background="#2e86de"/>
+                                                <RadioButton HorizontalAlignment="Center" Grid.Column="2" Style="{StaticResource MaterialDesignRadioButton}" Tag="Admis" Name="AMSAdmisNon" Content="Non" FontSize="12" Foreground="#5f6368" Background="#2e86de"/>
+                                            </WrapPanel>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+
+                            </StackPanel>
+                            <WrapPanel HorizontalAlignment="Right" Grid.Row="2">
+                                <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                        materialDesign:ButtonAssist.CornerRadius="5"
+                        ToolTip="Ajouter un stagiaire manuellement"
+                        Foreground="#57606f"
+                        FontSize="12"
+                        BorderThickness="0"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Padding="20,0" 
+                        Margin="0,0,12,0"
+                        Content="Annuler">
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                        ToolTip="Supprimer des stagiaire" 
+                        FontSize="12"
+                        Background="#2e86de"
+                        BorderThickness="0"
+                        Padding="20,0,20,1"
+                        Height="34"
+                        Foreground="White"
+                        materialDesign:ButtonAssist.CornerRadius="5" 
+                        Name="SAButton"
+                        Visibility="Visible"
+                                        Click="SAButton_Click"
+                        Content="Ajouter">
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                        ToolTip="Supprimer des stagiaire" 
+                        FontSize="12"
+                        Background="#10ac84"
+                        BorderThickness="0"
+                        Padding="20,0,20,1"
+                        Height="34"
+                        Foreground="White"
+                        materialDesign:ButtonAssist.CornerRadius="5" 
+                                        Visibility="Collapsed"
+                                        Click="SMButton_Click"
+                        Name="SMButton"
+                        Content="Modifier">
+                                </Button>
+                            </WrapPanel>
+                        </Grid>
+                    </Border>
+                    <Border Background="White" Name="DeleteWarningDialog" CornerRadius="5" Visibility="Collapsed" MaxWidth="420">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Background="#eb3b5a" Padding="15,12,15,14" CornerRadius="5,5,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Kind="Warning" Foreground="White" Width="18" Height="18" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" x:Name="DeleteWarningDialogTitle" FontWeight="Medium" Foreground="White" FontSize="13" Margin="12,0" VerticalAlignment="Center">Confirmer la suppression</TextBlock>
+                                    <Button Grid.Column="2" x:Name="DeleteWarningDialogClose" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Style="{StaticResource MaterialDesignFlatLightButton}"
+                        ToolTip="Supprimer des duplicatas"
+                        Height="18"
+                        Foreground="White"
+                        Background="Transparent"
+                        Padding="0"
+                        materialDesign:ButtonAssist.CornerRadius="5"
+                        Width="18">
+                                        <materialDesign:PackIcon
+                            Kind="Close"
+                            Height="16"
+                            Width="16" />
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <StackPanel Grid.Row="1" Margin="20">
+                                <TextBlock Foreground="#57606f" FontSize="13" Padding="20,10,20,30" TextWrapping="Wrap" LineHeight="22" TextAlignment="Center">
+                                    Voulez-vous vraiment supprimer définitivement les stagiaires (<Run Name="DeleteWarningDialogCount" Foreground="#eb3b5a" FontWeight="Medium"></Run>) sélectionnés ?
+                                </TextBlock>
+                                <WrapPanel HorizontalAlignment="Right">
+                                    <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                        materialDesign:ButtonAssist.CornerRadius="5"
+                        ToolTip="Ajouter un stagiaire manuellement"
+                        Foreground="#57606f"
+                        FontSize="12"
+                        BorderThickness="0"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Padding="20,0,20,2" 
+                        Margin="0,0,10,0"
+                        Content="Annuler">
+                                    </Button>
+                                    <Button Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                        ToolTip="Supprimer des stagiaire" 
+                        FontSize="12"
+                        Background="#eb3b5a"
+                        BorderThickness="0"
+                        Padding="20,0,20,2"
+                        Foreground="White"
+                        materialDesign:ButtonAssist.CornerRadius="5" 
+                                            Click="Button_Click_4"
+                        Content="Confirmer">
+                                    </Button>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="ErrorList" Visibility="Collapsed" Background="White" CornerRadius="5" Padding="30,20,30,30" MaxHeight="800" MaxWidth="600">
+                        <DataGrid
+Grid.Row="1"
+FontSize="12"
+VerticalScrollBarVisibility="Auto"
+BorderBrush="#dfe4ea"
+                            Background="White"
+CanUserAddRows="False"
+AutoGenerateColumns="False"
+HeadersVisibility="All"
+materialDesign:DataGridAssist.CellPadding="12"
+materialDesign:DataGridAssist.CornerRadius="0"
+materialDesign:DataGridAssist.ColumnHeaderPadding="16"
+                                CanUserResizeColumns="True"
+                                CanUserResizeRows="True"
+                                
+Name="ErrorListView">
+                            <DataGrid.Resources>
+                                <domain:BindingProxy x:Key="DataContextProxy"
+      Data="{Binding}" xmlns:domain="clr-namespace:G3D.Domain"/>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+Binding="{Binding Cef}"
+Header="CEF"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                <DataGridTextColumn
+Binding="{Binding Message}"
+Header="MESSAGE D'ERREUR"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                    <Border Background="White" Padding="30" x:Name="ExcelExport" CornerRadius="5" Visibility="Collapsed">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="materialDesign:PackIcon" x:Key="WarningIcon">
+                                    <Setter Property="Foreground" Value="#d9254e"/>
+                                    <Setter Property="Width" Value="13"/>
+                                    <Setter Property="Height" Value="13"/>
+                                    <Setter Property="Margin" Value="0,0,7,0"/>
+                                    <Setter Property="Kind" Value="WarningCircle"/>
+                                </Style>
+                                <Style TargetType="TextBlock" x:Key="WarningText">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Foreground" Value="#d9254e"/>
+                                </Style>
+                                <Style TargetType="WrapPanel" x:Key="WrapMargin">
+                                    <Setter Property="Margin" Value="0,5,0,0"/>
+                                </Style>
+                            </Grid.Resources>
+                            <TextBlock Foreground="#57606f" VerticalAlignment="Center" FontWeight="Medium" FontSize="13">Exporter vers un document excel</TextBlock>
+                            <Button Grid.Column="1"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Style="{StaticResource MaterialDesignFlatLightButton}"
+                ToolTip="Supprimer des duplicatas"
+                Height="30"
+                Foreground="#2c3e50"
+                Background="Transparent"
+                Padding="0"
+                materialDesign:ButtonAssist.CornerRadius="5"
+                Width="30">
+                                <materialDesign:PackIcon
+                    Kind="Close"
+                    Height="18"
+                    Width="18" />
+                            </Button>
+                            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,30,0,40">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                        x:Name="ExcelPath"
+                        Height="32"
+                        VerticalContentAlignment="Center"     
+                                            materialDesign:HintAssist.FloatingScale=".9"
+                        MinWidth="240"
+                        Foreground="#5f6368"
+                        materialDesign:HintAssist.Hint="Chemin"
+                         Margin="0,0,25,0"/>
+                                        <Button Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource MaterialDesignFlatLightButton}"
+                        ToolTip="Supprimer des stagiaire"
+                        Height="30"
+                        Foreground="#5f6368"
+                        Padding="0"
+                        materialDesign:ButtonAssist.CornerRadius="5" 
+                                            Click="ExcelPathLocate_Click"
+                        Name="ExcelPathLocate"
+                        Width="30">
+                                            <materialDesign:PackIcon
+                            Kind="FolderSearch"
+                            Height="18"
+                            Width="18" />
+                                        </Button>
+                                    </Grid>
+                                    <WrapPanel Visibility="Collapsed" Name="ExcelPathLocateWarning" Style="{StaticResource WrapMargin}">
+                                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                        <TextBlock Name="ExcelPathLocateWarningText" Style="{StaticResource WarningText}"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBox
+                    Height="32"
+                    Grid.Row="1"
+                                        materialDesign:HintAssist.FloatingScale=".9"
+                    materialDesign:TextFieldAssist.HasTrailingIcon="True"
+                    materialDesign:TextFieldAssist.TrailingIcon="FormatTitle"
+                    materialDesign:HintAssist.Hint="Titre"
+                    VerticalContentAlignment="Center"       
+                    x:Name="ExcelFileTitle"             
+                    Foreground="#5f6368"
+                    Margin="0,25,0,0" />
+                                    <WrapPanel Visibility="Collapsed" Name="ExcelFileTitleWarning" Style="{StaticResource WrapMargin}">
+                                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                        <TextBlock Name="ExcelFileTitleWarningText" Style="{StaticResource WarningText}"/>
+                                    </WrapPanel>
+                                </StackPanel>
+
+                            </StackPanel>
+                            <Button  
+                Name="ExcelExportBtn"
+                Grid.Row="2" 
+                Grid.ColumnSpan="2"
+                Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                ToolTip="Supprimer des duplicatas"
+                Height="32"
+                Background="#27ae60"
+                FontSize="12"
+                Width="Auto"
+                Foreground="White"
+                Padding="25,0,25,3"
+                BorderThickness="0"
+                                Click="ExcelExportBtn_Click"
+                materialDesign:ButtonAssist.CornerRadius="5"
+                Content="Export"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+            <Grid>
+                <StackPanel Visibility="Visible" x:Name="WelcomePanel" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Viewbox Width="100" Margin="0,0,0,20">
+                        <Grid>
+                            <Path Stretch="None"
+              Fill="#FFC3DFF7"
+              Data="F0M78.13327,69.11925 C77.58264,68.21096 76.97937,67.33563 76.32656,66.49776 C75.70025,65.68385 75.0202,64.91276 74.29095,64.18964 C73.1764,63.04239 73.22,63.15685 73.61514,62.38566 C74.90681,59.85681 74.02934,54.75552 71.72395,51.34921 C71.57178,51.14007 71.43429,50.92063 71.31247,50.69248 C71.31247,50.50717 69.82732,48.74952 69.06158,48.02465 C67.01234,46.09259 65.24651,45.23965 63.2218,45.2015 L62.18628,45.1797 L62.05821,44.77912 C61.33334,42.50643 61.02814,41.59626 60.63846,40.52805 C60.38503,39.83861 60.14795,39.23092 60.09345,39.16552 C60.02692,39.05645 59.9773,38.93793 59.94629,38.81399 C59.85598,38.55051 59.75137,38.29216 59.63291,38.04008 L59.1315,36.95006 C59.0334,36.7266 58.91895,36.48952 58.79905,36.24154 C57.612,33.78669 56.26473,31.41259 54.76598,29.13462 C54.74611,29.09979 54.72428,29.06613 54.70058,29.03379 L54.55887,28.81851 C53.84491,27.75029 52.19898,25.46398 51.91013,25.1397 C51.90265,25.13085 51.89445,25.12265 51.8856,25.11517 C51.85563,25.08792 51.63217,24.81814 51.38692,24.51566 C51.14166,24.21318 50.89096,23.91343 50.84191,23.85075 L50.14157,23.03324 C48.34994,21.08037 46.44454,19.23502 44.43532,17.50684 C42.66404,16.10344 40.4186,14.50928 40.20604,14.50928 C40.10276,14.47207 40.00949,14.41144 39.93354,14.33216 C39.66103,14.07873 35.84597,12.20662 35.60889,12.20662 C35.43612,12.15804 35.26897,12.09136 35.1102,12.00769 C34.91826,11.90732 34.71112,11.83919 34.49707,11.80604 C34.4036,11.81379 34.31131,11.78104 34.24364,11.71611 C34.1312,11.63604 33.99958,11.58715 33.86213,11.57441 C33.685,11.54443 33.13182,11.42725 32.63586,11.3019 C32.1399,11.17655 31.46409,11.0294 31.13436,10.98852 C30.88365,10.94492 30.30049,10.90405 29.65193,10.87134 L29.55928,10.87134 L29.43393,10.87134 L28.91344,10.85227 L28.87257,10.85227 C28.30661,10.80824 27.73809,10.80824 27.17214,10.85227 C27.09191,10.8864 27.00766,10.91021 26.92143,10.92312 L26.90508,10.92312 C26.77428,10.94492 26.6026,10.9749 26.42275,10.99942 C26.11209,11.04302 25.72786,11.11115 25.47716,11.1711 L25.42266,11.1711 L25.32728,11.19563 L25.27005,11.2147 L25.24008,11.2147 L24.8613,11.32098 L24.80135,11.33733 L24.72232,11.35913 L24.64874,11.3782 L24.62422,11.3782 L24.60787,11.39728 L24.51249,11.42725 L24.40621,11.45996 C24.24544,11.51446 24.06831,11.58258 23.93206,11.64526 L23.18267,11.97499 Q23.03279,12.04039 22.88019,12.11397 C22.68398,12.21207 22.4905,12.31562 22.29703,12.42462 C22.2289,12.46277 22.15805,12.50365 22.08992,12.54997 L21.89644,12.66988 C21.76837,12.75163 21.64301,12.83883 21.51766,12.94238 L21.26968,13.12496 C20.93353,13.37975 20.6115,13.65266 20.30502,13.94247 C20.24234,13.9997 20.17966,14.05965 20.11971,14.12233 C20.05976,14.185 20.00254,14.23405 19.94803,14.29128 C19.82541,14.41391 19.70551,14.54198 19.59105,14.67279 C19.54473,14.71911 19.50385,14.76816 19.46025,14.81721 L19.33217,14.96437 C19.26405,15.04339 19.20137,15.1197 19.13597,15.20145 C19.07057,15.2832 18.98064,15.3922 18.90434,15.4903 C18.82804,15.5884 18.77899,15.65108 18.72176,15.73011 C18.69119,15.76737 18.66298,15.8065 18.63729,15.84728 C18.58551,15.91541 18.53373,15.98899 18.48468,16.05984 C18.38113,16.20154 18.28576,16.33234 18.19038,16.49312 C18.095,16.6539 18.04595,16.71112 17.98055,16.82285 C17.91515,16.93458 17.81432,17.09536 17.7353,17.23161 L17.67534,17.33788 C17.57452,17.51229 17.47914,17.68669 17.40284,17.86654 C17.32926,18.0028 17.26114,18.13905 17.19301,18.2862 C17.06766,18.55871 16.94776,18.81214 16.8333,19.07919 C16.79788,19.17457 16.757,19.26722 16.72158,19.3517 C16.68615,19.43617 16.648,19.537 16.6153,19.6242 C16.5826,19.7114 16.5281,19.8531 16.48995,19.97028 L16.4082,20.20736 C16.3864,20.27276 16.36732,20.33816 16.34552,20.40356 C16.29375,20.56707 16.24469,20.73057 16.19837,20.8968 C16.18202,20.95402 16.16567,21.00852 16.15204,21.06575 C16.12207,21.17475 16.09482,21.28375 16.06757,21.39548 C15.84139,22.31382 15.71331,22.43645 15.30728,22.13942 C15.03477,21.94594 12.95284,20.8641 12.5141,20.69514 C12.38875,20.64882 12.1871,20.56979 12.06447,20.51802 C11.43585,20.28421 10.79219,20.09303 10.13786,19.94576 C8.8053,19.84761 7.46733,19.84761 6.13476,19.94576 C5.96854,19.98936 5.76688,20.04931 5.68241,20.07928 C5.62284,20.09992 5.56014,20.11006 5.4971,20.10926 L5.181,20.10926 C5.05565,20.10926 4.96027,20.13378 4.96027,20.17466 C4.96027,20.21554 4.90304,20.24006 4.81312,20.28639 L4.81312,20.28639 C4.71857,20.32869 4.62113,20.36421 4.52154,20.39266 C4.33109,20.4318 4.15657,20.52665 4.02013,20.66517 C3.99015,20.74692 3.91658,20.78507 3.86207,20.74964 C3.80757,20.71422 3.76125,20.72784 3.76125,20.7769 C3.76125,20.82595 3.64135,20.9295 3.48874,21.00852 C3.10996,21.20473 1.75016,22.60268 1.93547,22.60268 C1.97907,22.60268 1.88641,22.70895 1.73654,22.83976 C1.60445,22.94 1.50875,23.08067 1.46403,23.24034 C1.46403,23.33027 1.41771,23.40384 1.36321,23.40384 C1.3087,23.40384 1.26238,23.49377 1.26238,23.60277 C1.26238,23.71177 1.21878,23.8017 1.16428,23.8017 C1.10978,23.8017 1.06345,23.89435 1.06345,24.00335 C1.06345,24.11235 1.01712,24.20228 0.96262,24.20228 C0.90812,24.20228 0.8618,24.29221 0.8618,24.39848 C0.86678,24.4939 0.83114,24.58696 0.76369,24.65464 C0.69091,24.73896 0.65464,24.84876 0.66287,24.95984 C0.66287,25.09337 0.61654,25.2051 0.56204,25.2051 C0.50754,25.2051 0.46394,25.33863 0.46394,25.50485 C0.46394,25.67108 0.41761,25.80461 0.36311,25.80461 C0.30861,25.80461 0.26229,25.95994 0.26229,26.14797 C0.26229,26.33599 0.20778,26.50767 0.13693,26.52947 C-0.04564,26.58942 -0.04564,34.22501 0.13693,34.28496 C0.21596,34.31221 0.26229,34.51659 0.26229,34.82997 C0.26229,35.14335 0.30861,35.3232 0.36311,35.3232 C0.41761,35.3232 0.46394,35.50033 0.46394,35.71561 C0.46394,35.93089 0.50482,36.12164 0.55659,36.14072 C0.60837,36.15979 0.66559,36.3451 0.67922,36.54947 C0.69284,36.75385 0.73917,36.92553 0.78277,36.92553 C0.82637,36.92553 0.8618,37.08086 0.8618,37.27434 C0.8618,37.46782 0.90812,37.62587 0.96262,37.62587 C1.01712,37.62587 1.06345,37.74032 1.06345,37.8793 C1.06345,38.01828 1.10705,38.11093 1.16428,38.0755 C1.2215,38.04008 1.26238,38.15453 1.26238,38.34801 C1.24835,38.49349 1.28388,38.63945 1.36321,38.76221 C1.4354,38.84471 1.4717,38.95261 1.46403,39.06197 C1.45478,39.17153 1.49128,39.28003 1.56486,39.36172 C1.6323,39.4294 1.66795,39.52247 1.66296,39.61788 C1.66296,39.72416 1.70929,39.81408 1.76379,39.81408 C1.81829,39.81408 1.86461,39.90128 1.86461,40.00756 C1.85963,40.10298 1.89527,40.19604 1.96272,40.26372 C2.02987,40.32269 2.0669,40.40876 2.06354,40.49807 C2.06354,40.72425 2.28972,41.21203 2.39327,41.21476 C2.4396,41.21476 2.4505,41.25563 2.4178,41.31013 C2.38931,41.40147 2.4012,41.50064 2.4505,41.58264 C2.81021,42.29115 2.96553,42.65086 2.96553,42.76259 C2.96227,42.82731 2.9895,42.88983 3.03911,42.93154 C3.34736,43.3021 3.59228,43.72104 3.76397,44.17144 C3.76397,44.24774 3.80757,44.31314 3.85662,44.31314 C3.90568,44.31314 4.00923,44.47119 4.07735,44.66467 C4.14548,44.85815 4.24086,45.01348 4.28446,45.01348 C4.32806,45.01348 4.36621,45.0816 4.36621,45.16335 C4.36621,45.2451 4.40981,45.31323 4.46704,45.31323 C4.52426,45.31323 4.56514,45.38408 4.56514,45.46856 C4.58996,45.60177 4.65456,45.72433 4.75044,45.82009 C4.87668,45.96455 4.98636,46.12268 5.07745,46.29152 C5.17401,46.48337 5.29491,46.66197 5.43715,46.82291 C5.53689,46.90904 5.61367,47.0186 5.66061,47.14174 C5.68095,47.22605 5.72659,47.30212 5.79141,47.35974 C5.94881,47.54615 6.09617,47.74082 6.23287,47.9429 C6.38666,48.16924 6.55315,48.38669 6.73155,48.59419 C6.82128,48.68377 6.89913,48.78451 6.96318,48.89394 C7.06128,49.16645 7.52726,49.73871 7.64172,49.74143 C7.71529,49.74143 7.75072,49.78503 7.71802,49.83409 C7.68532,49.88314 7.79704,50.04119 7.96327,50.18017 C8.0924,50.27122 8.19569,50.39422 8.26303,50.53715 C8.26078,50.56435 8.26966,50.5913 8.28763,50.61185 C8.30561,50.63239 8.33114,50.64477 8.3584,50.64615 C8.83413,51.03304 9.28383,51.45088 9.70458,51.89695 C10.12164,52.35259 10.57753,52.77109 11.0671,53.14774 C11.13523,53.14774 11.15975,53.17499 11.12705,53.21042 C11.05348,53.284 11.29873,53.54833 11.44043,53.54833 C11.59079,53.61155 11.72699,53.7042 11.84102,53.82083 C12.5032,54.42852 12.65853,54.54569 12.75663,54.54569 C12.89952,54.59938 13.02817,54.68515 13.13269,54.7964 C13.24379,54.91136 13.38131,54.99742 13.53327,55.0471 C13.66503,55.07958 13.78497,55.14852 13.87935,55.24603 C13.97395,55.34522 14.095,55.4152 14.22816,55.44768 C14.29628,55.44768 14.35624,55.49129 14.35624,55.54579 C14.35624,55.60029 14.44616,55.64661 14.55789,55.64661 C14.66962,55.64661 14.75682,55.69294 14.75682,55.74744 C14.76663,55.81051 14.82413,55.85483 14.88762,55.84827 C15.02025,55.88055 15.14112,55.94948 15.23643,56.0472 C15.33766,56.15056 15.46781,56.22085 15.60976,56.24885 C15.69968,56.24885 15.74329,56.29245 15.70786,56.34695 C15.67243,56.40145 15.73784,56.44778 15.85229,56.44778 C15.96674,56.44778 16.05939,56.49138 16.05939,56.54043 C16.05939,56.58948 16.21744,56.68486 16.4082,56.74753 C16.59895,56.81021 16.73793,56.90559 16.70523,56.95464 C16.67253,57.00369 16.73793,57.04729 16.85511,57.04729 C16.97228,57.04729 17.05948,57.09361 17.05948,57.14812 C17.05948,57.20262 17.13851,57.24894 17.23661,57.24894 C17.36707,57.26893 17.48396,57.34064 17.56089,57.44787 C17.65042,57.56439 17.78504,57.63764 17.9315,57.64952 C18.05685,57.64952 18.1604,57.69312 18.1604,57.74763 C18.1604,57.80213 18.22853,57.84845 18.31028,57.84845 C18.39203,57.84845 18.46016,57.8866 18.46016,57.9302 C18.46016,57.9738 18.61821,58.07463 18.81169,58.14821 C19.00517,58.22178 19.1605,58.32534 19.1605,58.36894 C19.1605,58.41254 19.22862,58.45069 19.31037,58.45069 C19.39213,58.45069 19.46025,58.49974 19.46025,58.55969 C19.46025,58.61964 19.52293,58.64689 19.60468,58.61692 C19.68894,58.59011 19.77902,58.63637 19.80633,58.72047 C19.83903,58.80767 19.89081,58.85127 19.92351,58.81857 C19.95621,58.78587 20.07339,58.84855 20.19601,58.9521 C20.31864,59.05565 20.43309,59.12378 20.46852,59.09652 C20.50394,59.06927 20.5966,59.12105 20.66472,59.20008 C20.73992,59.28453 20.84386,59.33796 20.9563,59.34995 C21.08215,59.37237 21.19338,59.44521 21.26423,59.55161 C21.34116,59.65884 21.45806,59.73055 21.58851,59.75054 C21.68662,59.75054 21.76564,59.79414 21.76564,59.85136 C21.76564,59.90859 21.83377,59.94946 21.91824,59.94946 C22.21074,60.00545 22.47683,60.15573 22.67581,60.3773 C22.75619,60.46807 22.86455,60.52944 22.98374,60.5517 C23.11746,60.58058 23.24028,60.64671 23.33799,60.74245 C23.4475,60.8499 23.58254,60.92773 23.7304,60.96863 C23.85542,61.0016 23.96636,61.07428 24.04651,61.17574 C24.11189,61.26689 24.20917,61.33011 24.31901,61.35286 C24.40076,61.35286 24.46616,61.39647 24.46616,61.45097 C24.46616,61.50547 24.55609,61.55179 24.66509,61.55179 C24.7741,61.55179 24.86675,61.59267 24.86675,61.63899 C24.86675,61.68532 25.00027,61.78342 25.1665,61.85155 C25.33273,61.91967 25.46626,62.01505 25.46626,62.0641 C25.46626,62.11315 25.55618,62.1513 25.66519,62.1513 C25.77419,62.1513 25.86684,62.1949 25.86684,62.24668 C25.86684,62.29846 25.95404,62.33116 26.06032,62.32571 L26.55628,62.61184 L46.03492,73.90444 L46.32378,74.06794 L46.36738,74.09792 C46.65704,74.21989 46.93141,74.37537 47.18489,74.56117 C47.24571,74.60266 47.31431,74.6314 47.38655,74.64565 C47.46241,74.6597 47.52875,74.70526 47.56912,74.771 C47.61166,74.83367 47.68433,74.86896 47.75988,74.86365 C47.88285,74.88497 47.99407,74.94977 48.07326,75.04623 C48.24894,75.23115 48.48262,75.35039 48.73545,75.38414 C48.86257,75.45895 48.97899,75.55061 49.08153,75.65664 C49.23326,75.7916 49.41422,75.88955 49.61019,75.94277 C49.76279,75.97547 49.88269,76.03815 49.88269,76.0872 C49.88269,76.13625 49.95354,76.1744 50.03802,76.1744 C50.17747,76.20328 50.30538,76.27245 50.4059,76.37333 C50.49994,76.47184 50.61991,76.54174 50.75198,76.57498 C50.81547,76.56842 50.87297,76.61275 50.88278,76.67581 C50.88278,76.73031 50.97271,76.77391 51.08444,76.77391 C51.19616,76.77391 51.28337,76.82024 51.28337,76.87474 C51.28337,76.92924 51.34332,76.97557 51.41689,76.97557 C51.5473,77.00944 51.666,77.07821 51.76025,77.1745 C51.86032,77.27651 51.98831,77.34666 52.12813,77.37615 C52.21533,77.37615 52.28346,77.41975 52.28346,77.47425 C52.28346,77.52875 52.37338,77.57508 52.48511,77.57508 C52.59684,77.57508 52.68404,77.61595 52.68404,77.65955 C52.68404,77.70315 52.88842,77.85576 53.1364,77.98656 C53.30622,78.05901 53.45928,78.16569 53.58603,78.29994 C53.58603,78.34354 53.67596,78.37624 53.78496,78.37624 C53.89396,78.37624 53.98661,78.41439 53.98661,78.45527 C53.98661,78.49614 54.14467,78.60242 54.33542,78.676 C54.52617,78.74957 54.68695,78.8504 54.68695,78.89673 C54.68695,78.94305 54.75508,78.97575 54.83683,78.97575 C54.91858,78.97575 54.98671,79.0248 54.98671,79.08203 C54.98671,79.13925 55.02758,79.16378 55.07391,79.1338 C55.12023,79.10383 55.26466,79.16923 55.39001,79.27823 C55.49323,79.37692 55.62133,79.44568 55.76062,79.47716 C55.86222,79.48982 55.95741,79.5336 56.03312,79.60251 C56.2715,79.82593 56.54851,80.00414 56.85064,80.12845 C57.01269,80.18437 57.15927,80.27774 57.27847,80.40095 C57.27847,80.44183 57.3684,80.47453 57.4774,80.47453 C57.5864,80.47453 57.67905,80.52085 57.67905,80.57536 C57.67905,80.62986 57.74445,80.67618 57.82893,80.67618 C57.91341,80.67618 57.97881,80.71978 57.97881,80.77428 C57.97881,80.82878 58.04694,80.87511 58.12869,80.87511 C58.21044,80.87511 58.27856,80.92144 58.27856,80.97594 C58.27856,81.03044 58.36849,81.07676 58.47749,81.07676 C58.58649,81.07676 58.67915,81.12037 58.67915,81.17487 C58.67915,81.22937 58.7609,81.27569 58.86445,81.27569 C59.0054,81.29809 59.13435,81.36834 59.22961,81.47462 C59.30973,81.57371 59.4196,81.64441 59.54299,81.67627 C59.61929,81.67627 59.67924,81.7226 59.67924,81.77983 C59.67924,81.83705 59.72011,81.86158 59.77189,81.8316 C59.82367,81.80163 59.93267,81.8316 60.01442,81.92698 C60.07842,81.99879 60.16163,82.0508 60.25422,82.07686 C60.35752,82.11274 60.45088,82.17249 60.52673,82.25126 C60.74183,82.41695 60.97384,82.55945 61.21889,82.67637 C61.43253,82.776 61.63681,82.89455 61.8293,83.03062 C61.99422,83.14472 62.17047,83.24152 62.35524,83.31948 C62.51159,83.37267 62.65405,83.4602 62.77217,83.57563 C62.9172,83.70786 63.08657,83.8106 63.27085,83.87811 C63.54336,84.00892 63.77226,84.15062 63.77226,84.20512 C63.77226,84.25962 63.84311,84.27325 63.92759,84.24055 C64.06584,84.22376 64.20374,84.27446 64.2982,84.3768 C64.39074,84.47443 64.50872,84.54427 64.63883,84.57845 C64.7124,84.57845 64.77235,84.61388 64.77235,84.65203 C64.77235,84.69018 64.91951,84.79373 65.09664,84.87276 C65.28411,84.95774 65.45919,85.06775 65.61712,85.19976 C65.70653,85.28995 65.82008,85.3524 65.94413,85.37962 C66.01225,85.37962 66.07493,85.42322 66.07493,85.47772 C66.07493,85.53222 66.16485,85.57854 66.27386,85.57854 C66.38286,85.57854 66.47278,85.62487 66.47278,85.67937 C66.4826,85.74244 66.5401,85.78676 66.60359,85.7802 C66.72799,85.80539 66.84248,85.86595 66.93332,85.9546 C67.03346,86.04636 67.1512,86.11682 67.2794,86.1617 C67.35325,86.17716 67.41738,86.22255 67.45653,86.28706 C67.49629,86.34711 67.5644,86.3822 67.63638,86.37971 C67.77372,86.41001 67.8995,86.47905 67.99881,86.57864 C68.09285,86.67714 68.21283,86.74705 68.34489,86.78029 C68.40838,86.77373 68.46588,86.81805 68.4757,86.88112 C68.4757,86.93562 68.56562,86.97922 68.67462,86.97922 C68.78363,86.97922 68.87628,87.02009 68.87628,87.06642 C68.87628,87.11275 68.9553,87.1836 69.05068,87.21357 C69.36816,87.32337 69.66414,87.48749 69.92542,87.69863 C69.97138,87.74786 70.04602,87.75704 70.10255,87.72043 C70.1625,87.68228 70.21155,87.69318 70.21155,87.75041 C70.21155,87.86758 71.4133,88.46165 71.64493,88.46165 C71.72929,88.45969 71.80979,88.49692 71.86293,88.56247 C71.94558,88.6344 72.05336,88.67066 72.16269,88.6633 C72.27248,88.65505 72.38111,88.69029 72.46517,88.7614 C72.49787,88.81863 72.65592,88.86223 72.81397,88.86223 C72.93956,88.85144 73.06472,88.88734 73.1655,88.96305 C73.31693,89.04288 73.48829,89.07696 73.65874,89.06116 C73.90399,89.06116 74.10564,89.10476 74.10564,89.15926 C74.10564,89.21376 74.55528,89.26008 75.25562,89.26008 C75.64075,89.2858 76.02759,89.25922 76.40559,89.18106 C76.40559,89.13473 76.59634,89.08841 76.83069,89.07478 C77.01114,89.07571 77.18933,89.03466 77.35118,88.95488 C77.42935,88.89453 77.52494,88.86107 77.62368,88.8595 C77.72451,88.8595 77.80354,88.8159 77.80354,88.75868 C77.80354,88.70145 77.86349,88.66057 77.93434,88.66057 C78.12509,88.66057 78.60197,88.42077 78.6047,88.32812 C78.6047,88.28452 78.65103,88.27362 78.70553,88.30904 C78.76003,88.34447 78.80635,88.32539 78.80635,88.26544 C78.80635,88.20549 78.83905,88.16461 78.87993,88.17279 C79.07068,88.20277 79.18513,88.15371 79.20421,88.04199 C79.20555,88.03113 79.20555,88.02015 79.20421,88.00929 C79.21191,87.95697 79.23047,87.90684 79.25871,87.86213 L79.29686,87.79401 C79.32684,87.74768 79.36226,87.69318 79.40314,87.64141 C79.44401,87.58963 79.48489,87.53513 79.53122,87.48335 C82.57782,84.00074 82.48789,77.92933 79.29414,71.29657 C79.04616,70.75701 78.7355,70.1793 78.13327,69.11925 z M39.94716,29.24635 C39.97604,29.28542 40.0007,29.32744 40.02074,29.3717 C39.95538,29.32521 39.87749,29.29956 39.79729,29.29812 C39.86814,29.25997 39.93899,29.23817 39.94716,29.24635 z M47.27754,62.0423 L47.27754,62.0423 L47.26119,62.0423 z" />
+                            <Path Stretch="None"
+              Fill="#FFD2E7F8"
+              Data="F0M45.86324,0.11285 C45.58655,0.18866 45.29956,0.21993 45.01303,0.20551 C44.56067,0.20551 44.21459,0.26001 44.24457,0.30906 C44.27454,0.35811 44.22549,0.39626 44.13556,0.39626 C44.04564,0.39626 44.00204,0.34721 44.04564,0.27091 C44.08924,0.19461 44.08924,0.17008 43.98024,0.27091 C43.87687,0.35016 43.75077,0.39411 43.62053,0.39626 C43.52042,0.39245 43.42274,0.42762 43.34802,0.49436 C43.28207,0.56467 43.18805,0.60167 43.09187,0.59519 C42.98559,0.59519 42.89839,0.64151 42.89839,0.69601 C42.89839,0.75052 42.74306,0.79684 42.55504,0.79684 C42.41119,0.78162 42.26655,0.8173 42.14628,0.89767 C42.10836,0.95255 42.0341,0.96812 41.97733,0.93309 C41.91737,0.89494 41.80837,0.93309 41.73752,1.0421 C41.67919,1.13357 41.57216,1.18174 41.46502,1.16472 C41.35601,1.12112 41.33421,1.16472 41.38054,1.27645 C41.42687,1.38818 41.41597,1.4236 41.29606,1.32823 C41.12439,1.18925 40.84371,1.32823 40.94726,1.48628 C40.98541,1.54623 40.96906,1.59528 40.91183,1.59528 C40.88342,1.59604 40.85594,1.58509 40.83585,1.56499 C40.81575,1.54489 40.8048,1.51742 40.80555,1.489 C40.80555,1.43178 40.75923,1.4127 40.70473,1.44813 C40.67795,1.46255 40.65802,1.48704 40.64933,1.51618 C40.64064,1.54532 40.6439,1.57672 40.6584,1.60346 C40.6911,1.65523 40.57938,1.69611 40.41042,1.69611 C40.20059,1.69611 40.10522,1.74516 40.10522,1.85143 C40.10522,1.95771 40.05617,1.97951 39.99894,1.94136 C39.94171,1.90321 39.83271,1.95771 39.76186,2.05309 C39.60628,2.23591 39.37491,2.3365 39.1351,2.32559 C39.0697,2.32559 39.02337,2.37737 39.03427,2.42915 C39.04517,2.48092 38.96342,2.57357 38.85442,2.63625 C38.76664,2.68503 38.68282,2.74061 38.60372,2.80248 C38.52687,2.84763 38.44151,2.8764 38.35301,2.88695 C38.26206,2.89803 38.1756,2.9328 38.10231,2.98778 C37.95515,3.17853 37.6663,3.35294 37.7426,3.20306 C37.78348,3.12131 37.7426,3.15401 37.61997,3.27936 C37.52985,3.39097 37.40527,3.46956 37.26572,3.50281 C37.1577,3.51801 37.06402,3.58522 37.01501,3.68267 C36.94739,3.78962 36.83539,3.86062 36.70981,3.87615 C36.47545,3.8925 36.1648,4.14865 36.2738,4.2413 C36.3065,4.27673 36.21385,4.30398 36.06125,4.30398 C35.90864,4.30398 35.81599,4.34758 35.85142,4.40481 C35.88684,4.46203 35.80782,4.50291 35.67156,4.50291 C35.51188,4.51711 35.36277,4.58876 35.25191,4.70456 C35.16602,4.80568 35.04915,4.87561 34.91945,4.90349 C34.83497,4.90349 34.79682,4.93346 34.83225,4.96889 C34.93035,5.06699 34.41804,5.30407 34.24909,5.24139 C34.20645,5.22786 34.16015,5.23208 34.12066,5.25311 C34.08118,5.27413 34.05183,5.31019 34.03926,5.35312 C34.01536,5.43789 33.92861,5.48849 33.84306,5.46757 C33.75585,5.43487 33.73133,5.46757 33.76675,5.56568 C33.80218,5.66378 33.78583,5.70465 33.73678,5.69103 C33.61593,5.70031 33.49952,5.74067 33.39887,5.80821 C33.27539,5.88064 33.13958,5.9296 32.99829,5.95263 C32.96331,5.94993 32.92896,5.96305 32.90468,5.98839 C32.8804,6.01372 32.86876,6.0486 32.87294,6.08343 C32.87294,6.15156 32.87294,6.20334 32.82389,6.19516 C32.63041,6.16519 32.26253,6.23059 32.37426,6.27419 C32.44238,6.30144 32.47508,6.36411 32.44511,6.41317 C32.41513,6.46222 32.31975,6.47039 32.22983,6.43769 C32.1399,6.40499 32.09085,6.41317 32.13445,6.48402 C32.17805,6.55487 32.06087,6.64479 31.86195,6.7211 C31.66302,6.7974 31.50769,6.8846 31.50769,6.9282 C31.50769,6.9718 31.44501,7.00995 31.36871,7.00995 C31.27724,7.02138 31.20015,7.08368 31.16978,7.17073 C31.14359,7.2533 31.05753,7.30111 30.97358,7.27973 C30.9,7.24976 30.77738,7.31243 30.70108,7.41871 C30.60697,7.53237 30.46964,7.60153 30.32229,7.60946 C30.1834,7.61105 30.05169,7.67146 29.95986,7.77569 C29.82933,7.90209 29.67051,7.99552 29.4966,8.04819 C29.3113,8.1136 29.16415,8.20897 29.17505,8.26347 C29.18595,8.31797 29.09602,8.36975 28.97612,8.37793 C28.82572,8.40483 28.68965,8.48396 28.59189,8.60138 C28.49817,8.71475 28.36456,8.78789 28.21856,8.80576 C28.08813,8.81764 27.97144,8.89172 27.90518,9.00469 C27.84795,9.11641 27.7444,9.20362 27.67627,9.20362 C27.60815,9.20362 27.61087,9.16546 27.70625,9.10006 C27.80162,9.03466 27.48007,9.00469 26.61623,9.01831 C26.18342,8.99985 25.75006,9.03833 25.32728,9.13276 C25.29458,9.18454 25.2319,9.16819 25.18285,9.09189 C25.1338,9.01559 25.09565,8.98834 25.09565,9.09189 C25.09565,9.19544 24.95667,9.21724 24.74139,9.21724 C24.52612,9.21724 24.39259,9.26357 24.39259,9.32079 C24.39259,9.37802 24.23181,9.40527 23.99201,9.37529 C23.665,9.33714 23.59142,9.35894 23.58325,9.49792 C23.57507,9.6369 23.55872,9.62327 23.5233,9.53607 C23.48787,9.44887 23.447,9.44069 23.35707,9.56332 C23.24368,9.67595 23.09789,9.75027 22.94014,9.77588 C22.74588,9.82204 22.56611,9.91567 22.41693,10.04838 C22.29158,10.16556 22.1635,10.23096 22.12535,10.19281 C22.0872,10.15466 21.9782,10.22278 21.87737,10.33996 C21.76574,10.46057 21.61324,10.53536 21.44954,10.54979 C21.31495,10.53452 21.18958,10.62042 21.15523,10.75144 C21.11981,10.88224 21.04895,10.9313 20.9454,10.89315 C20.84185,10.85499 20.79007,10.89315 20.79007,10.97762 C20.79007,11.0621 20.6947,11.12477 20.553,11.12477 C20.41744,11.12641 20.28769,11.18007 20.19056,11.27465 C20.12244,11.3564 20.01889,11.39455 19.96166,11.35913 C19.90443,11.3237 19.87991,11.35913 19.92078,11.46541 C19.96166,11.57168 19.94531,11.60983 19.89353,11.57986 C19.8668,11.56536 19.8354,11.56209 19.80626,11.57079 C19.77711,11.57948 19.75263,11.59941 19.73821,11.62618 C19.71028,11.68102 19.64327,11.70295 19.58833,11.67523 C19.53928,11.64526 19.38667,11.73791 19.24497,11.87961 C19.10327,12.02132 18.98882,12.10307 18.98882,12.06492 C18.98882,12.02677 18.90979,12.06492 18.81441,12.15212 C18.72008,12.23805 18.60864,12.30306 18.48741,12.34287 C18.36885,12.3862 18.26235,12.4572 18.17675,12.54997 C18.08955,12.64535 17.99418,12.69985 17.96692,12.6726 C17.93967,12.64535 17.85792,12.69168 17.7898,12.77343 C17.72198,12.85746 17.62438,12.91212 17.51729,12.92603 C17.45022,12.91937 17.38946,12.96583 17.37831,13.03231 C17.37831,13.09226 17.33744,13.11406 17.28566,13.08136 C17.23389,13.04866 17.12488,13.09498 17.03768,13.18219 C16.9288,13.27885 16.79776,13.34717 16.65618,13.38111 C16.53248,13.40505 16.41813,13.46365 16.32645,13.55007 C16.26201,13.62701 16.17542,13.6822 16.07847,13.70812 C15.94967,13.75408 15.83637,13.83528 15.75146,13.94247 C15.65608,14.05693 15.57706,14.11688 15.57706,14.076 C15.57706,14.03513 15.51166,14.05693 15.43263,14.12505 C15.35695,14.18884 15.25263,14.20657 15.16012,14.17138 C15.08927,14.12778 15.06747,14.13868 15.10562,14.20135 C15.14377,14.26403 15.04022,14.32943 14.86854,14.36486 C14.69687,14.40028 14.57969,14.47931 14.59604,14.55016 C14.61239,14.62101 14.54426,14.66461 14.44616,14.64826 C14.34806,14.63191 14.27176,14.66189 14.27176,14.71366 C14.27176,14.76544 14.14641,14.85809 13.99925,14.91804 C13.6495,15.05427 13.32382,15.24563 13.03459,15.48485 C12.87926,15.6102 12.70758,15.68651 12.65853,15.6538 C12.60948,15.6211 12.56588,15.6538 12.56588,15.69468 C12.56588,15.73556 12.3942,15.85818 12.1871,15.93993 C11.99599,16.01143 11.82026,16.11872 11.66934,16.25604 C11.56306,16.38684 11.51674,16.39229 11.45133,16.29147 C11.38593,16.19064 11.36958,16.20971 11.36686,16.34324 C11.36413,16.47677 11.30963,16.50947 11.24151,16.48494 C11.17338,16.46042 11.0017,16.56125 10.86272,16.70295 C10.64643,16.96295 10.34883,17.14247 10.01796,17.21253 C9.90315,17.23749 9.8042,17.30972 9.74545,17.41146 C9.65484,17.54234 9.50398,17.61828 9.34487,17.61311 C9.19499,17.61311 9.07237,17.65672 9.07237,17.71122 C9.07237,17.76572 9.03967,17.80659 8.99607,17.80114 C8.72356,17.75754 8.62273,17.81749 8.77261,17.92104 C8.92249,18.0246 8.87889,18.01915 8.69631,17.981 C8.51373,17.94285 8.47286,17.981 8.47286,18.07092 C8.47286,18.16085 8.43743,18.20717 8.39656,18.20172 C8.31884,18.17491 8.23339,18.18248 8.1616,18.22254 C8.08981,18.2626 8.03849,18.33134 8.0205,18.41155 C7.99141,18.52173 7.89683,18.60217 7.78342,18.61321 C7.67539,18.61875 7.57251,18.66105 7.49184,18.73311 C7.42371,18.79851 7.36921,18.80941 7.36921,18.75763 C7.36921,18.70586 7.33106,18.71948 7.28746,18.79034 C7.20526,18.88115 7.09486,18.94163 6.97408,18.96201 C6.81242,19.00586 6.66557,19.09247 6.54897,19.21272 C6.44542,19.32444 6.32279,19.3953 6.27647,19.37077 C6.23014,19.34625 6.13749,19.41165 6.06119,19.51792 C5.98489,19.6242 5.87589,19.71413 5.82411,19.71413 C5.71332,19.74755 5.61232,19.8074 5.5298,19.88853 C5.4208,19.98391 5.36085,20.01116 5.39628,19.94848 C5.4317,19.8858 5.39628,19.84765 5.29,19.88035 C5.0175,19.95121 4.71774,20.20191 4.80222,20.28366 C4.84037,20.32454 4.91122,20.30001 4.95482,20.22644 C5.0386,20.14124 5.15832,20.10168 5.27637,20.12016 C5.40627,20.13324 5.53747,20.12216 5.66333,20.08746 C5.74781,20.05476 5.94946,19.99481 6.11569,19.95393 C7.44825,19.85579 8.78622,19.85579 10.11879,19.95393 C10.77277,20.10249 11.41635,20.29365 12.04539,20.52619 C12.16802,20.57524 12.36968,20.65699 12.49503,20.70332 C12.93376,20.87227 15.0266,21.95412 15.2882,22.14759 C15.69423,22.44735 15.83321,22.31927 16.04849,21.40093 C17.09218,17.14168 19.92896,13.39746 23.17722,11.98589 L23.92661,11.65616 C24.16174,11.54892 24.40392,11.45787 24.65147,11.38365 C24.83132,11.33733 25.14743,11.25013 25.35453,11.19018 C27.14489,10.67242 30.16424,10.71874 32.63586,11.3019 C33.13182,11.41908 33.68228,11.53626 33.86213,11.57441 C34.00021,11.58635 34.13227,11.63634 34.24364,11.71883 C34.31248,11.78159 34.40418,11.81315 34.49707,11.80604 C34.71121,11.8388 34.91842,11.90695 35.1102,12.00769 C35.26854,12.09023 35.43467,12.15687 35.60616,12.20662 C35.84597,12.20662 39.65831,14.07873 39.93354,14.33216 C40.00949,14.41144 40.10276,14.47207 40.20604,14.50928 C40.4186,14.50928 42.65859,16.10344 44.43532,17.50684 C46.44454,19.23502 48.34994,21.08037 50.14157,23.03324 C50.4713,23.42292 50.78741,23.7908 50.84191,23.85075 C50.89641,23.9107 51.14439,24.21046 51.38692,24.51566 C51.62945,24.82087 51.86108,25.08792 51.88833,25.11517 C53.30535,26.49405 57.51555,33.37207 59.13423,36.95006 L59.63564,38.04008 C59.75362,38.29236 59.85823,38.55069 59.94902,38.81399 C59.98136,38.93748 60.0309,39.05582 60.09617,39.16552 C60.13705,39.22002 60.36868,39.82771 60.64118,40.52805 C61.03086,41.59626 61.33607,42.50643 62.06093,44.78185 L62.18901,45.1797 L63.22453,45.2015 C65.25741,45.23965 67.01507,46.08987 69.06431,48.02465 C69.83004,48.74679 71.3152,50.50717 71.3152,50.69248 C71.43669,50.92024 71.57324,51.13964 71.72395,51.34921 C74.03207,54.74735 74.90953,59.85681 73.61786,62.38293 C73.22273,63.15685 73.17913,63.04239 74.29367,64.18964 C75.02432,64.91143 75.70446,65.68263 76.32928,66.49776 C76.9821,67.33563 77.58536,68.21096 78.13599,69.11925 C78.73823,70.1793 79.04888,70.75428 79.31321,71.29929 C82.50697,77.92933 82.5969,84.00347 79.55029,87.48608 C79.22601,87.85668 79.08703,88.20004 79.34591,87.98204 C79.44731,87.88833 79.58504,87.84442 79.72197,87.86213 C79.77647,87.86213 79.8228,87.79401 79.8228,87.71226 C79.8228,87.63051 79.91817,87.56238 80.07078,87.56238 C80.24458,87.5521 80.40142,87.45472 80.48771,87.3035 C80.59944,87.13455 80.71934,87.0637 80.84196,87.09367 C80.95479,87.1162 81.06812,87.05728 81.11447,86.95197 C81.19682,86.82696 81.33818,86.7537 81.4878,86.75849 C81.6513,86.75849 81.71398,86.72851 81.6404,86.68219 C81.56683,86.63586 81.6404,86.55684 81.83933,86.46418 C82.02521,86.38049 82.19855,86.27135 82.35437,86.1399 C82.43761,86.05514 82.54061,85.9924 82.65412,85.95733 C82.78596,85.91864 82.90778,85.85168 83.0111,85.76112 C83.29723,85.53767 83.45801,85.50224 83.35173,85.68482 C83.31358,85.75295 83.42804,85.66302 83.60789,85.48589 C83.74716,85.32878 83.92884,85.21522 84.1311,85.15889 C84.23737,85.15889 84.30278,85.12346 84.27553,85.07986 C84.24827,85.03626 84.31913,84.99266 84.43085,84.98448 C84.57156,84.95949 84.69683,84.88022 84.77966,84.76375 C84.84533,84.6603 84.9491,84.58687 85.06851,84.55938 C85.14754,84.55938 85.21294,84.51305 85.21294,84.45855 C85.21294,84.40405 85.30287,84.35772 85.4146,84.35772 C85.52632,84.35772 85.61352,84.31957 85.61352,84.27052 C85.61352,84.22147 85.68438,84.15334 85.76885,84.12064 C85.85333,84.08794 85.89965,84.10157 85.8506,84.18604 C85.80155,84.27052 85.86968,84.22965 85.97868,84.13427 C86.08768,84.03889 86.21031,83.98984 86.25119,84.02799 C86.29206,84.06614 86.38744,84.00347 86.46646,83.88901 C86.57011,83.75934 86.71079,83.66429 86.86977,83.61651 C87.01692,83.57836 87.09868,83.50751 87.0578,83.44483 C87.01692,83.38216 87.0578,83.36035 87.20495,83.40396 C87.3521,83.44756 87.41751,83.42848 87.41751,83.30313 C87.41751,83.17778 87.47746,83.15053 87.61098,83.18595 C87.70664,83.22375 87.81535,83.1824 87.86169,83.09057 C87.89166,83.01155 87.95707,82.97067 88.00339,82.99792 C88.04972,83.02517 88.23502,82.89437 88.40942,82.70089 C88.58383,82.50741 88.77185,82.37934 88.82363,82.40931 C88.87541,82.43929 88.91901,82.40931 88.91901,82.36571 C88.91901,82.32211 88.99258,82.29214 89.08524,82.32756 C89.17789,82.36299 89.22694,82.35209 89.18061,82.27306 C89.13429,82.19403 89.23784,82.11228 89.36592,82.18313 C89.39044,82.19676 89.46947,82.12591 89.54304,82.02781 C89.62956,81.92113 89.75316,81.85106 89.88912,81.8316 C90.00903,81.8316 90.08805,81.78528 90.06625,81.74985 C90.04445,81.71443 90.1371,81.62722 90.27336,81.55365 C90.40961,81.48007 90.52134,81.38469 90.52134,81.33837 C90.52134,81.29204 90.61126,81.25662 90.72026,81.25662 C90.82927,81.25662 90.91919,81.20757 90.91919,81.15034 C90.91919,81.09311 90.96552,81.07131 91.02002,81.10674 C91.07452,81.14217 91.24075,81.04406 91.39063,80.89691 C91.5405,80.74976 91.66313,80.67073 91.70128,80.74431 C91.73943,80.81788 91.77486,80.83696 91.87841,80.74431 C91.98196,80.65166 91.99286,80.58626 91.96289,80.5372 C91.93291,80.48815 91.94381,80.45273 91.98741,80.4609 C92.21632,80.49905 92.42614,80.4391 92.37164,80.34918 C92.31714,80.25925 92.39889,80.25107 92.5079,80.25107 C92.60725,80.25774 92.70233,80.20968 92.75588,80.12572 C92.79675,80.0249 92.80765,80.0249 92.8131,80.12572 C92.81855,80.22655 92.91393,80.15842 93.04746,80.0249 C93.18098,79.89137 93.26001,79.76602 93.24638,79.72514 C93.23276,79.68426 93.24638,79.65701 93.29816,79.66519 C93.59091,79.65328 93.87433,79.55881 94.11567,79.39268 C94.18925,79.31911 94.2928,79.28368 94.34458,79.31638 C94.39635,79.34908 94.42633,79.31638 94.4127,79.24281 C94.39908,79.16923 94.45631,79.1229 94.56258,79.14198 C94.71371,79.13319 94.85373,79.05971 94.94681,78.94033 C95.05854,78.81497 95.12122,78.76592 95.08579,78.83405 C95.05037,78.90218 95.06944,78.9594 95.12939,78.9594 C95.18934,78.9594 95.23567,78.89128 95.23567,78.80952 C95.23567,78.72777 95.29017,78.67055 95.36102,78.68417 C95.43187,78.6978 95.47547,78.65692 95.46457,78.59425 C95.45367,78.53157 95.5218,78.50159 95.63898,78.53157 C95.75615,78.56154 95.83518,78.53157 95.83518,78.41712 C95.83518,78.30267 95.89241,78.26179 95.96053,78.27541 C96.12676,78.30812 96.74535,77.97566 96.947,77.7304 C97.0077,77.64934 97.08847,77.58547 97.18135,77.5451 C97.35116,77.43368 97.50437,77.29882 97.63644,77.14452 C97.84627,76.92652 98.03702,76.79026 98.05337,76.84476 C98.06972,76.89927 98.14602,76.84476 98.2196,76.73576 C98.29317,76.62676 98.31225,76.54773 98.23322,76.59678 C98.1542,76.64584 98.19235,76.55046 98.28772,76.40603 C98.3831,76.2616 98.49755,76.13353 98.54115,76.13353 C98.58475,76.13353 98.65288,76.0436 98.68831,75.93187 C98.72373,75.82015 98.80003,75.7602 98.86271,75.79835 C98.92538,75.8365 98.94991,75.79835 98.90631,75.69479 C98.88341,75.65459 98.87928,75.60636 98.89501,75.56284 C98.91074,75.51933 98.94474,75.48489 98.98806,75.46861 C99.06981,75.43864 99.11069,75.37051 99.08071,75.32146 C99.05074,75.27241 99.10796,75.23154 99.20606,75.23154 C99.34777,75.23154 99.35867,75.20974 99.25239,75.14433 C99.14611,75.07893 99.15156,75.04623 99.23059,75.01898 C99.30962,74.99173 99.35867,74.86638 99.37229,74.73013 C99.39682,74.5094 99.47039,74.31864 99.87643,73.44118 C100.07263,73.0188 100.02085,66.82476 99.82193,66.82476 C99.7756,66.82476 99.73745,66.67761 99.73745,66.49503 C99.74641,66.34597 99.71236,66.19747 99.63935,66.0672 C99.55463,65.87496 99.51189,65.66686 99.514,65.45679 C99.50037,65.18428 99.45404,64.96628 99.41317,64.9908 C99.37229,65.01533 99.33142,64.96628 99.32597,64.8818 C99.30144,64.59295 99.28782,64.54117 99.21151,64.46487 C99.15706,64.37177 99.13145,64.2646 99.13794,64.15694 C99.13794,64.02886 99.09161,63.92259 99.03711,63.92259 C98.98099,63.92111 98.93627,63.87518 98.93629,63.81903 C98.93629,63.75908 98.99351,63.74546 99.06164,63.78361 C99.12976,63.82176 99.10251,63.75908 98.99624,63.64191 C98.88996,63.52473 98.84091,63.4239 98.88451,63.4239 C98.92811,63.4239 98.91176,63.36395 98.85181,63.29037 C98.77197,63.15648 98.727,63.00469 98.72101,62.84892 C98.72101,62.67724 98.66651,62.55461 98.62835,62.57641 C98.5902,62.59821 98.49755,62.41291 98.42398,62.1622 C98.35949,61.93023 98.2543,61.71155 98.11332,61.51637 C98.01415,61.40982 97.95202,61.27411 97.93619,61.12941 C97.94382,61.02823 97.90701,60.92875 97.83537,60.85691 C97.8085,60.84256 97.78865,60.81787 97.78042,60.78854 C97.77219,60.75922 97.77629,60.72781 97.79176,60.70158 C97.82174,60.6498 97.79176,60.60893 97.73181,60.60893 C97.67186,60.60893 97.64189,60.5408 97.67186,60.45905 C97.69668,60.35527 97.64072,60.24918 97.54106,60.21107 C97.42506,60.15991 97.36717,60.02877 97.40753,59.90859 C97.43092,59.8582 97.43248,59.80039 97.41185,59.74881 C97.39121,59.69723 97.35022,59.65645 97.29853,59.63608 C97.2086,59.60338 97.16228,59.53526 97.19225,59.48348 C97.22223,59.43171 97.1759,59.3663 97.08598,59.33088 C97.00043,59.30351 96.95297,59.21225 96.9797,59.1265 C97.00968,59.04747 96.9797,59.01205 96.9361,59.04747 C96.8925,59.0829 96.83527,59.02022 96.83527,58.91667 C96.81474,58.77354 96.74428,58.64228 96.63634,58.54606 C96.52395,58.44355 96.45154,58.30452 96.43197,58.15366 C96.43197,57.91385 96.17309,57.53235 96.12131,57.68495 C96.10223,57.74218 96.03411,57.68495 95.96871,57.54052 C95.90331,57.39609 95.89786,57.31979 95.95236,57.35522 C96.00686,57.39064 95.99323,57.32252 95.91966,57.20807 C95.84608,57.09361 95.76705,57.04456 95.72618,57.10724 C95.6853,57.16992 95.63625,57.14539 95.5981,57.04184 C95.56083,56.95483 95.56083,56.85635 95.5981,56.76933 C95.63353,56.70938 95.62263,56.68758 95.57358,56.71756 C95.52452,56.74753 95.4237,56.71756 95.35285,56.63308 C95.282,56.5486 95.24657,56.49138 95.35285,56.48865 C95.45912,56.48593 95.3801,56.4287 95.25474,56.36058 C95.12939,56.29245 95.05582,56.20252 95.09397,56.16437 C95.13212,56.12622 95.09397,56.069 94.99587,56.03357 C94.90892,56.00395 94.84582,55.92822 94.83236,55.83737 C94.81215,55.73565 94.74705,55.64851 94.65523,55.60029 C94.55986,55.54579 94.51353,55.49674 94.55441,55.49674 C94.66886,55.49674 94.30098,55.09343 94.1838,55.09343 C94.12657,55.09343 94.0312,54.98988 93.9767,54.86725 C93.9222,54.74462 93.81864,54.65197 93.75324,54.66832 C93.68784,54.68467 93.63062,54.60292 93.63062,54.49119 C93.63062,54.37947 93.57884,54.29226 93.51344,54.29226 C93.44804,54.29226 93.42351,54.26501 93.45621,54.23231 C93.53796,54.15056 93.21368,53.79086 93.11286,53.85353 C93.06653,53.88078 93.03111,53.83173 93.03111,53.74725 C93.03111,53.66278 92.99295,53.59193 92.94663,53.59193 C92.80493,53.59193 92.42887,53.22405 92.497,53.15592 C92.56512,53.08779 92.497,53.09052 92.41797,53.09052 C92.29656,53.06086 92.19177,52.98447 92.12639,52.87796 C92.04279,52.75795 91.95177,52.64328 91.85388,52.53461 C91.70128,52.37383 91.72581,52.19398 91.93019,51.9896 C92.07889,51.83534 92.16109,51.62887 92.15909,51.41461 C92.15909,51.34649 92.19179,51.28926 92.22994,51.28926 C92.26809,51.28926 92.30352,51.23204 92.30897,51.16391 C92.34006,50.86568 92.40591,50.57211 92.50517,50.28917 C92.55709,50.17011 92.57501,50.03901 92.55695,49.91039 C92.53525,49.8098 92.54574,49.70493 92.58692,49.61063 C92.69865,49.35448 92.70137,49.25093 92.58692,49.11195 C92.5297,49.03292 92.5297,48.9866 92.58692,48.9866 C92.64415,48.9866 92.6823,48.71409 92.67412,48.33803 C92.6929,48.11781 92.666,47.89609 92.5951,47.68675 C92.52821,47.50578 92.50487,47.3116 92.52697,47.11994 C92.54709,46.90585 92.51239,46.69016 92.42614,46.49318 C92.36737,46.4454 92.35767,46.35936 92.40434,46.2997 C92.43998,46.11615 92.41907,45.9261 92.34439,45.75469 C92.27391,45.58211 92.24408,45.39563 92.25719,45.20968 C92.28717,45.13065 92.27082,45.09523 92.21904,45.1252 C92.11004,45.19333 91.97379,44.82272 92.05826,44.68647 C92.07385,44.65982 92.07801,44.62801 92.0698,44.59825 C92.06159,44.56849 92.04171,44.5433 92.01466,44.52842 C91.93764,44.4262 91.90167,44.29885 91.91384,44.17144 C91.91384,44.01066 91.87568,43.87713 91.82936,43.87713 C91.73943,43.87713 91.51598,43.5038 91.47238,43.27217 C91.40698,42.93154 91.0827,42.28298 91.00367,42.33203 C90.92464,42.38108 90.93827,42.33203 90.96824,42.24483 C90.98903,42.13499 90.95077,42.02228 90.86742,41.9478 C90.78927,41.87477 90.73511,41.77975 90.71209,41.67529 C90.71282,41.64782 90.70261,41.62119 90.6837,41.60126 C90.66479,41.58133 90.63873,41.56973 90.61126,41.56901 C90.55676,41.56901 90.51316,41.45184 90.51316,41.31013 C90.5129,41.16868 90.46914,41.03074 90.38781,40.915 C90.08533,40.5771 90.0281,40.48444 90.08533,40.42722 C90.14255,40.36999 90.08533,40.36727 90.0281,40.36727 C89.97088,40.36727 89.91093,40.27734 89.91093,40.16561 C89.91093,39.98849 89.8101,39.92308 89.59209,39.95306 C89.55667,39.95306 89.54577,39.84678 89.57302,39.70508 C89.60027,39.56338 89.57302,39.47345 89.51579,39.51433 C89.45857,39.5552 89.41224,39.51433 89.41224,39.42985 C89.36856,39.28658 89.27722,39.16255 89.15336,39.07832 C89.00893,38.96659 88.92173,38.82762 88.95716,38.77039 C88.99258,38.71316 88.95716,38.69409 88.84816,38.73496 C88.73915,38.77584 88.701,38.76221 88.7555,38.67501 C88.81001,38.58781 88.7555,38.53331 88.61925,38.49788 C88.483,38.46246 88.40942,38.38071 88.40942,38.30441 C88.40942,38.2281 88.37127,38.16543 88.32222,38.16543 C88.27317,38.16543 88.20777,38.07005 88.17779,37.9556 C88.14782,37.84115 88.08242,37.7703 88.03609,37.80027 C87.98977,37.83025 87.88076,37.76212 87.80174,37.64767 C87.59766,37.35368 87.35266,37.09033 87.07415,36.86558 C86.9646,36.80638 86.86524,36.73002 86.77984,36.6394 C86.35746,36.23609 86.10948,36.06442 85.96233,36.06442 C85.87761,36.06146 85.81091,35.99112 85.81245,35.90636 C85.81245,35.82189 85.7743,35.77556 85.72798,35.80554 C85.68165,35.83551 85.55902,35.77011 85.45547,35.66111 C85.38152,35.56711 85.2808,35.49775 85.16662,35.46218 C85.10666,35.46218 85.00039,35.37225 84.92954,35.26053 C84.90084,35.19319 84.84625,35.14022 84.77808,35.11357 C84.7099,35.08691 84.63387,35.08881 84.56711,35.11882 C84.4254,35.15425 84.2946,35.11882 84.25372,35.05615 C84.21285,34.99347 84.2183,34.95532 84.3164,35.01255 C84.4145,35.06977 84.42268,35.05887 84.37363,35.01255 C84.32747,34.96099 84.26659,34.92484 84.19922,34.909 C84.15063,34.90202 84.10305,34.88921 84.05752,34.87085 C84.0172,34.85375 83.97518,34.84096 83.93217,34.83269 C83.86246,34.81191 83.79631,34.78067 83.73597,34.74004 C83.61703,34.69418 83.48736,34.68377 83.36263,34.71007 C83.18551,34.74277 83.10648,34.71007 83.10648,34.61742 C83.10648,34.52476 83.02473,34.49206 82.79037,34.53839 C82.55602,34.58472 82.49062,34.57381 82.55874,34.46209 C82.62687,34.35036 82.6187,34.34219 82.48244,34.46209 C82.34619,34.58199 82.29987,34.55201 82.26444,34.49479 C82.22901,34.43756 82.26444,34.38034 82.32984,34.35581 C82.08451,34.31084 81.83406,34.30075 81.5859,34.32584 C81.26626,34.3117 80.94619,34.34197 80.63486,34.41576 C80.59126,34.46209 80.68936,34.47026 80.85559,34.43756 C81.12809,34.38034 81.14444,34.38306 80.91827,34.50024 C80.64576,34.64194 80.26698,34.27406 80.37326,33.95523 C80.38411,33.73952 80.34881,33.52399 80.2697,33.32302 C80.19576,33.15117 80.16131,32.96493 80.16888,32.77801 C80.20158,32.72623 80.18523,32.68536 80.13345,32.68536 C80.03535,32.68536 79.92907,32.41285 79.86095,31.99319 C79.82483,31.83439 79.7612,31.68314 79.67292,31.54629 C79.59288,31.43258 79.54317,31.30033 79.52849,31.16205 C79.52849,31.06395 79.48489,30.98493 79.43039,30.98493 C79.37589,30.98493 79.34591,30.8514 79.36499,30.68517 C79.38406,30.51894 79.36499,30.41267 79.31321,30.44264 C79.26144,30.47262 79.20694,30.34727 79.23691,30.12109 C79.23152,30.06999 79.20352,30.02399 79.16061,29.99573 C79.00528,29.88128 78.8227,29.48342 78.92626,29.48342 C78.98281,29.48052 79.02716,29.43378 79.02708,29.37715 C79.02708,29.31992 78.98348,29.29812 78.92626,29.33355 C78.86903,29.36897 78.82815,29.3063 78.82815,29.20002 C78.82086,29.07926 78.76716,28.96599 78.67828,28.88391 C78.59652,28.81579 78.55292,28.72041 78.58562,28.67136 C78.61832,28.62231 78.54747,28.45063 78.43302,28.28985 C78.32325,28.14363 78.25203,27.97214 78.22592,27.79117 C78.22592,27.67672 78.19049,27.58134 78.14962,27.58134 C78.01064,27.58134 77.82534,26.98183 77.96159,26.97366 C78.02426,26.97366 77.97521,26.91915 77.85259,26.8592 C77.73231,26.80561 77.64724,26.69491 77.62641,26.5649 C77.62641,26.46407 77.58008,26.37959 77.52558,26.37959 C77.47108,26.37959 77.42475,26.24607 77.42475,26.07984 C77.42475,25.91361 77.39205,25.78008 77.35118,25.78008 C77.3103,25.78008 77.2231,25.66563 77.16042,25.52938 C77.07322,25.34135 77.07322,25.2923 77.16042,25.3359 C77.24763,25.3795 77.19312,25.3359 77.08957,25.24325 C76.98602,25.1506 76.93425,25.04705 76.96695,24.99255 C76.99965,24.93804 76.93152,24.79907 76.80889,24.68461 C76.68627,24.57016 76.62904,24.47751 76.73259,24.47206 C76.83614,24.46661 76.79799,24.43119 76.67537,24.37941 C76.55274,24.32763 76.52821,24.28948 76.59361,24.28676 C76.65902,24.28403 76.66719,24.19138 76.56091,23.97883 C76.47644,23.8126 76.37016,23.70632 76.32383,23.73085 C76.27751,23.75537 76.25298,23.68725 76.27751,23.57279 C76.30476,23.41747 76.27751,23.37387 76.17123,23.41474 C76.06495,23.45562 76.02408,23.41474 76.02408,23.28666 C76.0183,23.17252 75.96848,23.06507 75.8851,22.98691 C75.76713,22.85938 75.67463,22.71046 75.6126,22.54818 C75.54419,22.38413 75.45241,22.23085 75.34009,22.09309 C75.27298,22.0389 75.24413,21.95022 75.26652,21.86691 C75.29922,21.81514 75.22019,21.68434 75.09211,21.57806 C74.96404,21.47178 74.91771,21.38186 74.98856,21.37913 C75.05941,21.37641 75.04579,21.3001 74.91498,21.1584 C74.80844,21.04824 74.73726,20.90874 74.71061,20.75782 C74.71061,20.65699 74.66428,20.57524 74.60978,20.57524 C74.55528,20.57524 74.50895,20.50439 74.50895,20.41991 C74.50895,20.33544 74.46535,20.29184 74.41085,20.32454 C74.35635,20.35724 74.31002,20.32454 74.31002,20.23189 C74.31002,20.13923 74.26915,20.07656 74.22282,20.07656 C74.1765,20.07656 74.10837,19.98391 74.08112,19.87218 C74.05494,19.66123 73.95214,19.46726 73.79226,19.32717 C73.69689,19.22089 73.64511,19.08737 73.67781,19.02741 C73.71051,18.96746 73.70506,18.95111 73.65874,18.99199 C73.55246,19.08737 73.1982,18.56416 73.27996,18.43063 C73.31266,18.37885 73.27996,18.36795 73.22545,18.4061 C73.17095,18.44425 73.10828,18.4061 73.10828,18.3298 C73.1137,18.25719 73.07789,18.18769 73.01563,18.14995 C72.95112,18.11081 72.90573,18.04667 72.89027,17.97282 C72.84423,17.85021 72.77271,17.73876 72.68044,17.64581 C72.58234,17.54226 72.52512,17.41691 72.55782,17.37331 C72.58301,17.31158 72.55547,17.24093 72.49514,17.21253 C72.42157,17.16621 72.40521,17.18256 72.44882,17.25613 C72.49242,17.32971 72.47334,17.37058 72.41339,17.37058 C72.35344,17.37058 72.27714,17.24523 72.33436,17.11443 C72.33436,17.08173 72.27986,17.01088 72.18449,16.9591 C72.0905,16.91071 72.02485,16.82082 72.00736,16.71657 C72.00736,16.63482 71.96376,16.56942 71.90926,16.56942 C71.85476,16.56942 71.80843,16.50674 71.80843,16.43317 C71.79276,16.32603 71.7373,16.22874 71.6531,16.16066 C71.57084,16.09616 71.53273,15.99029 71.555,15.88816 C71.59315,15.78461 71.555,15.76008 71.44872,15.80368 C71.34245,15.84728 71.30157,15.82276 71.34245,15.71648 C71.38332,15.6102 71.2934,15.51755 71.06994,15.5557 C71.02362,15.5557 71.01272,15.52845 71.04269,15.48213 C71.07267,15.4358 70.98546,15.28865 70.84921,15.16057 C70.73286,15.0655 70.64669,14.93862 70.60123,14.79541 C70.60123,14.72184 70.56308,14.66189 70.51948,14.66189 C70.47588,14.66189 70.37505,14.55289 70.3042,14.41663 C70.23335,14.28038 70.12435,14.19863 70.06985,14.23133 C70.01535,14.26403 69.99355,14.23133 70.0317,14.12505 C70.06985,14.01878 70.05895,13.9779 70.00717,14.00788 C69.9554,14.03785 69.81369,13.88525 69.68834,13.66452 C69.56299,13.44379 69.41584,13.26121 69.33136,13.26121 C69.26017,13.26123 69.20204,13.20431 69.20056,13.13313 C69.13491,12.97561 69.02866,12.83833 68.89263,12.73528 C68.71005,12.57723 68.62012,12.41917 68.65827,12.34832 C68.69642,12.27747 68.68825,12.25567 68.62285,12.29655 C68.55745,12.33742 68.48932,12.28019 68.45662,12.17937 C68.39033,12.04158 68.28139,11.92882 68.14596,11.85781 C67.96339,11.76244 67.93069,11.70248 68.02334,11.64253 C68.11599,11.58258 68.08601,11.54443 67.92524,11.49811 C67.76446,11.45178 67.69906,11.37548 67.69906,11.3019 C67.69906,11.22833 67.57643,11.08662 67.42655,10.99125 C67.13317,10.84434 66.89933,10.60088 66.76436,10.30181 C66.68591,10.15346 66.55754,10.03764 66.40193,9.9748 C66.21936,9.89578 66.10218,9.7677 66.10218,9.65052 C66.10218,9.53335 66.06403,9.45977 66.01498,9.45977 C65.89842,9.41637 65.7925,9.34855 65.70432,9.26084 C65.57624,9.15184 65.43182,9.09189 65.37187,9.12731 C65.31191,9.16274 65.29829,9.14366 65.33371,9.08644 C65.41819,8.95019 65.06121,8.55778 64.86228,8.55778 C64.77235,8.55778 64.70968,8.50328 64.72603,8.43243 C64.73475,8.40408 64.72686,8.37324 64.7056,8.35255 C64.68435,8.33187 64.6533,8.32483 64.6252,8.33432 C64.55708,8.33432 64.51075,8.33432 64.52438,8.28255 C64.53114,8.26268 64.52942,8.2409 64.51963,8.22234 C64.50983,8.20378 64.49282,8.19007 64.4726,8.18445 C64.32272,8.13812 63.92759,7.70484 63.96847,7.63944 C64.00934,7.57404 63.94121,7.56314 63.85401,7.56314 C63.69596,7.56314 63.309,7.22251 63.309,7.08898 C63.30122,7.03875 63.25897,7.00106 63.20818,6.99905 L63.0038,6.97453 C62.94385,6.97453 62.91932,6.9282 62.94385,6.88732 C62.96837,6.84645 62.91387,6.74562 62.82667,6.66115 C62.73947,6.57667 62.65227,6.53579 62.63864,6.56304 C62.57597,6.68022 62.12633,6.23059 62.17538,6.10251 C62.22443,5.97443 62.17538,5.97716 62.05276,6.02621 C61.93013,6.07526 61.89743,6.05891 61.95193,5.97171 C62.00643,5.88451 61.97645,5.85453 61.8947,5.86816 C61.6222,5.90358 61.50775,5.86816 61.53227,5.74008 C61.53227,5.67468 61.4914,5.61745 61.40692,5.612 C61.32244,5.60655 61.26794,5.54933 61.28429,5.4812 C61.30064,5.41307 61.24069,5.3613 61.15894,5.3613 C61.07719,5.3613 61.00906,5.3177 61.00906,5.2632 C61.00906,5.20869 60.94366,5.19234 60.86736,5.22232 C60.70113,5.285 60.306,4.97707 60.306,4.78359 C60.306,4.71001 60.2624,4.67731 60.2079,4.71001 C60.1534,4.74271 60.10707,4.72636 60.10707,4.66641 C60.10707,4.60646 60.07437,4.56558 60.03077,4.57103 C59.84274,4.59828 59.50756,4.42388 59.50756,4.29853 C59.50756,4.22223 59.47214,4.15683 59.43126,4.15138 C59.16066,4.13391 58.90535,4.01979 58.71185,3.82982 C58.54834,3.69357 58.43934,3.55732 58.48567,3.50554 C58.53199,3.45376 58.48567,3.46194 58.42572,3.50554 C58.31321,3.54134 58.19018,3.5071 58.11234,3.41834 C57.99764,3.32141 57.86259,3.25156 57.7172,3.21396 C57.53765,3.16179 57.36815,3.07981 57.2158,2.97143 C57.06047,2.8597 56.90241,2.79703 56.86699,2.83245 C56.83156,2.86788 56.80431,2.83245 56.80431,2.77795 C56.80431,2.72345 56.77161,2.66622 56.72801,2.6744 C56.48276,2.71255 56.3029,2.6417 56.3029,2.50545 C56.3029,2.42097 56.2593,2.37737 56.2048,2.41279 C56.1503,2.44822 56.10398,2.42642 56.10398,2.36647 C56.10398,2.30652 56.01677,2.26292 55.91322,2.26292 C55.80967,2.26292 55.70612,2.22749 55.68704,2.18662 C55.34419,1.93798 54.95922,1.75334 54.5507,1.64161 C54.46895,1.64161 54.40355,1.60073 54.40355,1.55168 C54.40355,1.50263 54.31089,1.489 54.20189,1.52443 C54.09289,1.55985 53.98116,1.52443 53.92939,1.43178 C53.87761,1.33913 53.83401,1.29825 53.79041,1.3255 C53.67323,1.39635 53.38165,1.26827 53.4416,1.1729 C53.46885,1.1293 53.41163,1.10477 53.31625,1.1184 C53.23077,1.13774 53.14134,1.11204 53.07917,1.05027 C52.95226,0.96956 52.80445,0.92787 52.65406,0.93037 C52.50593,0.92996 52.35942,0.89936 52.22351,0.84044 C52.12109,0.79052 52.00749,0.76799 51.89378,0.77504 C51.57495,0.77504 51.09261,0.56249 51.07626,0.42351 C51.07626,0.36901 51.02721,0.39081 50.96998,0.47256 C50.91276,0.55431 50.85008,0.59246 50.81193,0.49981 C50.77378,0.40716 50.58848,0.37446 50.3623,0.37446 C50.13612,0.37446 49.98897,0.33631 50.01622,0.28998 C50.04347,0.24366 50.01622,0.20551 49.92629,0.20551 C49.83636,0.20551 49.80366,0.23548 49.82819,0.27363 C49.85271,0.31178 49.80366,0.34176 49.72736,0.34176 C49.65106,0.34176 49.61019,0.30361 49.63744,0.25728 C49.66469,0.21096 49.46031,0.16736 49.18235,0.1619 C48.59102,0.14555 48.56104,0.14283 48.41934,0.0529 C48.27764,-0.03702 45.88504,-0.00432 45.84962,0.09105 z" />
+                            <Path Stretch="None"
+              Fill="#FF1180CC"
+              Data="F0M53.78768,58.22451 C53.47927,58.37508 53.18234,58.54813 52.89932,58.74227 L52.83119,58.79132 L52.79577,58.81312 L52.75489,58.84037 L52.46059,59.00932 L52.39791,59.04202 L52.27801,59.11015 C52.23986,59.12923 52.20171,59.1483 52.17173,59.16738 L52.04093,59.2464 L51.96463,59.29273 L51.93465,59.3118 L51.93465,59.3118 L51.90195,59.33633 C51.75735,59.43147 51.6072,59.51792 51.45232,59.59521 L51.35694,59.64426 L51.35694,59.64426 L51.26974,59.68786 L51.25611,59.68786 C51.01176,59.81104 50.77433,59.9475 50.54488,60.09662 L50.54488,60.09662 L50.51763,60.11842 C50.20117,60.33357 49.86968,60.52573 49.52571,60.6934 L49.20688,60.87326 L48.41389,61.33106 L47.96426,61.60357 L47.81438,61.68805 L47.74625,61.7262 C47.65893,61.776 47.56782,61.81883 47.47375,61.85427 L47.47375,61.85427 L46.06762,61.13214 L46.06762,61.36649 L46.06762,61.36649 L46.06762,62.12405 C46.01312,62.90069 46.03492,64.50575 46.06762,67.61503 C46.06762,68.03468 46.06762,68.45162 46.06762,68.86037 L46.06762,75.89917 L38.77539,80.03307 L38.77539,80.03307 L27.18304,73.41938 C27.10918,73.32543 27.00169,73.26387 26.88328,73.2477 L26.88328,73.2477 C26.78518,73.2477 26.70888,73.20137 26.70888,73.14687 L26.59715,62.59821 L26.5154,58.30081 C26.55355,55.00623 26.53175,50.76605 26.4282,50.10387 L26.4282,50.10387 C26.4282,50.10387 26.4282,50.09024 26.4282,50.08479 C26.42697,50.06226 26.41942,50.04054 26.4064,50.02211 C26.232,49.86679 24.64602,48.91847 23.47152,48.26991 C22.49868,47.7249 22.12535,47.51779 22.0218,47.45239 C21.9673,47.40879 21.74929,47.27799 21.54491,47.16081 L20.82005,46.75206 L20.09519,46.34057 C19.89081,46.2234 19.67553,46.09259 19.6183,46.04899 C19.56108,46.00539 19.22862,45.80919 18.87164,45.61844 C18.03233,45.16335 18.02415,45.22058 19.1278,44.34856 C19.651,43.93708 20.17694,43.5147 20.29957,43.41115 C20.42219,43.30759 20.67835,43.10867 20.87183,42.96424 C21.0653,42.81981 21.24243,42.67538 21.26968,42.64813 C21.29693,42.62088 21.47951,42.46828 21.67027,42.31568 C21.86102,42.16307 22.17985,41.90419 22.3706,41.74342 C22.56136,41.58264 23.53147,40.8169 24.52339,40.03481 C25.51531,39.25272 26.34645,38.58781 26.3737,38.55239 C26.40095,38.51696 26.58898,38.36981 26.79063,38.21993 C26.99228,38.07005 27.22119,37.8902 27.29477,37.82207 C27.36834,37.75395 27.62995,37.53594 27.87793,37.34519 L28.47744,36.87376 C28.55919,36.80563 29.14507,36.32875 29.77728,35.83551 C30.4095,35.34228 31.01991,34.84904 31.13981,34.74549 C31.25971,34.64194 31.49679,34.45936 31.68482,34.31494 C31.87285,34.17051 32.14535,33.9525 32.2816,33.8326 C32.50106,33.65401 32.73535,33.49447 32.98194,33.35572 L33.29532,33.17314 C33.6196,32.98511 34.09104,32.71261 34.51069,32.46463 C34.88883,32.22753 35.28208,32.01544 35.68791,31.82969 C35.73958,31.83125 35.78309,31.79137 35.78602,31.73976 C35.78676,31.72257 35.79351,31.70617 35.80509,31.69344 L35.80509,31.69344 C35.84624,31.64765 35.89895,31.61377 35.95769,31.59534 L35.99312,31.59534 L35.99312,31.59534 C36.21045,31.49246 36.42156,31.3769 36.62533,31.24926 C36.89784,31.0803 37.19214,30.91135 37.27662,30.87592 C37.34895,30.84574 37.41608,30.80436 37.47555,30.7533 C37.56036,30.68391 37.65161,30.62277 37.74805,30.57072 L37.93063,30.46444 C38.05359,30.39258 38.18207,30.33062 38.31486,30.27914 C38.41024,30.24916 38.48926,30.18376 38.48926,30.13471 L38.48926,30.13471 C38.48926,30.09656 38.54649,30.06659 38.62552,30.05296 L38.62552,30.05296 L38.68819,30.05296 C38.79719,30.05296 38.88712,30.00936 38.88712,29.95486 C38.88845,29.92731 38.9013,29.90159 38.92255,29.88401 L38.96342,29.86221 C38.97965,29.85941 38.99624,29.85941 39.01247,29.86221 C39.15124,29.82658 39.27992,29.75944 39.38853,29.666 C39.77276,29.36352 39.93354,29.42075 40.20604,29.93851 C40.28556,30.12227 40.3921,30.29312 40.52215,30.44537 C40.53932,30.457 40.55411,30.4718 40.56575,30.48897 L40.57938,30.51894 C40.59054,30.54473 40.59611,30.5726 40.59573,30.60069 C40.77864,31.06816 40.99164,31.52329 41.23339,31.96322 C41.58219,32.64993 42.38336,34.22228 43.01012,35.46218 C43.63688,36.70208 44.17371,37.73487 44.20096,37.76212 C44.22822,37.78937 45.01848,39.34537 45.94772,41.21476 C46.87696,43.08414 47.67268,44.64014 47.70265,44.66739 C47.73263,44.69464 48.46294,46.11439 49.32133,47.82027 C52.10633,53.34395 52.35431,53.81538 52.43061,53.85898 C52.48053,53.89465 52.50919,53.953 52.50691,54.01431 C52.50691,54.19144 52.74399,54.67377 52.83119,54.6765 C52.87207,54.6765 52.90749,54.76642 52.90749,54.87542 C52.90749,54.98443 52.95109,55.07708 53.0056,55.07708 C53.0601,55.07708 53.10642,55.16428 53.10642,55.27056 C53.10642,55.37683 53.14185,55.47494 53.18272,55.49401 C53.42384,55.87262 53.63784,56.26783 53.82311,56.67668 C54.4308,57.89205 54.4308,57.86753 53.78768,58.22451 z M26.43637,50.09297 L26.43637,50.04119 L26.43637,50.07389 C26.43637,50.07389 26.43365,50.09297 26.43637,50.09297 z M26.85331,73.25588 L26.6789,73.15505 C26.6789,73.20682 26.75521,73.25588 26.85331,73.25588 z" />
+                            <Path Stretch="None"
+              Fill="#FF2196F3"
+              Data="F0M32.98194,33.34482 L39.94444,29.24635 L54.49892,57.8321 L47.59637,61.80522 L32.98194,33.34482 z" />
+                            <Path Stretch="None"
+              Fill="#FF0E75AF"
+              Data="F0M46.04582,61.14849 L46.04582,75.95367 L38.75359,80.03852 L38.75087,80.04125 L38.75087,80.03852 L39.00702,57.06091 L46.04582,61.14849 z" />
+                        </Grid>
+                    </Viewbox>
+                    <TextBlock Foreground="#57606f" FontSize="14" FontWeight="Medium" Margin="0,40" TextAlignment="Center">Commencez par ajouter le premier stagiaire ou fichier</TextBlock>
+                    <TextBlock Foreground="#a4b0be" TextAlignment="Center" FontSize="13" LineHeight="26">Complétez votre liste des stagiaires maintenant pour accélérer la création et le suivi des etapes <LineBreak/> de diplôme plus tard</TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,25">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                            <Style TargetType="materialDesign:PackIcon">
+                                <Setter Property="Margin" Value="10,0,0,0"/>
+                                <Setter Property="Width" Value="16"/>
+                                <Setter Property="Height" Value="16"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button
+                            Click="Button_Click_2"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+  Style="{StaticResource MaterialDesignFlatMidBgButton}"
+materialDesign:ButtonAssist.CornerRadius="5"
+                        Margin="0,0,25,0"
+  ToolTip="Ajouter un stagiaire manuellement"
+                        FontSize="12"
+                        Height="36"
+                        Padding="25,2,20,3"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+                            <Button.Content>
+                                <WrapPanel>
+                                    <TextBlock>Ajouter un stagiaire</TextBlock>
+                                    <materialDesign:PackIcon Kind="AccountPlusOutline"/>
+                                </WrapPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button
+  Style="{StaticResource MaterialDesignFlatButton}"
+                            Click="Button_Click_1"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                        Height="36"
+                        FontSize="12"
+                        Padding="25,2,20,3"
+                        Background="White"
+                        Foreground="#57606f"
+                        materialDesign:ButtonAssist.CornerRadius="5"
+  ToolTip="Ajouter des stagiaires par un fichier excel">
+                            <Button.Content>
+                                <WrapPanel>
+                                    <TextBlock>Importer des stagiaires</TextBlock>
+                                    <materialDesign:PackIcon Kind="UploadOutline"/>
+                                </WrapPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                <Grid x:Name="MainPanel" Visibility="Collapsed" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="White" CornerRadius="5" Padding="30,20" Margin="0,0,0,25">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="White" HorizontalAlignment="Left" CornerRadius="5">
+                                <WrapPanel>
+                                    <RadioButton Style="{StaticResource RadioButtonStyle1}" Checked="RadioButton_Checked" IsChecked="True" GroupName="GroupChoiceChipOutline" HorizontalAlignment="Center" FontSize="12" ToolTip="Gestion des diplômes">
+                                        <WrapPanel>
+                                            <materialDesign:PackIcon Kind="AccountMultipleOutline" Margin="0,0,8,0"/>
+                                            <TextBlock FontSize="13">Tout</TextBlock>
+                                        </WrapPanel>
+                                    </RadioButton>
+                                    <RadioButton Style="{StaticResource RadioButtonStyle1}" Name="RéguliersChecked" Checked="RadioButton_Checked_1" Grid.Column="1" GroupName="GroupChoiceChipOutline" HorizontalAlignment="Center" FontSize="12" ToolTip="Gestion des duplicata">
+                                        <WrapPanel>
+                                            <materialDesign:PackIcon Kind="AccountSchoolOutline" Margin="0,0,8,0"/>
+                                            <TextBlock FontSize="13">Réguliers</TextBlock>
+                                        </WrapPanel>
+                                    </RadioButton>
+                                    <RadioButton Style="{StaticResource RadioButtonStyle1}" Name="LibresChecked" Checked="RadioButton_Checked_2" Grid.Column="2" GroupName="GroupChoiceChipOutline" HorizontalAlignment="Center" FontSize="12" ToolTip="Gestion des archives" Margin="4,4,3,4">
+                                        <WrapPanel>
+                                            <materialDesign:PackIcon Kind="AccountOutline" Margin="0,0,8,0"/>
+                                            <TextBlock FontSize="13">Libres</TextBlock>
+                                        </WrapPanel>
+                                    </RadioButton>
+                                </WrapPanel>
+                            </Border>
+                            <TextBlock Grid.Column="1" Foreground="#57606f" HorizontalAlignment="Right" FontSize="13" VerticalAlignment="Center">Le nombre de stagiaires : <Run Foreground="{StaticResource PrimaryHueMidBrush}" FontWeight="Medium" Name="StagiairesCount" Text="0"></Run></TextBlock>
+                        </Grid>
+                    </Border>
+                    <Border Background="White" CornerRadius="5" Grid.Row="1">
+                        <Grid x:Name="SecondPanel">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Background="White" CornerRadius="5,5,0,0" Padding="30,20" BorderBrush="#ced6e0" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <WrapPanel>
+                                        <TextBox
+  x:Name="RechercherStagiaire"
+                                        TextChanged="RechercherStagiaire_TextChanged"
+                            Background="#f3f4f6"
+                            MinWidth="300"
+                            Foreground="#5f6368"
+                            TextWrapping="Wrap"
+                            Padding="15,6,20,6"
+                                            VerticalContentAlignment="Center"
+                                            VerticalAlignment="Center"
+                            materialDesign:TextFieldAssist.TextBoxViewMargin="6,5,30,5"
+                            materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:TextFieldAssist.LeadingIcon="Search"
+                            materialDesign:TextFieldAssist.HasLeadingIcon="True"
+                            BorderThickness="0"
+                            FontSize="12"
+  materialDesign:HintAssist.Hint="Rechercher d'un stagiaire..."
+  >
+                                        </TextBox>
+
+                                    </WrapPanel>
+
+                                    <WrapPanel Grid.Column="1"
+                                HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <materialDesign:Badged Margin="0,0,25,0" BadgeBackground="#ff4757" BadgeForeground="White" x:Name="WarningBadge" Visibility="Collapsed" Badge="5">
+                                            <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" Click="Button_Click_5" Background="#d9254e" Width="34" Height="34" Padding="0" BorderThickness="0" materialDesign:ShadowAssist.ShadowDepth="Depth0" materialDesign:ButtonAssist.CornerRadius="5">
+                                                <Button.Content>
+                                                    <materialDesign:PackIcon Kind="Warning" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Button.Content>
+                                            </Button>
+                                        </materialDesign:Badged>
+                                        <Button
+                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                            Click="Button_Click_6"
+                                            Margin="0,0,25,0"
+  Style="{StaticResource MaterialDesignFlatMidBgButton}"
+  ToolTip="Supprimer des duplicatas"
+                                            Background="#27ae60"
+                                Height="34"
+                                Foreground="White"
+                                Padding="15,0,20,2"
+                                    BorderThickness="0"
+                                materialDesign:ButtonAssist.CornerRadius="5"
+                                            Name="Export"
+                            >
+                                            <WrapPanel>
+                                                <materialDesign:PackIcon
+    Kind="Download"
+    Height="18"
+                                            Margin="0,0,10,0"
+    Width="18" />
+                                                <TextBlock FontSize="12">Exporter</TextBlock>
+                                            </WrapPanel>
+                                        </Button>
+                                        <Button
+                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                            Click="Button_Click_1"
+  Style="{StaticResource MaterialDesignFlatMidBgButton}"
+  ToolTip="Supprimer des duplicatas"
+                                Height="34"
+                                Foreground="White"
+                                Padding="15,0,20,2"
+                                    BorderThickness="0"
+                                materialDesign:ButtonAssist.CornerRadius="5"
+                            >
+                                            <WrapPanel>
+                                                <materialDesign:PackIcon
+    Kind="Upload"
+    Height="18"
+                                            Margin="0,0,10,0"
+    Width="18" />
+                                                <TextBlock FontSize="12">Importer</TextBlock>
+                                            </WrapPanel>
+                                        </Button>
+                                    </WrapPanel>
+                                </Grid>
+                            </Border>
+                            <!--<DataGrid ItemsSource="{Binding ListFiles}"
+                                Grid.Row="1"
+                          FontSize="12"
+                    VerticalScrollBarVisibility="Auto"
+                    CanUserDeleteRows="True"
+                          CanUserResizeColumns="True"
+                          CanUserResizeRows="True"
+                          CanUserReorderColumns="True"
+                          CanUserSortColumns="True"
+                          EnableRowVirtualization="True"
+                          RowBackground="#f1f2f6"
+                          BorderBrush="#dfe4ea"
+                                  
+                          AlternatingRowBackground="#f7f9fb"
+                          
+  CanUserAddRows="True"
+  AutoGenerateColumns="True"
+  HeadersVisibility="All"
+                    Background="#f7f9fb"
+                    materialDesign:DataGridAssist.CellPadding="12"
+                    materialDesign:DataGridAssist.CornerRadius="0"
+                    materialDesign:DataGridAssist.ColumnHeaderPadding="16"
+                    Name="DataGridData">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn
+      Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+      ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+      EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
+      <DataGridCheckBoxColumn.Header>
+        <Border
+          Background="Transparent">
+          <CheckBox
+            IsChecked="{Binding IsAllItems1Selected}" />
+        </Border>
+      </DataGridCheckBoxColumn.Header>
+      <DataGridCheckBoxColumn.HeaderStyle>
+        <Style
+          TargetType="{x:Type DataGridColumnHeader}"
+          BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+          <Setter
+            Property="HorizontalContentAlignment"
+            Value="Center" />
+        </Style>
+      </DataGridCheckBoxColumn.HeaderStyle>
+    </DataGridCheckBoxColumn>
+                                </DataGrid.Columns>
+                                -->
+                            <!--<local:SelectableViewModel Title="ee" Size="ded" DateCreated="2020-02-02" DateModified="2020-02-02"/>-->
+                            <!--
+                            </DataGrid>-->
+                            <DataGrid 
+ItemsSource="{Binding GridItems}"
+Grid.Row="1"
+FontSize="12"
+VerticalScrollBarVisibility="Auto"
+RowBackground="#f1f2f6"
+BorderBrush="#dfe4ea"
+AlternatingRowBackground="#f7f9fb"
+CanUserAddRows="False"
+AutoGenerateColumns="False"
+HeadersVisibility="All"
+Background="#f7f9fb"
+materialDesign:DataGridAssist.CellPadding="12"
+materialDesign:DataGridAssist.CornerRadius="0"
+materialDesign:DataGridAssist.ColumnHeaderPadding="16"
+                                CanUserResizeColumns="False"
+                                CanUserDeleteRows="False"
+                                CanUserResizeRows="False"
+                                
+Name="DataGridData">
+                                <DataGrid.Resources>
+                                    <domain:BindingProxy x:Key="DataContextProxy"
+      Data="{Binding}" xmlns:domain="clr-namespace:G3D.Domain"/>
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn
+                                        
+Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
+
+                                        <DataGridCheckBoxColumn.Header>
+                                            <Border Background="Transparent">
+                                                <CheckBox x:Name="GridCheckBoxColumn" IsChecked="{Binding Data.IsAllGridItemsSelected, Source={StaticResource DataContextProxy}}" />
+                                            </Border>
+                                        </DataGridCheckBoxColumn.Header>
+                                        <DataGridCheckBoxColumn.HeaderStyle>
+                                            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                            </Style>
+                                        </DataGridCheckBoxColumn.HeaderStyle>
+                                    </DataGridCheckBoxColumn>
+                                    <DataGridTextColumn
+Binding="{Binding Cef}"
+Header="CEF"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding NomPrénom}"
+Header="NOM ET PRÉNOM"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding Cin}"
+Header="CIN"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding Niveau}"
+Header="NIVEAU"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding TypeFormation}"
+Header="TYPE DE FORMATION"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding AnnéeÉtude}"
+Header="ANNÉE D'ÉTUDE"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding Classement}"
+Header="CLASSEMENT"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding Admis}"
+Header="ADMIS OUI/NON"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding TypeStagiaires}"
+Header="CANDIDAT CR/CL"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding AnnéeFormation}"
+Header="ANNÉE DE FORMATION"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding Filière}"
+Header="FILIÈRE"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding Groupe}"
+Header="GROUPE"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+                                    <DataGridTextColumn
+Binding="{Binding Établissement}"
+Header="ÉTABLISSEMENT"
+                                        IsReadOnly="True"
+ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"/>
+
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Border Grid.Row="2" Background="White" CornerRadius="0,0,5,5" Padding="30,20" BorderBrush="#ced6e0" BorderThickness="0,1,0,0"
+>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="#57606f" FontSize="13">Stagiaires sélectionnés : <Run FontWeight="Medium" Foreground="{StaticResource PrimaryHueMidBrush}" Name="CountSelectedItems"></Run></TextBlock>
+                                    <!--<TextBlock Grid.Column="1" Foreground="#57606f" FontSize="12" HorizontalAlignment="Right" Margin="0,0,40,0">Le nombre de duplicata : <Run FontWeight="Medium">1300</Run></TextBlock>-->
+                                    <WrapPanel Grid.Column="1" HorizontalAlignment="Right">
+                                        <WrapPanel.Resources>
+                                            <Style x:Key="test" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsKeyboardFocused" Value="true">
+                                                        <Setter Property="Background" Value="Red" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                            <domain:BindingProxy x:Key="DataContextProxy"
+      Data="{Binding}" xmlns:domain="clr-namespace:G3D.Domain"/>
+                                        </WrapPanel.Resources>
+                                        <Button
+  Style="{StaticResource MaterialDesignFlatLightButton}"
+  ToolTip="Ajouter un stagiaire" Click="Button_Click_2" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                Height="34"
+                                Margin="0,0,30,0"
+                                Foreground="#2e86de"
+                                Background="Transparent"
+                               materialDesign:ButtonProgressAssist.IndicatorForeground="Black"
+                                materialDesign:ButtonProgressAssist.Opacity="0"
+                                materialDesign:ToggleButtonAssist.SwitchTrackOffBackground="Black"
+                                materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="Black"
+                                Padding="0"
+                                materialDesign:ButtonAssist.CornerRadius="5" Name="AjouterStagiaire"
+                            Width="34">
+                                            <materialDesign:PackIcon
+    Kind="AccountAddOutline"
+    Height="20"
+    Width="20" />
+
+                                        </Button>
+                                        <Button
+  Style="{StaticResource MaterialDesignFlatLightButton}"
+  ToolTip="Modifier un stagiaire"
+                                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                            Click="ModifierStagiaire_Click"
+                                Height="34"
+                                Margin="0,0,30,0"
+                                Foreground="#10ac84"
+                                Background="Transparent"
+                               materialDesign:ButtonProgressAssist.IndicatorForeground="Black"
+                                materialDesign:ButtonProgressAssist.Opacity="0"
+                                materialDesign:ToggleButtonAssist.SwitchTrackOffBackground="Black"
+                                materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="Black"
+                                Padding="0"
+                                materialDesign:ButtonAssist.CornerRadius="5" Name="ModifierStagiaire"
+                            Width="34">
+                                            <materialDesign:PackIcon
+    Kind="AccountEditOutline"
+    Height="20"
+    Width="20" />
+
+                                        </Button>
+                                        <Button
+  Style="{StaticResource MaterialDesignFlatLightButton}"
+  ToolTip="Supprimer des stagiaire"  Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+
+                                            Click="Button_Click_3"
+                                Height="34"
+                                Foreground="#eb3b5a"
+                                Background="Transparent"
+                               materialDesign:ButtonProgressAssist.IndicatorForeground="Black"
+                                materialDesign:ButtonProgressAssist.Opacity="0"
+                                materialDesign:ToggleButtonAssist.SwitchTrackOffBackground="Black"
+                                materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="Black"
+                                Padding="0"
+                                materialDesign:ButtonAssist.CornerRadius="5" Name="SupprimerStagiaires"
+                            Width="34">
+                                            <materialDesign:PackIcon
+    Kind="DeleteOutline"
+    Height="20"
+    Width="20" />
+
+                                        </Button>
+
+
+                                    </WrapPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </materialDesign:DialogHost>
+    </Border>
+</UserControl>

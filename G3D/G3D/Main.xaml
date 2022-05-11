@@ -1,0 +1,1137 @@
+﻿<Window x:Class="G3D.Main"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+        xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:internal="clr-namespace:MaterialDesignThemes.Wpf.Internal;assembly=MaterialDesignThemes.Wpf"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:G3D"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        ResizeMode="CanResize"
+        Loaded="Window_Loaded"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        Background="#f3f4fb"
+        Height="1080" Width="1920">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0 64 0 0" NonClientFrameEdges="Left,Bottom,Right" />
+    </WindowChrome.WindowChrome>
+    <Window.Template>
+        <ControlTemplate TargetType="Window">
+            <Border Padding="0 30 0 0">
+                <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                    <Border Background="White"
+                        VerticalAlignment="Top" Height="30" Margin="0 -30 140 0">
+                        <WrapPanel VerticalAlignment="Center">
+                            <Image
+		Width="18"
+		Height="18"
+		Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+		Source="/Resources/Icon.ico" />
+                            <TextBlock Foreground="#57606f" Margin="12 0" HorizontalAlignment="Left" VerticalAlignment="Center"
+                               FontSize="12" Text="{TemplateBinding Title}" />
+                        </WrapPanel>
+
+                    </Border>
+                    <ContentPresenter />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="WindowState" Value="Maximized">
+                    <Setter TargetName="RootGrid" Property="Margin" Value="7" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Template>
+    <Window.Resources>
+
+
+        <Style TargetType="materialDesign:Card">
+            <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0"></Setter>
+            <Setter Property="BorderBrush" Value="#dadce0"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="UniformCornerRadius" Value="0"></Setter>
+        </Style>
+        <Style x:Key="MaterialDesignListBoxItem1" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Padding" Value="0,10,30,10"/>
+            <Setter Property="Margin" Value="0,3"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="wpf:ListBoxItemAssist.ShowSelection" Value="{Binding Path=(wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding Margin}" ClipToBounds="{TemplateBinding ClipToBounds}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.3" To="Normal">
+                                            <VisualTransition.GeneratedEasingFunction>
+                                                <CircleEase EasingMode="EaseOut"/>
+                                            </VisualTransition.GeneratedEasingFunction>
+                                        </VisualTransition>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState Name="Normal"/>
+                                    <VisualState Name="MouseOver">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity"
+                                                    To="0.1" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="Disabled"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup Name="SelectionStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.6"/>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState Name="Selected">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="SelectedBorder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="Unselected">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="SelectedBorder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="SelectedUnfocused">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="SelectedBorder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetName="LeftBorder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid>
+                                <Border x:Name="MouseOverBorder" Opacity="0" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"/>
+                                <Border x:Name="SelectedBorder" Opacity="0" Background="#f5f8fe"/>
+                                <!-- Content of each listBox -->
+                                <wpf:Ripple x:Name="Ripple" Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Focusable="False" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Padding="{TemplateBinding Padding}" RecognizesAccessKey="False">
+                                    <WrapPanel>
+                                        <Border Width="3" x:Name="LeftBorder" Height="30" Opacity="0" Background="{StaticResource PrimaryHueMidBrush}" CornerRadius="0,4,4,0"/>
+                                        <WrapPanel>
+                                            <Label x:Name="LabelColor" Foreground="#5f6368" FontWeight="Regular" FontSize="12" Content="{TemplateBinding Content}">
+                                            </Label>
+                                        </WrapPanel>
+                                    </WrapPanel>
+                                </wpf:Ripple>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value=".56" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" TargetName="LabelColor" Value="{StaticResource PrimaryHueMidBrush}" />
+                                <Setter Property="FontWeight" TargetName="LabelColor" Value="Medium" />
+                            </Trigger>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(wpf:ListBoxItemAssist.ShowSelection)}" Value="False">
+                                <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="SelectedBorder" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="Ripple" Property="Feedback" Value="Transparent"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <converters:ListViewGridViewConverter 
+        x:Key="MaterialDesignListViewItemContainerStyleConverter1"
+        DefaultValue="{StaticResource MaterialDesignListBoxItem1}"
+        ViewValue="{StaticResource MaterialDesignGridViewItem}" />
+
+        <Style x:Key="MaterialDesignListView1" TargetType="{x:Type ListView}" BasedOn="{StaticResource MaterialDesignListView}">
+            <Setter Property="ItemContainerStyle" Value="{Binding RelativeSource={RelativeSource Self}, Path=View, Converter={StaticResource MaterialDesignListViewItemContainerStyleConverter1}}" />
+
+        </Style>
+
+        <Style x:Key="MaterialDesignTreeViewItem1" TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+            <Setter Property="wpf:TreeViewAssist.ShowSelection" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates" >
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.3" To="Normal">
+                                            <VisualTransition.GeneratedEasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </VisualTransition.GeneratedEasingFunction>
+                                        </VisualTransition>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState Name="Normal"/>
+                                    <VisualState Name="MouseOver">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity"
+                                                             To="0.1" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetName="MouseOverBorder" Storyboard.TargetProperty="Opacity"
+                                                             To="0.1" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="Disabled"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.6"/>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState Name="Selected" >
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="SelectedBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.18" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="Unselected"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ExpansionStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" To="Expanded">
+                                            <VisualTransition.GeneratedEasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </VisualTransition.GeneratedEasingFunction>
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemsHost" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ItemsHost" To="1" Duration="0:0:0.3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Scale" Storyboard.TargetName="ScaleHost" To="1" Duration="0:0:0.3"/>
+                                            </Storyboard>
+                                        </VisualTransition>
+                                        <VisualTransition GeneratedDuration="0" To="Collapsed">
+                                            <VisualTransition.GeneratedEasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </VisualTransition.GeneratedEasingFunction>
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemsHost" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame KeyTime="0:0:0.3" Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ItemsHost" To="0" Duration="0:0:0.3"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Scale" Storyboard.TargetName="ScaleHost" To="0" Duration="0:0:0.3"/>
+                                            </Storyboard>
+                                        </VisualTransition>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Expanded">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ItemsHost" To="1" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="Scale" Storyboard.TargetName="ScaleHost" To="1" Duration="0:0:0.3"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemsHost" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Collapsed">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ItemsHost" To="0" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="Scale" Storyboard.TargetName="ScaleHost" To="0" Duration="0:0:0.3"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemsHost" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <wpf:ScaleHost x:Name="ScaleHost" />
+                            <ToggleButton x:Name="Expander" ClickMode="Hover" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" 
+                                      Style="{StaticResource MaterialDesignExpandCollapseToggleStyle}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      Margin="8 0 8 0"
+                                      Width="{TemplateBinding wpf:TreeViewAssist.ExpanderSize}"
+                                      Height="{TemplateBinding wpf:TreeViewAssist.ExpanderSize}"
+                                      VerticalAlignment="Center"/>
+
+                            <Border x:Name="MouseOverBorder"
+                                Grid.Column="1" Grid.ColumnSpan="2"
+                                IsHitTestVisible="False"
+                                Opacity="0"
+                                Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"/>
+
+                            <Border x:Name="SelectedBorder"
+                                Grid.Column="1" Grid.ColumnSpan="2"
+                                IsHitTestVisible="False"
+                                Opacity="0"
+                                Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"/>
+
+                            <Grid Grid.Column="1" Grid.ColumnSpan="2" x:Name="ContentGrid" Background="{TemplateBinding Background}">
+                                <wpf:Ripple Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                        x:Name="Ripple"
+                                        Focusable="False"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter x:Name="PART_Header" ContentSource="Header"/>
+                                </wpf:Ripple>
+                            </Grid>
+
+                            <ContentControl Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                        x:Name="AdditionalContentControl"
+                                        Content="{TemplateBinding Header}"
+                                        ContentTemplate="{Binding RelativeSource={RelativeSource Self}, Path=(wpf:TreeViewAssist.AdditionalTemplate)}"
+                                        ContentTemplateSelector="{Binding RelativeSource={RelativeSource Self}, Path=(wpf:TreeViewAssist.AdditionalTemplateSelector)}"                                        
+                                        Visibility="Collapsed">
+                            </ContentControl>
+
+                            <StackPanel Grid.Column="1" Grid.Row="2"
+                                    x:Name="ItemsPanel"
+                                    Margin="-16 0 0 0"
+                                    Grid.ColumnSpan="2">
+                                <StackPanel.Height>
+                                    <MultiBinding Converter="{StaticResource MathMlpMultipleConverter}">
+                                        <Binding ElementName="ItemsHost" Path="ActualHeight"/>
+                                        <Binding ElementName="ScaleHost" Path="Scale"/>
+                                    </MultiBinding>
+                                </StackPanel.Height>
+                                <ItemsPresenter x:Name="ItemsHost"
+                                            VerticalAlignment="Top"
+                                            Opacity="0"
+                                            Visibility="Collapsed"/>
+                            </StackPanel>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(wpf:TreeViewAssist.AdditionalTemplate), Converter={StaticResource NullableToVisibilityConverter}, Mode=OneWay}" 
+                                     Value="Visible">
+                                <Setter TargetName="AdditionalContentControl" Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(wpf:TreeViewAssist.AdditionalTemplateSelector), Converter={StaticResource NullableToVisibilityConverter}, Mode=OneWay}" 
+                                     Value="Visible">
+                                <Setter TargetName="AdditionalContentControl" Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter Property="Visibility" TargetName="Expander" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" Value=".56"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(wpf:TreeViewAssist.ShowSelection)}" Value="False">
+                                <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="SelectedBorder" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="Ripple" Property="Feedback" Value="Transparent"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="MaterialDesignChoiceChipOutlineRadioButton" TargetType="{x:Type RadioButton}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Grid ClipToBounds="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Background="{TemplateBinding Background}" CornerRadius="5"/>
+                            <Border x:Name="MouseOverBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="5" Opacity="0"/>
+                            <Border x:Name="SelectedBackgroundBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding Background}" BorderThickness="2" CornerRadius="5" Opacity="0"/>
+                            <ContentControl x:Name="Content" Foreground="{DynamicResource PrimaryHueDarkBrush}" MinWidth="70" ContentStringFormat="{TemplateBinding ContentTemplateSelector}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" HorizontalAlignment="Center" IsTabStop="False" Margin="12 0 15 0" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value=".56"/>
+                            </Trigger>
+
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Foreground" TargetName="Content" Value="#778ca3"/>
+                                <Setter Property="Foreground" Value="#778ca3"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}"/>
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderThickness" TargetName="Border" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
+                                <Setter Property="FontWeight" Value="Medium"/>
+                                <Setter Property="BorderThickness" TargetName="Border" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" TargetName="MouseOverBorder" Value=".03"/>
+                                <Setter Property="BorderThickness" TargetName="Border" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RadioButtonStyle1" BasedOn="{StaticResource MaterialDesignChoiceChipOutlineRadioButton}" TargetType="{x:Type RadioButton}">
+            <Setter Property="Background" Value="#e9f4fe"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+
+
+        <converters:SnackbarActionButtonPlacementModeConverter x:Key="SnackbarActionButtonPlacementModeConverter" />
+        <Style TargetType="wpf:SnackbarMessage" x:Key="SnackbarMessageIcon">
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="wpf:SnackbarMessage">
+                        <DockPanel>
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              MaxHeight="120">
+                                <ContentPresenter.Resources>
+                                    <DataTemplate DataType="{x:Type system:String}">
+                                        <TextBlock Text="{Binding}" Padding="0" VerticalAlignment="Center" LineHeight="18">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                                                    <Setter Property="FontSize" Value="13" />
+                                                    <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+                                                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="wpf:SnackbarMessage" x:Key="SnackbarMessageBorder">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Margin" Value="16" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="wpf:SnackbarMessage">
+                        <DockPanel>
+                            <Button x:Name="PART_ActionButton"
+                                Command="{TemplateBinding ActionCommand}"
+                                CommandParameter="{TemplateBinding ActionCommandParameter}"
+                                Content="{TemplateBinding ActionContent}"
+                                ContentTemplate="{TemplateBinding ActionContentTemplate}"
+                                ContentStringFormat="{TemplateBinding ActionContentStringFormat}"
+                                ContentTemplateSelector="{TemplateBinding ActionContentTemplateSelector}"
+                                HorizontalAlignment="Right"
+                                Panel.ZIndex="1"
+                                Visibility="{TemplateBinding ActionContent, Converter={StaticResource NullableToVisibilityConverter}}"
+                                Style="{DynamicResource MaterialDesignSnackbarActionButton}">
+                                <DockPanel.Dock>
+                                    <MultiBinding Converter="{StaticResource SnackbarActionButtonPlacementModeConverter}">
+                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type wpf:Snackbar}}" Path="ActionButtonPlacement" />
+                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type wpf:Snackbar}}" Path="(wpf:SnackbarMessage.InlineActionButtonMaxHeight)" />
+                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type wpf:Snackbar}}" Path="ActualHeight" />
+                                    </MultiBinding>
+                                </DockPanel.Dock>
+                            </Button>
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          MaxHeight="240">
+                                <ContentPresenter.Resources>
+                                    <DataTemplate DataType="{x:Type system:String}">
+                                        <WrapPanel>
+                                            <TextBlock Text="{Binding}" Padding="0" VerticalAlignment="Center" LineHeight="18">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                                                        <Setter Property="FontSize" Value="13" />
+                                                        <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+                                                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <converters:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
+        <converters:MathMultipleConverter x:Key="MathMultipleConverter" Operation="Multiply" />
+
+        <Style x:Key="MaterialDesignSnackbarActionButton" TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wpf:Snackbar}}, Path=Foreground}" />
+            <Setter Property="Opacity" Value=".5"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="wpf:RippleAssist.Feedback" Value="{DynamicResource MaterialDesignSnackbarRipple}" />
+            <Setter Property="TextBlock.FontWeight" Value="Regular" />
+            <Setter Property="TextBlock.FontSize" Value="12" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Height" Value="22" />
+            <Setter Property="Margin" Value="8 -10 -8 -10" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                            <Grid x:Name="Root" >
+                                <wpf:Ripple Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Focusable="False"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Padding="{TemplateBinding Padding}"
+                                        
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wpf:Snackbar}}, Path=Foreground}" />
+                                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wpf:Snackbar}}, Path=Background}" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type wpf:Snackbar}}, Path=Foreground}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" Value="0.38" />
+                            </Trigger>
+                            <Trigger Property="DockPanel.Dock" Value="Bottom">
+                                <Setter Property="Margin" Value="0 18 -8 -8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="wpf:Snackbar" x:Key="SnackbarBorder">
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="MinWidth" Value="288" />
+            <Setter Property="MaxWidth" Value="460" />
+            <Setter Property="ClipToBounds" Value="True" />
+            <Setter Property="Background" Value="{Binding}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="wpf:Snackbar">
+                        <ControlTemplate.Resources>
+                            <Storyboard x:Key="ActivateStoryboard" Duration="0:0:0.3">
+                                <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Tag" From="0" To="1" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Opacity" To="0" BeginTime="0" Duration="0" />
+                                <DoubleAnimation Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Opacity" From="0" To="1" BeginTime="0:0:0.075"
+                                             Duration="0:0:0.225">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                            <Storyboard x:Key="DeactivateStoryboard" Duration="0:0:0.3">
+                                <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Tag" From="1" To="0" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </ControlTemplate.Resources>
+                        <StackPanel x:Name="Root">
+                            <StackPanel.Tag>
+                                <system:Double>0.0</system:Double>
+                            </StackPanel.Tag>
+                            <StackPanel.Height>
+                                <MultiBinding Converter="{StaticResource MathMultipleConverter}">
+                                    <Binding ElementName="ContentBorder" Path="ActualHeight" />
+                                    <Binding RelativeSource="{RelativeSource Self}" Path="Tag" />
+                                </MultiBinding>
+                            </StackPanel.Height>
+                            <Border x:Name="ContentBorder"
+                                Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding Foreground}" BorderThickness="3,0,0,0" CornerRadius="3" SnapsToDevicePixels="True"
+                                VerticalAlignment="Stretch"
+                                MinHeight="48">
+                                <ContentPresenter Content="{TemplateBinding Message}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              x:Name="ContentPresenter">
+                                    <ContentPresenter.Resources>
+                                        <Style TargetType="wpf:SnackbarMessage" BasedOn="{StaticResource SnackbarMessageBorder}"></Style>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                            </Border>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsActive" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource ActivateStoryboard}" />
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource DeactivateStoryboard}" />
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="HorizontalAlignment" Value="Stretch">
+                                <Setter TargetName="ContentBorder" Property="CornerRadius" Value="0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="HorizontalAlignment" Value="Stretch">
+                    <Setter Property="MaxWidth" Value="{x:Static system:Double.MaxValue}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="wpf:Snackbar" x:Key="SnackbarIcon">
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="MinWidth" Value="288" />
+            <Setter Property="MaxWidth" Value="460" />
+            <Setter Property="ClipToBounds" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="wpf:Snackbar">
+                        <ControlTemplate.Resources>
+                            <Storyboard x:Key="ActivateStoryboard" Duration="0:0:0.3">
+                                <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Tag" From="0" To="1" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Opacity" To="0" BeginTime="0" Duration="0" />
+                                <DoubleAnimation Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Opacity" From="0" To="1" BeginTime="0:0:0.075"
+                                             Duration="0:0:0.225">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                            <Storyboard x:Key="DeactivateStoryboard" Duration="0:0:0.3">
+                                <DoubleAnimation Storyboard.TargetName="Root" Storyboard.TargetProperty="Tag" From="1" To="0" Duration="0:0:0.3">
+                                    <DoubleAnimation.EasingFunction>
+                                        <SineEase EasingMode="EaseOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
+                        </ControlTemplate.Resources>
+                        <StackPanel x:Name="Root">
+                            <StackPanel.Tag>
+                                <system:Double>0.0</system:Double>
+                            </StackPanel.Tag>
+                            <StackPanel.Height>
+                                <MultiBinding Converter="{StaticResource MathMultipleConverter}">
+                                    <Binding ElementName="ContentBorder" Path="ActualHeight" />
+                                    <Binding RelativeSource="{RelativeSource Self}" Path="Tag" />
+                                </MultiBinding>
+                            </StackPanel.Height>
+                            <Border x:Name="ContentBorder"
+                                Background="{TemplateBinding Background}" CornerRadius="3" SnapsToDevicePixels="True"
+                                VerticalAlignment="Stretch"
+                                Padding="16"
+                                MinHeight="48">
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Kind="{Binding RelativeSource={RelativeSource AncestorType={x:Type materialDesign:Snackbar}}, Path=(materialDesign:TextFieldAssist.LeadingIcon)}" HorizontalAlignment="Left" VerticalAlignment="Center" Width='18' Height='18' Margin="0,0,15,0"/>
+                                    <ContentPresenter Grid.Column="1" Content="{TemplateBinding Message}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              x:Name="ContentPresenter" HorizontalAlignment="Right">
+                                        <ContentPresenter.Resources>
+                                            <Style TargetType="wpf:SnackbarMessage" BasedOn="{StaticResource SnackbarMessageIcon}"></Style>
+                                        </ContentPresenter.Resources>
+                                    </ContentPresenter>
+
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsActive" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource ActivateStoryboard}" />
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource DeactivateStoryboard}" />
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="HorizontalAlignment" Value="Stretch">
+                                <Setter TargetName="ContentBorder" Property="CornerRadius" Value="0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="HorizontalAlignment" Value="Stretch">
+                    <Setter Property="MaxWidth" Value="{x:Static system:Double.MaxValue}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MaterialDesignChoiceChipOutlineRadioButton1" TargetType="{x:Type RadioButton}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Grid ClipToBounds="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Background="{TemplateBinding Background}" CornerRadius="5" Padding="10,20"/>
+                            <Border x:Name="MouseOverBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="5" Opacity="0"/>
+                            <Border x:Name="SelectedBackgroundBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding Background}" BorderThickness="2" CornerRadius="5" Opacity="0"/>
+                            <ContentControl x:Name="Content" MinWidth="145" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryHueDarkBrush}" ContentStringFormat="{TemplateBinding ContentTemplateSelector}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" IsTabStop="False" Margin="15 0 15 0" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value=".56"/>
+                            </Trigger>
+
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Foreground" TargetName="Content" Value="#778ca3"/>
+                                <Setter Property="Foreground" Value="#778ca3"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}"/>
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderThickness" TargetName="Border" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
+                                <Setter Property="FontWeight" Value="Medium"/>
+                                <Setter Property="BorderThickness" TargetName="Border" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" TargetName="MouseOverBorder" Value=".03"/>
+                                <Setter Property="BorderThickness" TargetName="Border" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RadioButtonStyle2" BasedOn="{StaticResource MaterialDesignChoiceChipOutlineRadioButton1}" TargetType="{x:Type RadioButton}">
+            <Setter Property="Background" Value="#e9f4fe"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style TargetType="materialDesign:PackIcon" x:Key="WarningIcon">
+            <Setter Property="Foreground" Value="#d9254e"/>
+            <Setter Property="Width" Value="13"/>
+            <Setter Property="Height" Value="13"/>
+            <Setter Property="Margin" Value="0,0,7,0"/>
+            <Setter Property="Kind" Value="WarningCircle"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="WarningText">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#d9254e"/>
+        </Style>
+        <Style TargetType="WrapPanel" x:Key="WrapMargin">
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+
+    </Window.Resources>
+    <materialDesign:DialogHost DialogClosingCallback="{Binding DialogClosingHandler}" Name="MainDialog" CloseOnClickAway="True" DialogBackground="White">
+        <materialDesign:DialogHost.DialogContent>
+            <Grid>
+                <Border Background="White" Name="BackUpFiles" CornerRadius="5" Visibility="Collapsed" MaxWidth="420">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="#4b7bec" Padding="15,12,15,14" CornerRadius="5,5,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Kind="BackupRestore" Foreground="White" Width="18" Height="18" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" x:Name="DeleteWarningDialogTitle" FontWeight="Medium" Foreground="White" FontSize="13" Margin="12,0" VerticalAlignment="Center">Sauvegardez vos fichiers</TextBlock>
+                                <Button Grid.Column="2" x:Name="DeleteWarningDialogClose" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Style="{StaticResource MaterialDesignFlatLightButton}"
+                        ToolTip="Supprimer des duplicatas"
+                        Height="18"
+                        Foreground="White"
+                        Background="Transparent"
+                        Padding="0"
+                        materialDesign:ButtonAssist.CornerRadius="5"
+                        Width="18">
+                                    <materialDesign:PackIcon
+                            Kind="Close"
+                            Height="16"
+                            Width="16" />
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <StackPanel Grid.Row="1" Margin="30,30,30,20">
+                            <StackPanel Margin="0,0,0,30">
+                                <TextBlock Foreground="#57606f" FontSize="13" Padding="5" TextAlignment="Center" Margin="0,0,0,20">
+                        Sélectionnez les fichiers que vous souhaitez sauvegarder
+                                </TextBlock>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton Click="DatabaseGroup_Click" Style="{StaticResource RadioButtonStyle2}" Checked="DatabaseGroup_Checked" Unchecked="DatabaseGroup_Unchecked" Margin="0,0,15,0" GroupName="DatabaseGroup" ToolTip="Gestion des diplômes" Name="DatabaseGroup">
+                                        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <materialDesign:PackIcon Width="18" Height="18" Kind="DatabaseOutline" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+                                            <TextBlock VerticalAlignment="Center" FontSize="13">Base de données</TextBlock>
+                                        </WrapPanel>
+                                    </RadioButton>
+                                    <RadioButton Click="ArchiveGroup_Click" Grid.Column="1" Style="{StaticResource RadioButtonStyle2}" Checked="ArchiveGroup_Checked" Unchecked="DatabaseGroup_Unchecked" Margin="15,0,0,0" GroupName="ArchiveGroup" ToolTip="Gestion des diplômes" Name="ArchiveGroup">
+                                        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <materialDesign:PackIcon Width="18" Height="18" Kind="ArchiveOutline" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+                                            <TextBlock VerticalAlignment="Center" FontSize="13">Archive</TextBlock>
+                                        </WrapPanel>
+                                    </RadioButton>
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Margin="0,0,0,30" Name="DirectoryInfos" IsEnabled="False">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                                Padding="10,0,0,0"
+                        x:Name="ExcelPath"
+                                            materialDesign:HintAssist.FloatingScale=".9"
+                        Height="32"
+                                            FontSize="12"
+                        VerticalContentAlignment="Center"     
+                        MinWidth="240"
+                                BorderBrush="#a5b1c2"
+                        Foreground="#5f6368"
+                        materialDesign:HintAssist.Hint="Chemin"
+                         Margin="0,0,25,0"/>
+                                        <Button Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource MaterialDesignFlatLightButton}"
+                        ToolTip="Supprimer des stagiaire"
+                        Height="30"
+                        Foreground="#5f6368"
+                                    FontSize="12"
+                        Padding="0"
+                        materialDesign:ButtonAssist.CornerRadius="5" 
+                                            Click="ExcelPathLocate_Click"
+                        Name="ExcelPathLocate"
+                        Width="30">
+                                            <materialDesign:PackIcon
+                            Kind="FolderSearch"
+                            Height="18"
+                            Width="18" />
+                                        </Button>
+                                    </Grid>
+                                    <WrapPanel Visibility="Collapsed" Name="ExcelPathLocateWarning" Style="{StaticResource WrapMargin}">
+                                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                        <TextBlock Name="ExcelPathLocateWarningText" Style="{StaticResource WarningText}"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBox
+                            Padding="10,0,0,0"
+                    Height="32"
+                    Grid.Row="1"
+                                        materialDesign:HintAssist.FloatingScale=".9"
+                            
+                    materialDesign:TextFieldAssist.HasTrailingIcon="True"
+                    materialDesign:TextFieldAssist.TrailingIcon="FormatTitle"
+                            BorderBrush="#a5b1c2"
+                    materialDesign:HintAssist.Hint="Titre"
+                    VerticalContentAlignment="Center"       
+                    x:Name="ExcelFileTitle"             
+                    Foreground="#5f6368"
+                    Margin="0,25,0,0" />
+                                    <WrapPanel Visibility="Collapsed" Name="ExcelFileTitleWarning" Style="{StaticResource WrapMargin}">
+                                        <materialDesign:PackIcon Style="{StaticResource WarningIcon}"/>
+                                        <TextBlock Name="ExcelFileTitleWarningText" Style="{StaticResource WarningText}"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel x:Name="StatusInPercent" Visibility="Collapsed">
+                                <ProgressBar Name="PercentBar" IsIndeterminate="True"/>
+                                <TextBlock Foreground="#a5b1c2" FontSize="11" Padding="5" Name="FullPercent">
+                                </TextBlock>
+                            </StackPanel>
+                            <WrapPanel HorizontalAlignment="Right" Margin="0,15">
+                                <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                        materialDesign:ButtonAssist.CornerRadius="5"
+                        ToolTip="Ajouter un stagiaire manuellement"
+                        Foreground="#57606f"
+                        FontSize="12"
+                        BorderThickness="0"
+                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Padding="20,0,20,2" 
+                        Margin="0,0,10,0"
+                        Content="Annuler">
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                        ToolTip="Supprimer des stagiaire" 
+                        FontSize="12"
+                        Background="#4b7bec"
+                        BorderThickness="0"
+                                        Name="StartBackUp"
+                        Padding="20,0,20,3"
+                        Foreground="White"
+                        materialDesign:ButtonAssist.CornerRadius="5" 
+                                            Click="Button_Click_2"
+                        Content="Démarrer">
+                                </Button>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Grid Margin="40,50" Name="DialogContent" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="13"/>
+                        </Style>
+                        <Style TargetType="materialDesign:PackIcon">
+                            <Setter Property="Margin" Value="0,0,0,15"/>
+                            <Setter Property="Width" Value="22"/>
+                            <Setter Property="Height" Value="22"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+
+                    </Grid.Resources>
+                    <Grid Name="DialogOne">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton Style="{StaticResource RadioButtonStyle1}" Margin="0,0,15,0" IsChecked="True" GroupName="GroupChoiceChipOutline" ToolTip="Gestion des diplômes" Name="Diplôme" Checked="Diplôme_Checked" Unchecked="Diplôme_Unchecked">
+                            <Grid Margin="2,15,0,15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <materialDesign:PackIcon Kind="CertificateOutline" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Row="1">Diplômes</TextBlock>
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton Grid.Column="1" Style="{StaticResource RadioButtonStyle1}" Margin="0,0,15,0" GroupName="GroupChoiceChipOutline" ToolTip="Gestion des diplômes" Name="Duplicata">
+                            <Grid Margin="0,15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <materialDesign:PackIcon Kind="AccountDetailsOutline" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Row="1">Duplicatas</TextBlock>
+                            </Grid>
+                        </RadioButton>
+                        <RadioButton Grid.Column="2" Style="{StaticResource RadioButtonStyle1}" Margin="0" GroupName="GroupChoiceChipOutline" ToolTip="Gestion des diplômes" Name="Archive">
+                            <Grid Margin="0,15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <materialDesign:PackIcon Kind="ArchiveOutline" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Row="1">Documents</TextBlock>
+                            </Grid>
+                        </RadioButton>
+                    </Grid>
+                    <ComboBox Grid.Row="1"
+    Name="OutlinedComboBox"
+                        Foreground="#57606f"
+                              materialDesign:TextFieldAssist.HasClearButton="True"
+                        BorderThickness="1"
+                        BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        Height="40"
+                                                  
+                                                  Padding="15,11"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0,15,0,0"
+    Style="{StaticResource MaterialDesignOutlinedComboBox}"
+    materialDesign:HintAssist.Hint="Année de formation"
+                                materialDesign:HintAssist.FloatingScale=".9"
+                                                  materialDesign:HintAssist.HintOpacity="1"
+                        materialDesign:HintAssist.Foreground="#ccc"
+                        FontSize="12">
+                        <ComboBox.Resources>
+                            <SolidColorBrush x:Key="MaterialDesignPaper" Color="White" />
+                        </ComboBox.Resources>
+                    </ComboBox>
+                    <Button Style="{StaticResource MaterialDesignFlatMidBgButton}" Click="ChangementClick" Margin="0,15,0,0" Grid.Row="2" Padding="0" FontSize="12" materialDesign:ButtonAssist.CornerRadius="5" BorderThickness="0" Height="38" VerticalAlignment="Center" Content="Changement" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" />
+                </Grid>
+            </Grid>
+        </materialDesign:DialogHost.DialogContent>
+        <Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.ColumnSpan="2" Visibility="Collapsed" Name="MainProgressBar">
+                    <ProgressBar IsIndeterminate="True"/>
+                </StackPanel>
+                <Border Grid.Row="1" Background="White" CornerRadius="0,0,5,0" Padding="34,27.18" Margin="0,0,0,25">
+
+                    <Viewbox Width="180" HorizontalAlignment="Center">
+                        <Grid>
+                            <Path Stretch="None"
+              Fill="#FF5BBD79"
+              Data="F0M9.43349,8.37687 L9.43349,12.13381 L9.48298,12.13381 L9.48298,8.37687 z M18.7748,8.37687 C18.90628,9.01703 18.97219,9.66893 18.97152,10.32246 L18.97152,8.37687 z M18.7748,8.37687 L9.48298,8.37687 L9.48298,12.13381 L15.21149,12.13381 L15.21149,16.02004 L18.96843,16.02004 L18.96843,10.32246 C18.96971,9.66899 18.90442,9.0171 18.77356,8.37687 z M9.48298,16.01447 C9.42668,16.02004 9.36915,16.02004 9.31223,16.02004 C6.16896,16.02004 3.62084,13.47191 3.62084,10.32864 C3.62084,7.18537 6.16896,4.63725 9.31223,4.63725 C9.36915,4.63725 9.42668,4.63725 9.48298,4.6422 L9.48298,4.63725 L15.21149,4.63725 L15.21149,0.83886 L9.48298,0.83886 C4.24571,0.83955 0.00034,5.0852 0,10.32246 C0,15.55916 4.24875,19.80234 9.48483,19.80234 L15.18736,19.80234 L15.18736,16.02004 L9.48298,16.02004 z M9.43163,8.37687 L9.43163,12.13381 L9.48298,12.13381 L9.48298,8.37687 z M9.43163,8.37687 L9.43163,12.13381 L9.48298,12.13381 L9.48298,8.37687 z M9.43163,8.37687 L9.43163,12.13381 L9.48298,12.13381 L9.48298,8.37687 z" />
+                            <Path Stretch="None"
+              Fill="#FF57A7DC"
+              Data="F0M32.31042,4.63416 L32.31042,4.63972 L38.03336,4.63972 L38.03336,4.63416 z M32.31042,4.63416 L32.31042,4.63972 L38.03336,4.63972 L38.03336,4.63416 z M32.31042,19.8011 L32.31042,19.80605 L38.03831,19.80605 L38.03831,19.8011 z M47.52314,10.32122 C47.52314,15.55792 43.27996,19.79554 38.03831,19.8011 L28.55348,19.8011 L28.55348,16.01818 L32.31042,16.01818 L32.31042,16.02313 L38.03336,16.02313 L38.03336,16.01323 C38.09522,16.01818 38.14719,16.01818 38.20905,16.01818 C41.35232,16.01818 43.90045,13.47006 43.90045,10.32679 C43.90045,7.18352 41.35232,4.63539 38.20905,4.63539 C38.15029,4.63365 38.09149,4.63717 38.03336,4.64591 L38.03336,4.63539 L32.31042,4.63539 L32.31042,4.64096 L28.55348,4.64096 L28.55348,0.84258 L37.83664,0.84258 C37.8985,0.83763 37.96593,0.83763 38.03336,0.83763 C40.54954,0.83631 42.96313,1.83486 44.74291,3.61348 C46.5227,5.39211 47.52281,7.80504 47.52314,10.32122 z M59.92853,5.68583 L59.92853,1.35542 L61.59264,1.35542 C61.90167,1.35228 62.20838,1.409 62.49584,1.52245 C62.76416,1.62877 63.00979,1.78518 63.21964,1.98333 C63.42538,2.17901 63.59042,2.41343 63.70526,2.6731 C63.93825,3.21732 63.93825,3.83321 63.70526,4.37743 C63.59216,4.63629 63.42684,4.86901 63.21964,5.06101 C63.00779,5.25732 62.76131,5.41255 62.49275,5.5188 C62.20528,5.63225 61.89857,5.68897 61.58955,5.68583 z M60.82554,4.8878 L61.58027,4.8878 C61.94669,4.89109 62.2994,4.74867 62.5608,4.49187 C62.68565,4.36957 62.78454,4.22334 62.85155,4.06192 C62.92098,3.89216 62.95569,3.71021 62.95363,3.52681 C62.95481,3.34349 62.92013,3.16171 62.85155,2.9917 C62.785,2.8273 62.68613,2.67794 62.5608,2.55247 C62.30239,2.2946 61.95151,2.15091 61.58645,2.15345 L60.82554,2.15345 z M59.92853,12.49076 L59.92853,8.16035 L61.59264,8.16035 C61.90167,8.15721 62.20838,8.21393 62.49584,8.32738 C62.76416,8.43369 63.00979,8.5901 63.21964,8.78826 C63.42538,8.98394 63.59042,9.21835 63.70526,9.47803 C63.93825,10.02225 63.93825,10.63813 63.70526,11.18235 C63.5918,11.44011 63.42649,11.67174 63.21964,11.86285 C63.00779,12.05916 62.76131,12.21439 62.49275,12.32063 C62.20528,12.43408 61.89857,12.4908 61.58955,12.48766 z M60.82554,11.69272 L61.58027,11.69272 C61.94669,11.69602 62.2994,11.5536 62.5608,11.2968 C62.68599,11.17359 62.78491,11.02628 62.85155,10.86376 C62.92098,10.694 62.95569,10.51204 62.95363,10.32864 C62.95481,10.14532 62.92013,9.96354 62.85155,9.79353 C62.785,9.62914 62.68613,9.47978 62.5608,9.3543 C62.30239,9.09644 61.95151,8.95275 61.58645,8.95529 L60.82554,8.95529 z M59.92853,19.29568 L59.92853,14.96528 L61.59264,14.96528 C61.90167,14.96214 62.20838,15.01886 62.49584,15.13231 C62.76416,15.23862 63.00979,15.39503 63.21964,15.59318 C63.42538,15.78887 63.59042,16.02328 63.70526,16.28296 C63.93825,16.82718 63.93825,17.44306 63.70526,17.98728 C63.5918,18.24503 63.42649,18.47667 63.21964,18.66777 C63.00779,18.86408 62.76131,19.01931 62.49275,19.12556 C62.20528,19.23901 61.89857,19.29573 61.58955,19.29259 z M60.82554,18.49765 L61.58027,18.49765 C61.94669,18.50095 62.2994,18.35853 62.5608,18.10173 C62.68599,17.97852 62.78491,17.83121 62.85155,17.66869 C62.92098,17.49893 62.95569,17.31697 62.95363,17.13357 C62.95481,16.95025 62.92013,16.76847 62.85155,16.59846 C62.785,16.43407 62.68613,16.28471 62.5608,16.15923 C62.30239,15.90137 61.95151,15.75767 61.58645,15.76021 L60.82554,15.76021 z" />
+                            <Path Stretch="None"
+              Fill="#FFD1D8E0"
+              Data="F0M34.26591,14.0893 C34.2664,15.60448 33.66471,17.05774 32.59332,18.12914 C31.52192,19.20053 30.06866,19.80222 28.55348,19.80172 L18.97028,19.80172 L18.97028,16.02004 L28.41862,16.02004 C29.49177,16.02004 30.36173,15.15008 30.36173,14.07692 C30.36173,13.00377 29.49177,12.13381 28.41862,12.13381 L22.73217,12.13381 L22.73217,8.37687 L28.49656,8.37687 C29.53384,8.37687 30.37472,7.53599 30.37472,6.49871 C30.37472,5.46143 29.53384,4.62055 28.49656,4.62055 C28.47048,4.61973 28.44438,4.62139 28.41862,4.6255 C28.36855,4.62605 28.31856,4.62957 28.26891,4.63601 L18.97028,4.63601 L18.97028,0.83763 L28.55905,0.83763 C30.78354,0.83835 32.80044,2.14471 33.71074,4.17443 C34.62104,6.20414 34.25518,8.57914 32.77624,10.2408 C33.73558,11.29284 34.26691,12.66553 34.26591,14.0893 z M65.39103,5.68521 L65.39103,1.3548 L64.49401,1.3548 L64.49401,5.68521 z M67.0737,5.68521 L67.0737,4.05821 L68.34808,4.05821 C68.60937,4.06271 68.86767,4.00212 69.09971,3.8819 C69.53599,3.65868 69.80631,3.20574 69.79567,2.71579 C69.7994,2.46914 69.73519,2.22623 69.61008,2.01364 C69.48749,1.80899 69.31091,1.64204 69.09971,1.53111 C68.86685,1.41012 68.60735,1.3495 68.34498,1.3548 L66.17359,1.3548 L66.17359,5.68521 z M67.0737,2.1219 L68.2491,2.1219 C68.42015,2.11396 68.5876,2.17273 68.71616,2.28584 C68.83521,2.3989 68.89951,2.55794 68.89247,2.72197 C68.89802,2.88213 68.83368,3.03678 68.71616,3.14573 C68.58777,3.25913 68.42019,3.31794 68.2491,3.30967 L67.0737,3.30967 z M73.65592,5.68521 L73.65592,4.89336 L71.28409,4.89336 L71.28409,1.3548 L70.38708,1.3548 L70.38708,5.68521 z M76.98106,5.58314 C77.25328,5.47378 77.50132,5.31193 77.71104,5.10679 C78.13609,4.6882 78.37544,4.11657 78.37544,3.52 C78.37544,2.92344 78.13609,2.35181 77.71104,1.93322 C77.50116,1.72828 77.25316,1.56645 76.98106,1.45687 C76.40456,1.23003 75.76353,1.23003 75.18703,1.45687 C74.63999,1.67649 74.20194,2.10343 73.96833,2.64464 C73.73324,3.20454 73.73324,3.83547 73.96833,4.39537 C74.20194,4.93658 74.63999,5.36352 75.18703,5.58314 C75.76353,5.80998 76.40456,5.80998 76.98106,5.58314 z M75.54584,4.82222 C75.38182,4.75244 75.23351,4.65041 75.1097,4.52219 C74.98472,4.39287 74.88598,4.24056 74.81895,4.07368 C74.74689,3.89378 74.71114,3.70141 74.71378,3.50763 C74.71159,3.31991 74.74736,3.13369 74.81895,2.96015 C74.88727,2.79577 74.9859,2.64573 75.1097,2.51782 C75.23384,2.38999 75.38207,2.28802 75.54584,2.21779 C75.71899,2.14459 75.90534,2.10775 76.09332,2.10953 C76.27625,2.1084 76.45741,2.14527 76.62534,2.21779 C76.78786,2.28864 76.93496,2.39056 77.05839,2.51782 C77.18219,2.64573 77.28082,2.79577 77.34914,2.96015 C77.48939,3.31808 77.48939,3.71575 77.34914,4.07368 C77.28211,4.24056 77.18337,4.39287 77.05839,4.52219 C76.93525,4.64979 76.78808,4.75176 76.62534,4.82222 C76.45546,4.89546 76.27213,4.93234 76.08714,4.93048 C75.9012,4.93241 75.71689,4.89575 75.54584,4.82284 z M77.21614,0.83515 L76.5109,0 L75.64482,0 L74.93958,0.83515 L75.6077,0.83515 L76.07167,0.37737 L76.52946,0.83515 z M79.81438,5.68521 L79.81438,2.48689 L81.31147,5.37589 L82.81474,2.49927 L82.81474,5.68521 L83.65669,5.68521 L83.65669,1.3548 L82.51223,1.3548 L81.32446,3.69322 L80.14287,1.3548 L78.98604,1.3548 L78.98604,5.68521 z M87.79471,5.68521 L87.79471,4.90574 L85.33875,4.90574 L85.33875,3.87262 L86.941,3.87262 L86.941,3.12408 L85.33875,3.12408 L85.33875,2.13427 L87.76996,2.13427 L87.76996,1.3548 L84.44173,1.3548 L84.44173,5.68521 z M90.94972,5.57386 C91.20258,5.4749 91.42311,5.30789 91.58691,5.09132 C91.73941,4.87895 91.81866,4.62273 91.81271,4.36134 Q91.81271,3.86025 91.48793,3.55403 Q91.16315,3.24781 90.51358,3.14264 L89.69699,3.01273 Q89.3685,2.95087 89.22374,2.8457 C89.14102,2.77791 89.08913,2.67963 89.07982,2.5731 C89.0705,2.46656 89.10455,2.36076 89.17425,2.27965 C89.24984,2.2002 89.34467,2.1416 89.44954,2.10953 C89.58541,2.06595 89.72754,2.04504 89.87021,2.04767 Q90.55689,2.04767 91.23738,2.56732 L91.71991,1.90538 C91.47012,1.70611 91.18605,1.55412 90.88167,1.45687 C90.57557,1.35399 90.25499,1.30073 89.93207,1.29912 C89.62255,1.29172 89.3146,1.34532 89.02578,1.45687 C88.79,1.54833 88.5851,1.70495 88.43499,1.90847 C88.29234,2.11204 88.21863,2.35594 88.22465,2.60443 Q88.22465,3.07521 88.51541,3.36844 Q88.80617,3.66167 89.35675,3.76127 L90.21664,3.90974 C90.47647,3.95119 90.65958,4.01305 90.76722,4.09533 C90.87419,4.17762 90.93424,4.30695 90.92807,4.44176 C90.92948,4.54879 90.89087,4.65248 90.81981,4.73252 C90.73585,4.82245 90.62888,4.8877 90.51049,4.9212 C90.35815,4.96739 90.19949,4.98931 90.04033,4.98616 C89.78502,4.98798 89.53214,4.93635 89.29798,4.83459 C89.03168,4.7119 88.78637,4.54802 88.57109,4.34897 L88.05762,4.99853 C88.31879,5.23446 88.62063,5.42101 88.94845,5.54911 C89.273,5.67945 89.61945,5.74664 89.96919,5.74707 C90.3043,5.75586 90.63775,5.69717 90.94972,5.57447 z M67.36136,12.31383 C67.64428,12.15903 67.87552,11.92456 68.02639,11.63952 C68.1891,11.32326 68.26992,10.97125 68.26147,10.61569 L68.26147,8.15973 L67.36446,8.15973 L67.36446,10.61569 C67.36933,10.81953 67.32698,11.02173 67.24073,11.20648 C67.16496,11.36625 67.04327,11.49979 66.8912,11.59003 C66.55213,11.76737 66.14768,11.76737 65.8086,11.59003 C65.65344,11.50081 65.52848,11.36724 65.4498,11.20648 C65.36241,11.02211 65.32001,10.81963 65.32607,10.61569 L65.32607,8.15973 L64.43524,8.15973 L64.43524,10.61569 C64.42639,10.97291 64.50609,11.32677 64.66723,11.64571 C64.81643,11.93118 65.04817,12.16509 65.33226,12.31692 C65.64518,12.47964 65.99421,12.56051 66.34681,12.552 C66.69974,12.56082 67.04904,12.47903 67.36136,12.31445 z M69.87609,12.49014 L69.87609,10.86314 L71.15047,10.86314 C71.41197,10.86774 71.6705,10.80715 71.90272,10.68683 C72.339,10.46361 72.60932,10.01067 72.59868,9.52071 C72.60213,9.27411 72.53794,9.03127 72.41309,8.81857 C72.2905,8.61392 72.11393,8.44697 71.90272,8.33604 C71.66983,8.21512 71.41035,8.15451 71.148,8.15973 L68.97661,8.15973 L68.97661,12.49014 z M69.87609,8.92683 L71.05149,8.92683 C71.22254,8.91889 71.38999,8.97766 71.51856,9.09077 C71.63678,9.2031 71.701,9.36084 71.69487,9.52381 C71.70041,9.68396 71.63607,9.83862 71.51856,9.94757 C71.39016,10.06096 71.22259,10.11978 71.05149,10.11151 L69.87609,10.11151 z M76.45831,12.49014 L76.45831,11.69829 L74.08896,11.69829 L74.08896,8.15973 L73.19195,8.15973 L73.19195,12.49014 z M77.97396,12.49014 L77.97396,8.15973 L77.07694,8.15973 L77.07694,12.49014 z M81.5682,12.45611 C81.78674,12.39503 81.99516,12.30229 82.18683,12.18082 C82.37023,12.06508 82.53414,11.92101 82.67245,11.75397 L82.09094,11.17246 C81.94936,11.3446 81.77205,11.48392 81.57129,11.58075 C81.37246,11.67596 81.15455,11.72462 80.9341,11.72304 C80.74033,11.72567 80.54795,11.68993 80.36805,11.61787 C80.20123,11.55106 80.04971,11.45109 79.92264,11.32402 C79.79521,11.19662 79.69429,11.04523 79.6257,10.87861 C79.55213,10.70231 79.5153,10.51286 79.51744,10.32184 C79.51474,10.12906 79.55049,9.93769 79.62261,9.75889 C79.69002,9.59404 79.78876,9.44383 79.91336,9.31657 C80.03882,9.18966 80.18808,9.08875 80.35259,9.01962 C80.52482,8.94696 80.71005,8.91013 80.89698,8.91136 C81.12566,8.91029 81.35173,8.95994 81.55892,9.05674 C81.76967,9.15708 81.954,9.30539 82.09713,9.48978 L82.70338,8.8959 C82.56396,8.72473 82.39664,8.57833 82.20848,8.46286 C82.01566,8.34278 81.80759,8.24915 81.58985,8.18447 C81.36484,8.1184 81.13149,8.08506 80.89698,8.08549 C80.58873,8.08305 80.28297,8.14083 79.99688,8.25562 C79.72408,8.36562 79.47514,8.52737 79.2638,8.73196 C79.05362,8.93422 78.88543,9.17598 78.7689,9.44339 C78.40529,10.28502 78.59982,11.2638 79.25761,11.90244 C79.46857,12.10674 79.71766,12.26755 79.99069,12.37569 C80.27791,12.49032 80.58465,12.5481 80.89389,12.54581 C81.12171,12.54771 81.34868,12.51772 81.5682,12.45673 z M83.72103,12.49014 L84.16026,11.35804 L85.95428,11.35804 L86.39351,12.49014 L87.36476,12.49014 L85.60785,8.15973 L84.56855,8.15973 L82.7869,12.49014 z M85.06964,9.03818 L85.68209,10.63425 L84.43864,10.63425 z M89.01031,12.49014 L89.01031,8.95467 L90.47028,8.95467 L90.47028,8.16282 L86.65333,8.16282 L86.65333,8.95467 L88.11083,8.95467 L88.11083,12.49323 z M90.6868,12.49014 L91.12603,11.35804 L92.92005,11.35804 L93.35928,12.49014 L94.33053,12.49014 L92.57362,8.15973 L91.53432,8.15973 L89.75267,12.49014 z M92.03541,9.03818 L92.64786,10.63425 L91.40441,10.63425 z M97.30243,12.37878 C97.55548,12.28017 97.7761,12.1131 97.93962,11.89625 C98.09258,11.68408 98.17208,11.42776 98.16603,11.16627 Q98.16603,10.66518 97.84125,10.36205 Q97.51647,10.05892 96.86691,9.95066 L96.0497,9.82075 Q95.72183,9.75889 95.57645,9.65372 C95.47775,9.57991 95.42306,9.4612 95.43107,9.33822 C95.43145,9.24674 95.4656,9.15862 95.52696,9.09077 C95.60278,9.01159 95.69752,8.95304 95.80225,8.92064 C95.93816,8.8772 96.08026,8.8563 96.22292,8.85878 Q96.91022,8.85878 97.59009,9.37843 L98.07324,8.7165 C97.82331,8.51709 97.53901,8.36509 97.23438,8.26799 C96.92831,8.16501 96.60771,8.11175 96.28478,8.11024 C95.97526,8.1029 95.66732,8.1565 95.37849,8.26799 C95.14281,8.35962 94.93796,8.51621 94.7877,8.71959 C94.64551,8.92334 94.57204,9.16715 94.57798,9.41555 Q94.57798,9.88571 94.86812,10.17955 Q95.15826,10.4734 95.70946,10.57238 L96.56935,10.72086 Q96.95909,10.78272 97.11993,10.90644 C97.22715,10.98853 97.28727,11.118 97.28078,11.25288 C97.2825,11.35996 97.24385,11.46376 97.17252,11.54363 C97.08938,11.63209 96.98374,11.69624 96.86691,11.72922 C96.71437,11.77546 96.5555,11.79738 96.39613,11.79418 C96.14083,11.79593 95.88797,11.7443 95.65378,11.64261 C95.38765,11.51963 95.14239,11.35577 94.92689,11.15699 L94.41343,11.80655 C94.6746,12.04248 94.97643,12.22903 95.30425,12.35713 C95.6288,12.48747 95.97525,12.55466 96.32499,12.55509 C96.65928,12.5626 96.99168,12.50286 97.30243,12.3794 z M67.51602,19.19361 C67.78824,19.08426 68.03628,18.9224 68.246,18.71727 C68.67106,18.29867 68.9104,17.72705 68.9104,17.13048 C68.9104,16.53391 68.67106,15.96229 68.246,15.54369 C68.03612,15.33876 67.78812,15.17693 67.51602,15.06735 C66.93952,14.8405 66.29849,14.8405 65.72199,15.06735 C65.17496,15.28697 64.7369,15.71391 64.50329,16.25512 C64.2682,16.81502 64.2682,17.44594 64.50329,18.00584 C64.7369,18.54705 65.17496,18.97399 65.72199,19.19361 C66.29849,19.42045 66.93952,19.42045 67.51602,19.19361 z M66.0808,18.4327 C65.91679,18.36292 65.76847,18.26088 65.64467,18.13266 C65.51968,18.00334 65.42094,17.85104 65.35391,17.68415 C65.28215,17.50417 65.24642,17.31185 65.24874,17.11811 C65.24686,16.93042 65.28262,16.74425 65.35391,16.57062 C65.42223,16.40625 65.52086,16.2562 65.64467,16.1283 C65.7688,16.00047 65.91704,15.8985 66.0808,15.82826 C66.25396,15.75507 66.4403,15.71822 66.62829,15.72 C66.81121,15.71882 66.99239,15.75569 67.16031,15.82826 C67.32287,15.89902 67.46999,16.00095 67.59335,16.1283 C67.71715,16.2562 67.81578,16.40625 67.88411,16.57062 C68.02435,16.92855 68.02435,17.32622 67.88411,17.68415 C67.81707,17.85104 67.71833,18.00334 67.59335,18.13266 C67.19802,18.53268 66.59889,18.65153 66.0808,18.4327 z M72.32896,19.26166 C72.5475,19.20058 72.75592,19.10783 72.94759,18.98637 C73.13099,18.87062 73.2949,18.72655 73.43321,18.55951 L72.8517,17.978 C72.71012,18.15015 72.53281,18.28946 72.33205,18.3863 C72.13322,18.4815 71.91531,18.53016 71.69487,18.52858 C71.50109,18.53122 71.30871,18.49547 71.12882,18.42342 C70.962,18.35661 70.81047,18.25664 70.68341,18.12957 C70.55618,18.002 70.45528,17.85066 70.38646,17.68415 C70.3129,17.50785 70.27606,17.31841 70.2782,17.12739 C70.2755,16.93461 70.31125,16.74323 70.38337,16.56443 C70.45079,16.39959 70.54953,16.24937 70.67413,16.12211 C70.79958,15.99521 70.94884,15.8943 71.11335,15.82517 C71.28561,15.75257 71.47082,15.71574 71.65775,15.71691 C71.88644,15.71569 72.11254,15.76535 72.31968,15.86229 C72.53044,15.96263 72.71476,16.11094 72.85789,16.29533 L73.46415,15.70144 C73.32472,15.53028 73.1574,15.38387 72.96924,15.2684 C72.77643,15.14833 72.56836,15.0547 72.35061,14.99002 C72.12562,14.92389 71.89226,14.89056 71.65775,14.89104 C71.3495,14.88859 71.04374,14.94638 70.75764,15.06116 C70.48484,15.17116 70.2359,15.33292 70.02456,15.53751 C69.81438,15.73976 69.6462,15.98153 69.52966,16.24893 C69.16606,17.09057 69.36058,18.06935 70.01838,18.70799 C70.22954,18.91202 70.47858,19.07279 70.75145,19.18124 C71.03867,19.29587 71.34541,19.35364 71.65465,19.35136 C71.88354,19.35339 72.11158,19.3232 72.33205,19.26166 z M76.82949,19.11937 C77.11228,18.9644 77.34348,18.72998 77.49452,18.44507 C77.65723,18.12881 77.73805,17.7768 77.7296,17.42124 L77.7296,14.96528 L76.83259,14.96528 L76.83259,17.42124 C76.83745,17.62507 76.79511,17.82727 76.70886,18.01203 C76.6329,18.17167 76.51125,18.30516 76.35933,18.39558 C76.02025,18.57292 75.61581,18.57292 75.27673,18.39558 C75.12142,18.30654 74.99642,18.17292 74.91793,18.01203 C74.83054,17.82765 74.78813,17.62518 74.7942,17.42124 L74.7942,14.96528 L73.90337,14.96528 L73.90337,17.42124 C73.89452,17.77846 73.97422,18.13232 74.13536,18.45125 C74.28456,18.73673 74.5163,18.97063 74.80039,19.12247 C75.11329,19.28524 75.46233,19.36612 75.81494,19.35755 C76.16895,19.36662 76.51937,19.28461 76.83259,19.11937 z M79.27617,19.29568 L79.27617,16.09737 L80.77326,18.98637 L82.27653,16.10974 L82.27653,19.29568 L83.11786,19.29568 L83.11786,14.96528 L81.9734,14.96528 L80.78563,17.3037 L79.60405,14.96528 L78.44721,14.96528 L78.44721,19.29568 z M87.2565,19.29568 L87.2565,18.51621 L84.80054,18.51621 L84.80054,17.4831 L86.40279,17.4831 L86.40279,16.73456 L84.80054,16.73456 L84.80054,15.74475 L87.23175,15.74475 L87.23175,14.96528 L83.90414,14.96528 L83.90414,19.29568 z M88.74121,19.29568 L88.74121,16.4005 L90.94972,19.29568 L91.74156,19.29568 L91.74156,14.96528 L90.89466,14.96528 L90.89466,17.76148 L88.7474,14.96528 L87.89431,14.96528 L87.89431,19.29568 z M94.60582,19.29568 L94.60582,15.7596 L96.06517,15.7596 L96.06517,14.96775 L92.24822,14.96775 L92.24822,15.7596 L93.70881,15.7596 L93.70881,19.29816 z M99.13666,19.18433 C99.38971,19.08572 99.61034,18.91864 99.77385,18.7018 C99.9266,18.48955 100.00588,18.23324 99.99965,17.97182 Q99.99965,17.47073 99.67487,17.1676 Q99.35009,16.86447 98.70053,16.75621 L97.88518,16.62568 Q97.55792,16.56381 97.41192,16.45865 C97.31323,16.38484 97.25853,16.26613 97.26655,16.14315 C97.26692,16.05166 97.30107,15.96354 97.36243,15.89569 C97.43826,15.81652 97.533,15.75797 97.63772,15.72557 C97.77362,15.68209 97.91573,15.66119 98.05839,15.66371 Q98.74507,15.66371 99.42557,16.18336 L99.9081,15.52142 C99.65846,15.32191 99.37435,15.16989 99.06985,15.07292 C98.76378,14.96993 98.44318,14.91668 98.12026,14.91517 C97.81074,14.90783 97.5028,14.96143 97.21396,15.07292 C96.97829,15.16455 96.77343,15.32114 96.62317,15.52452 C96.4808,15.72822 96.40712,15.97202 96.41284,16.22048 Q96.41284,16.69063 96.70359,16.98448 Q96.99435,17.27833 97.54493,17.37731 L98.40483,17.52578 Q98.79456,17.58765 98.95541,17.71137 C99.06263,17.79345 99.12274,17.92293 99.11625,18.05781 C99.11797,18.16488 99.07932,18.26868 99.00799,18.34856 C98.92385,18.43761 98.81685,18.50182 98.69868,18.53415 C98.54635,18.58043 98.38768,18.60235 98.22852,18.59911 C97.97321,18.60086 97.72035,18.54923 97.48616,18.44754 C97.22003,18.32455 96.97477,18.1607 96.75927,17.96192 L96.24581,18.61148 C96.50883,18.84805 96.81281,19.03463 97.14282,19.16206 C97.46737,19.2924 97.81382,19.35959 98.16356,19.36002 C98.49744,19.36737 98.82939,19.30762 99.13976,19.18433 z M53.33703,19.80296 L54.08619,19.80296 L54.08619,0.8401 L53.33888,0.8401 z" />
+                        </Grid>
+                    </Viewbox>
+                </Border>
+                <Grid Grid.Row="2" Name="Menu"></Grid>
+                <Border Grid.Row="3" Background="White" CornerRadius="0,5,0,0" Margin="0,25,0,0">
+                    <StackPanel>
+                        <Button Style="{StaticResource MaterialDesignFlatLightButton}"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                    Click="Button_Click"
+                            ToolTip="Changement de type d'interface" Margin="10" VerticalAlignment="Bottom">
+                            <Button.Content>
+                                <WrapPanel HorizontalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="ApplicationCogOutline" Width="20" Height="20"/>
+                                    <TextBlock VerticalAlignment="Center" FontSize="13" Margin="16,0,0,0">Changement de mode</TextBlock>
+                                </WrapPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="1" Grid.Column="1" BorderBrush="#dadce0" VerticalAlignment="Top" Padding="30,20" Margin="25,0,0,0" CornerRadius="0,0,0,5" Background="#fff">
+                    <Grid Height="50" VerticalAlignment="Center">
+                        <TextBlock x:Name="SelectedItemTitle" FontSize="18" FontWeight="Medium" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#57606f">Tableau de bord</TextBlock>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Click="User_Click" Height="46" Padding="6,0,0,0" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                                <WrapPanel VerticalAlignment="Center">
+                                    <Button Style="{DynamicResource MaterialDesignFloatingActionButton}" Background="White" Padding="0" materialDesign:ShadowAssist.ShadowEdges="None" BorderBrush="{x:Null}" materialDesign:ShadowAssist.ShadowDepth="Depth0" Width="40" Height="40">
+                                        <Border CornerRadius="16" Width="40" Height="40" Padding="0" Margin="0">
+                                            <Image x:Name="Profile"></Image>
+                                        </Border>
+                                    </Button>
+                                    <StackPanel VerticalAlignment="Center" Margin="15,0,20,0">
+                                        <TextBlock Foreground="#3f4347" FontSize="13" Margin="0,0,0,3" Name="LName"></TextBlock>
+                                        <TextBlock Foreground="#aaa" FontSize="12" Name="FName"></TextBlock>
+                                    </StackPanel>
+                                </WrapPanel>
+                            </Button>
+                            <materialDesign:PopupBox FontSize="12" VerticalAlignment="Center" StaysOpen="True" x:Name="PopupBox" PlacementMode="BottomAndAlignRightEdges" Padding="0">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <materialDesign:PackIcon x:Name="Toggle_Icon" Kind="ChevronUp" Foreground="#3f4347" Width="20" Height="20"/>
+                                </materialDesign:PopupBox.ToggleContent>
+                                <Border x:Name="PopupBoxContent" CornerRadius="0,0,4,4" BorderBrush="#f3f4fb" BorderThickness="2,0,2,2" Padding="0,2">
+                                    <StackPanel IsVisibleChanged="PopupBoxContent_IsVisibleChanged" Width="140" VerticalAlignment="Center">
+                                        <!--<Button Click="Button_Click_3">Profil</Button>-->
+                                        <!--<Separator Height="1" Background="#f3f4fb" BorderThickness="2.5" Width="100" HorizontalAlignment="Center"></Separator>
+                                        <Button>Settings</Button>-->
+                                        <Separator Height="1" Background="#f3f4fb" BorderThickness="2.5" Width="100" HorizontalAlignment="Center"></Separator>
+                                        <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" Click="Button_Click_1">Sauvegarder</Button>
+                                        <Separator Height="1" Background="#f3f4fb" BorderThickness="2.5" Width="100" HorizontalAlignment="Center"></Separator>
+                                        <Button Click="Button_Click_4">Se déconnecter</Button>
+                                    </StackPanel>
+                                </Border>
+                            </materialDesign:PopupBox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Grid x:Name="ContentGrid" Grid.Row="2" Grid.Column="1" Margin="25,0">
+                </Grid>
+                <Border Grid.Row="3" Grid.Column="1" Background="White" Padding="30,19" Margin="25,0,0,0" CornerRadius="5,0,0,0" VerticalAlignment="Bottom">
+                    <Grid>
+                        <TextBlock x:Name="YearSelected" HorizontalAlignment="Left" Foreground="#57606f" FontSize="12">Année de formation : <Run FontWeight="Medium" Foreground="{StaticResource PrimaryHueMidBrush}" Name="YearSelectedContent" FontSize="13"></Run></TextBlock>
+                        <TextBlock HorizontalAlignment="Right" Foreground="#57606f" FontSize="12" Name="Etab">Complexe de formation professionnelle al adarissa fès</TextBlock>
+                    </Grid>
+                </Border>
+
+            </Grid>
+            <Canvas Panel.ZIndex="9">
+                <StackPanel Canvas.Bottom="77" Canvas.Right="25">
+                    <materialDesign:Snackbar x:Name="MyErrorSnackbarIcon" Style="{StaticResource SnackbarIcon}" materialDesign:TextFieldAssist.LeadingIcon="CloseCircle" MessageQueue="{materialDesign:MessageQueue}" Background="#fccfd5" Foreground="#d9254e">
+                        <materialDesign:SnackbarMessage Style="{DynamicResource SnackbarMessageIcon}" Content="ErrorMessage"/>
+                    </materialDesign:Snackbar>
+                    <materialDesign:Snackbar Style="{DynamicResource SnackbarBorder}" MessageQueue="{materialDesign:MessageQueue}" x:Name="MyErrorSnackbarBorder" Background="#fccfd5" Foreground="#d9254e">
+                        <materialDesign:SnackbarMessage Style="{DynamicResource SnackbarMessageBorder}"/>
+                    </materialDesign:Snackbar>
+
+                    <materialDesign:Snackbar x:Name="MyAlertSnackbarIcon" Style="{StaticResource SnackbarIcon}" materialDesign:TextFieldAssist.LeadingIcon="AlertCircle" MessageQueue="{materialDesign:MessageQueue}" Background="#fdf0c8" Foreground="#f09310">
+                        <materialDesign:SnackbarMessage Style="{DynamicResource SnackbarMessageIcon}" Content="AlertMessage"/>
+                    </materialDesign:Snackbar>
+                    <materialDesign:Snackbar Style="{DynamicResource SnackbarBorder}" MessageQueue="{materialDesign:MessageQueue}" x:Name="MyAlertSnackbarBorder" Background="#fdf0c8" Foreground="#f09310">
+                        <materialDesign:SnackbarMessage Style="{DynamicResource SnackbarMessageBorder}" Content="AlertMessage"/>
+                    </materialDesign:Snackbar>
+
+                    <materialDesign:Snackbar x:Name="MyCheckSnackbarIcon" Style="{StaticResource SnackbarIcon}" materialDesign:TextFieldAssist.LeadingIcon="CheckCircle" MessageQueue="{materialDesign:MessageQueue}" Background="#bbf7d6" Foreground="#15a459">
+                        <materialDesign:SnackbarMessage Style="{DynamicResource SnackbarMessageIcon}" Content="CheckMessage"/>
+                    </materialDesign:Snackbar>
+                    <materialDesign:Snackbar Style="{DynamicResource SnackbarBorder}"  MessageQueue="{materialDesign:MessageQueue}" x:Name="MyCheckSnackbarBorder" Background="#bbf7d6" Foreground="#15a459">
+                        <materialDesign:SnackbarMessage Style="{DynamicResource SnackbarMessageBorder}" Content="CheckMessage"/>
+                    </materialDesign:Snackbar>
+
+                    <materialDesign:Snackbar x:Name="MyInformationSnackbarIcon" Style="{StaticResource SnackbarIcon}" materialDesign:TextFieldAssist.LeadingIcon="InformationCircle" MessageQueue="{materialDesign:MessageQueue}" Background="#b9e8ff" Foreground="#1e90ff">
+                        <materialDesign:SnackbarMessage Style="{DynamicResource SnackbarMessageIcon}" Content="InformationMessage"/>
+                    </materialDesign:Snackbar>
+                    <materialDesign:Snackbar Style="{DynamicResource SnackbarBorder}" MessageQueue="{materialDesign:MessageQueue}" x:Name="MyInformationSnackbarBorder" Background="#b9e8ff" Foreground="#1e90ff">
+                        <materialDesign:SnackbarMessage Style="{DynamicResource SnackbarMessageBorder}" Content="InformationMessage"/>
+                    </materialDesign:Snackbar>
+                </StackPanel>
+            </Canvas>
+        </Grid>
+    </materialDesign:DialogHost>
+</Window>

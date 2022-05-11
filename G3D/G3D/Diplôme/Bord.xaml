@@ -1,0 +1,534 @@
+﻿<UserControl x:Class="G3D.Diplôme.Bord"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:local="clr-namespace:G3D"
+             mc:Ignorable="d" 
+             
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="14"
+             FontFamily="{materialDesign:MaterialDesignFont}"
+             d:DesignHeight="872" d:DesignWidth="1634">
+    <Border Background="#f3f4fb" CornerRadius="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="CornerRadius" Value="5"/>
+                        <Setter Property="Padding" Value="25"/>
+                        <Setter Property="Margin" Value="0,0,25,0"/>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="#747d8c"/>
+                        <Setter Property="FontSize" Value="12"/>
+                    </Style>
+                    <Style TargetType="Label">
+                        <Setter Property="FontSize" Value="22"/>
+                        <Setter Property="Foreground" Value="#57606f"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Padding" Value="0,10,0,0"/>
+                    </Style>
+                    <Style TargetType="materialDesign:PackIcon">
+                        <Setter Property="Width" Value="40"/>
+                        <Setter Property="Height" Value="40"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Foreground" Value="#57606f"/>
+                    </Style>
+                </Grid.Resources>
+                <Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock>Stagiaires réguliers</TextBlock>
+                            <Label Name="RéguliersAdmis"></Label>
+                        </StackPanel>
+                        <materialDesign:PackIcon Grid.Column="1" Kind="AccountSchoolOutline"/>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock>Stagiaires libres</TextBlock>
+                            <Label Name="LibresAdmis"></Label>
+                        </StackPanel>
+                        <materialDesign:PackIcon Grid.Column="1" Kind="AccountOutline"/>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock>Admis</TextBlock>
+                            <Label Name="TotalAdmis"></Label>
+                        </StackPanel>
+                        <materialDesign:PackIcon Grid.Column="1" Kind="AccountCheckOutline"/>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock>Non admis</TextBlock>
+                            <Label Name="TotalNonAdmis"></Label>
+                        </StackPanel>
+                        <materialDesign:PackIcon Grid.Column="1" Kind="AccountCancelOutline"/>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Border" x:Key="StatisticsBorder">
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="Padding" Value="25, 30"/>
+                            <Setter Property="Margin" Value="0,25,25,0"/>
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="StatisticsTitle">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Foreground" Value="#747d8c"/>
+                            <Setter Property="FontWeight" Value="Medium"/>
+                        </Style>
+                        <Style TargetType="WrapPanel">
+                            <Setter Property="Grid.Column" Value="1"/>
+                            <Setter Property="Grid.Row" Value="0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="Border" x:Key="StatisticsLegendCircle">
+                            <Setter Property="Width" Value="10"/>
+                            <Setter Property="Height" Value="10"/>
+                            <Setter Property="CornerRadius" Value="16"/>
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="StatisticsLegendText">
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Foreground" Value="#57606f"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Border Style="{StaticResource StatisticsBorder}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Style="{StaticResource StatisticsTitle}">Statistiques des stagiaires réguliers</TextBlock>
+                            <WrapPanel>
+                                <Border Style="{StaticResource StatisticsLegendCircle}" Background="{StaticResource PrimaryHueMidBrush}" Margin="0,0,6,0"></Border>
+                                <TextBlock Style="{StaticResource StatisticsLegendText}">Admis</TextBlock>
+                                <Border Style="{StaticResource StatisticsLegendCircle}" Background="#eb3b5a" Margin="12,0,6,0"></Border>
+                                <TextBlock Style="{StaticResource StatisticsLegendText}">Non Admis</TextBlock>
+                            </WrapPanel>
+                            <lvc:CartesianChart Grid.Row="1" Grid.ColumnSpan="2" Series="{Binding ReguliersSeriesCollection}" LegendLocation="None" Margin="0,15,0,0">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Labels="{Binding ReguliersLabels}" Name="ReguliersLabelsValue" MinValue="0">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator IsEnabled="False" Step="1">
+                                            </lvc:Separator>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource StatisticsBorder}" Grid.Column="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Style="{StaticResource StatisticsTitle}">Statistiques des stagiaires libres</TextBlock>
+                            <WrapPanel>
+                                <Border Style="{StaticResource StatisticsLegendCircle}" Background="{StaticResource PrimaryHueMidBrush}" Margin="0,0,6,0"></Border>
+                                <TextBlock Style="{StaticResource StatisticsLegendText}">Admis</TextBlock>
+                                <Border Style="{StaticResource StatisticsLegendCircle}" Background="#eb3b5a" Margin="12,0,6,0"></Border>
+                                <TextBlock Style="{StaticResource StatisticsLegendText}">Non Admis</TextBlock>
+                            </WrapPanel>
+                            <lvc:CartesianChart Grid.Row="1" Grid.ColumnSpan="2" Series="{Binding LibresSeriesCollection}" LegendLocation="None" Margin="0,15,0,0">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Labels="{Binding LibresLabels}" Name="LibresLabelsValue" MinValue="0">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator IsEnabled="False" Step="1">
+                                            </lvc:Separator>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                        </Grid>
+                    </Border>
+                </Grid>
+                <Grid Grid.Row="1" Margin="0,25,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="Padding" Value="25"/>
+                            <Setter Property="Margin" Value="0,0,25,25"/>
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="TitleText">
+                            <Setter Property="Foreground" Value="#747d8c"/>
+                            <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="Margin" Value="0,0,0,5"/>
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="SumText">
+                            <Setter Property="Foreground" Value="#a4b0be"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="ValueText">
+                            <Setter Property="FontSize" Value="22"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Foreground" Value="#57606f"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Foreground" Value="#a4b0be"/>
+                            <Setter Property="Margin" Value="2,0"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="materialDesign:PackIcon">
+                            <Setter Property="Width" Value="18"/>
+                            <Setter Property="Height" Value="18"/>
+                            <Setter Property="VerticalAlignment" Value="Top"/>
+                            <Setter Property="Foreground" Value="#2196f3"/>
+                            <Setter Property="Margin" Value="-5,-10,0,0"/>
+                            <Setter Property="Grid.Column" Value="1"/>
+                        </Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="lvc:Gauge">
+                            <Setter Property="Uses360Mode" Value="True"/>
+                            <Setter Property="From" Value="0"/>
+                            <Setter Property="To" Value="100"/>
+                            <Setter Property="FromColor" Value="#eb3b5a"/>
+                            <Setter Property="ToColor" Value="#2196f3"/>
+                            <Setter Property="Width" Value="75"/>
+                            <Setter Property="Height" Value="75"/>
+                            <Setter Property="InnerRadius" Value="31.5"/>
+                            <Setter Property="GaugeBackground" Value="#f3f4fb"/>
+                            <Setter Property="HighFontSize" Value="13"/>
+                            <Setter Property="Foreground" Value="#57606f"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <TextBlock FontWeight="Medium" Style="{StaticResource TitleText}">Édités</TextBlock>
+                                <TextBlock FontSize="12" Foreground="#a4b0be">Les stagiaires édités</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                <TextBlock Name="EditeCount" Style="{StaticResource ValueText}"></TextBlock>
+                                <Label>/</Label>
+                                <TextBlock Text="{Binding totalAdmis}" Style="{StaticResource SumText}"/>
+                            </StackPanel>
+                            <WrapPanel Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,-5,0">
+                                <lvc:Gauge Name="GaugeEdites">
+                                    <lvc:Gauge.GaugeRenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90"></RotateTransform>
+                                            <ScaleTransform ScaleX="-1"></ScaleTransform>
+                                        </TransformGroup>
+                                    </lvc:Gauge.GaugeRenderTransform>
+                                </lvc:Gauge>
+                                <materialDesign:PackIcon Kind="ArrowTopRight" Visibility="Collapsed" Name="EditeArrowTop"/>
+                                <materialDesign:PackIcon Kind="ArrowBottomRight" Visibility="Collapsed" Foreground="#eb3b5a" Name="EditeArrowBottom"/>
+                            </WrapPanel>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <TextBlock FontWeight="Medium" Style="{StaticResource TitleText}">Envoyé</TextBlock>
+                                <TextBlock FontSize="12" Foreground="#a4b0be">Les stagiaires envoyé</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                <TextBlock Name="EnvoyCount" Style="{StaticResource ValueText}"></TextBlock>
+                                <Label>/</Label>
+                                <TextBlock Text="{Binding totalAdmis}" Style="{StaticResource SumText}"/>
+                            </StackPanel>
+                            <WrapPanel Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,-5,0">
+                                <lvc:Gauge Name="GaugeEnvoye">
+                                    <lvc:Gauge.GaugeRenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90"></RotateTransform>
+                                            <ScaleTransform ScaleX="-1"></ScaleTransform>
+                                        </TransformGroup>
+                                    </lvc:Gauge.GaugeRenderTransform>
+                                </lvc:Gauge>
+                                <materialDesign:PackIcon Kind="ArrowTopRight" Visibility="Collapsed" Name="EnvoyeArrowTop"/>
+                                <materialDesign:PackIcon Kind="ArrowBottomRight" Visibility="Collapsed" Foreground="#eb3b5a" Name="EnvoyArrowBottom"/>
+                            </WrapPanel>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Margin="0,0,25,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <TextBlock FontWeight="Medium" Style="{StaticResource TitleText}">Signé</TextBlock>
+                                <TextBlock FontSize="12" Foreground="#a4b0be">Les stagiaires signé</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                <TextBlock Name="SigneCount" Style="{StaticResource ValueText}"></TextBlock>
+                                <Label>/</Label>
+                                <TextBlock Text="{Binding totalAdmis}" Style="{StaticResource SumText}"/>
+                            </StackPanel>
+                            <WrapPanel Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,-5,0">
+                                <lvc:Gauge Name="GaugeSigne">
+                                    <lvc:Gauge.GaugeRenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90"></RotateTransform>
+                                            <ScaleTransform ScaleX="-1"></ScaleTransform>
+                                        </TransformGroup>
+                                    </lvc:Gauge.GaugeRenderTransform>
+                                </lvc:Gauge>
+                                <materialDesign:PackIcon Kind="ArrowTopRight" Visibility="Collapsed" Name="SigneArrowTop"/>
+                                <materialDesign:PackIcon Kind="ArrowBottomRight" Visibility="Collapsed" Foreground="#eb3b5a" Name="SigneArrowBottom"/>
+                            </WrapPanel>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" Margin="0,0,25,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <TextBlock FontWeight="Medium" Style="{StaticResource TitleText}">Corrigés</TextBlock>
+                                <TextBlock FontSize="12" Foreground="#a4b0be">Les rejets corrigés</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                <TextBlock Name="CorrigeCount" Style="{StaticResource ValueText}"></TextBlock>
+                                <Label>/</Label>
+                                <TextBlock x:Name="RejeteCount" Style="{StaticResource SumText}"/>
+                            </StackPanel>
+                            <WrapPanel Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,-5,0">
+                                <lvc:Gauge Name="GaugeCorriges">
+                                    <lvc:Gauge.GaugeRenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90"></RotateTransform>
+                                            <ScaleTransform ScaleX="-1"></ScaleTransform>
+                                        </TransformGroup>
+                                    </lvc:Gauge.GaugeRenderTransform>
+                                </lvc:Gauge>
+                                <materialDesign:PackIcon Kind="ArrowTopRight" Visibility="Collapsed" Name="CorrigeArrowTop"/>
+                                <materialDesign:PackIcon Kind="ArrowBottomRight" Visibility="Collapsed" Foreground="#eb3b5a" Name="CorrigeArrowBottom"/>
+                            </WrapPanel>
+                        </Grid>
+                    </Border>
+
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1" Grid.RowSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="CornerRadius" Value="5"/>
+                        <Setter Property="Padding" Value="25"/>
+                    </Style>
+                    <Style TargetType="TextBlock" x:Key="TitleText">
+                        <Setter Property="Foreground" Value="#747d8c"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="Margin" Value="0,0,0,5"/>
+                    </Style>
+                    <Style TargetType="TextBlock" x:Key="SumText">
+                        <Setter Property="Foreground" Value="#a4b0be"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="TextBlock" x:Key="ValueText">
+                        <Setter Property="FontSize" Value="22"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="#57606f"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Foreground" Value="#a4b0be"/>
+                        <Setter Property="Margin" Value="2,0"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="lvc:Gauge">
+                        <Setter Property="Uses360Mode" Value="True"/>
+                        <Setter Property="From" Value="0"/>
+                        <Setter Property="To" Value="100"/>
+                        <Setter Property="FromColor" Value="#eb3b5a"/>
+                        <Setter Property="ToColor" Value="#2196f3"/>
+                        <Setter Property="Width" Value="75"/>
+                        <Setter Property="Height" Value="75"/>
+                        <Setter Property="InnerRadius" Value="31.5"/>
+                        <Setter Property="GaugeBackground" Value="#f3f4fb"/>
+                        <Setter Property="HighFontSize" Value="15"/>
+                    </Style>
+                    <Style TargetType="Border" x:Key="StatisticsLegendCircle">
+                        <Setter Property="Width" Value="10"/>
+                        <Setter Property="Height" Value="10"/>
+                        <Setter Property="CornerRadius" Value="16"/>
+                        <Setter Property="Margin" Value="0,0,5,0"/>
+                    </Style>
+                    <Style TargetType="TextBlock" x:Key="StatisticsLegendText">
+                        <Setter Property="FontSize" Value="10"/>
+                        <Setter Property="Foreground" Value="#57606f"/>
+                    </Style>
+                    <Style TargetType="WrapPanel">
+                        <Setter Property="Margin" Value="0,3,0,3"/>
+                    </Style>
+                </Grid.Resources>
+                <Border Padding="40,15,40,30">
+                    <Calendar Language="fr-FR" Height="325"
+                            Background="White"
+  Style="{StaticResource MaterialDesignCalendarPortraitForeground}" />
+                </Border>
+                <Border Grid.Row="1" Margin="0,25,0,0" Padding="25,25,25,40">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <TextBlock FontWeight="Medium"  Style="{StaticResource TitleText}">Taux d'insertion</TextBlock>
+                            <TextBlock FontSize="12" Foreground="#a4b0be">Statistiques sur l'emploi des stagiaires</TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <StackPanel.Resources>
+                                <Style TargetType="lvc:Gauge">
+                                    <Setter Property="Uses360Mode" Value="True"/>
+                                    <Setter Property="From" Value="0"/>
+                                    <Setter Property="To" Value="100"/>
+                                    <Setter Property="FromColor" Value="#eb3b5a"/>
+                                    <Setter Property="ToColor" Value="#2196f3"/>
+                                    <Setter Property="Width" Value="120"/>
+                                    <Setter Property="Height" Value="120"/>
+                                    <Setter Property="InnerRadius" Value="52.5"/>
+                                    <Setter Property="GaugeBackground" Value="#f3f4fb"/>
+                                    <Setter Property="HighFontSize" Value="18"/>
+                                    <Setter Property="Foreground" Value="#57606f"/>
+                                </Style>
+                                <Style TargetType="materialDesign:PackIcon">
+                                    <Setter Property="Width" Value="18"/>
+                                    <Setter Property="Height" Value="18"/>
+                                    <Setter Property="VerticalAlignment" Value="Top"/>
+                                    <Setter Property="Foreground" Value="#2196f3"/>
+                                    <Setter Property="Margin" Value="-5,-10,0,0"/>
+                                    <Setter Property="Grid.Column" Value="1"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,5">
+                                <TextBlock Name="EmbauchesCount" Style="{StaticResource ValueText}"></TextBlock>
+                                <Label>/</Label>
+                                <TextBlock Text="{Binding totalAdmis}" Style="{StaticResource SumText}"/>
+                            </StackPanel>
+                            <WrapPanel Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,20,-5,0">
+                                <lvc:Gauge Name="Embauches" Width="120" Height="120">
+                                    <lvc:Gauge.GaugeRenderTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90"></RotateTransform>
+                                            <ScaleTransform ScaleX="-1"></ScaleTransform>
+                                        </TransformGroup>
+                                    </lvc:Gauge.GaugeRenderTransform>
+                                </lvc:Gauge>
+                                <materialDesign:PackIcon Kind="ArrowTopRight" Visibility="Collapsed" Name="EmbauchesArrowTop"/>
+                                <materialDesign:PackIcon Kind="ArrowBottomRight" Visibility="Collapsed" Foreground="#eb3b5a" Name="EmbauchesArrowBottom"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
